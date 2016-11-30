@@ -37,10 +37,11 @@
             android:id="@+id/content_dashboard"
             layout="@layout/content_dashboard" />
         <include
-            android:id="@+id/drawerfrag"
+            android:id="@+id/navigation_drawer"
             layout="@layout/navigation_drawer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/margin_80dp"
             android:layout_gravity="start" />
 
     </android.support.v4.widget.DrawerLayout>

@@ -15,40 +15,40 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="BHAGYALAKSHMI TRADERS"
+        android:text="@string/login_title"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="@dimen/textsize_24sp"
         android:textStyle="bold"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="@dimen/margin_40dp"
         android:gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/margin_20dp"
         android:orientation="vertical"
         android:background="@color/white_60">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginTop="@dimen/margin_30dp"
+            android:layout_marginBottom="@dimen/margin_10dp"
+            android:layout_marginLeft="@dimen/margin_20dp"
+            android:layout_marginRight="@dimen/margin_20dp"
             android:orientation="horizontal"
             android:background="@drawable/roundedcorner_background">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:padding="10dp"
+                android:padding="@dimen/padding_10dp"
                 android:src="@drawable/ic_account_black_24dp"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Username"
-                android:textSize="18sp"
-                android:padding="10dp"
+                android:hint="@string/username_hint"
+                android:textSize="@dimen/textsize_18sp"
+                android:padding="@dimen/padding_10dp"
                 android:inputType="text"
                 android:gravity="center_vertical"
                 android:background="@android:color/transparent"
@@ -57,38 +57,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginBottom="@dimen/margin_20dp"
+            android:layout_marginLeft="@dimen/margin_20dp"
+            android:layout_marginRight="@dimen/margin_20dp"
             android:orientation="horizontal"
             android:background="@drawable/roundedcorner_background">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:padding="10dp"
+                android:padding="@dimen/padding_10dp"
                 android:src="@drawable/ic_lock_black_24dp"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Password"
-                android:textSize="18sp"
-                android:padding="10dp"
+                android:hint="@string/password_hint"
+                android:textSize="@dimen/textsize_18sp"
+                android:padding="@dimen/padding_10dp"
                 android:inputType="textPassword"
                 android:gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:textColorHint="@color/black"/>
         </LinearLayout>
         <Button
-            android:layout_width="120dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
             android:background="@color/colorPrimary"
-            android:text="Sign In"
+            android:text="@string/login_button_title"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginBottom="@dimen/margin_30dp"/>
 
     </LinearLayout>
 </LinearLayout>
