@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 
-public class dashboard extends AppCompatActivity {
+public class Dashboard extends AppCompatActivity {
     Toolbar toolbar;
     DrawerLayout drawer;
     ActionBarDrawerToggle mDrawerToggle;

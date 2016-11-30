@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.dashboard.dashboard">
+    tools:context="com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -28,7 +28,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/drawer"
+        android:id="@+id/navigation_drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appbarlayout">
@@ -37,11 +37,9 @@
             android:id="@+id/content_dashboard"
             layout="@layout/content_dashboard" />
         <include
-            android:id="@+id/navigation_drawer"
             layout="@layout/navigation_drawer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/margin_80dp"
             android:layout_gravity="start" />
 
     </android.support.v4.widget.DrawerLayout>
