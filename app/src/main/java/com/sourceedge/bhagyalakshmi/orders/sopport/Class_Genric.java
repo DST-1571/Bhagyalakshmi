@@ -23,6 +23,7 @@ public static void setOrientation(Context mContext){
         ((Activity)mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 }
 
+
     public static void setupDrawer(Toolbar toolbar, DrawerLayout drawer, ActionBarDrawerToggle mDrawerToggle, Context mContext) {
         // Drawer object Assigned to the view
         mDrawerToggle = new ActionBarDrawerToggle((Activity)mContext, drawer, toolbar, R.string.opendrawer, R.string.closedrawer) {
