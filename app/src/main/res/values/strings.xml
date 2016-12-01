@@ -14,4 +14,5 @@
     <string name="drawer_messages">Messages</string>
     <string name="opendrawer">open</string>
     <string name="closedrawer">close</string>
+    <string name="title_activity_distributor_sales">DistributorSales</string>
 </resources>
