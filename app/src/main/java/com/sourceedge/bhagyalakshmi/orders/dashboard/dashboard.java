@@ -1,4 +1,4 @@
-package com.sourceedge.bhagyalakshmi.orders.dashboard;
+package com.sourceedge.bhagyalakshmi.orders.Dashboard;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

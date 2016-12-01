@@ -7,8 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+import com.sourceedge.bhagyalakshmi.orders.Dashboard.Dashboard;
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
 
 public class Login extends AppCompatActivity {
     Button loginButton;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard">
+    tools:context="com.sourceedge.bhagyalakshmi.orders.Dashboard.Dashboard">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
