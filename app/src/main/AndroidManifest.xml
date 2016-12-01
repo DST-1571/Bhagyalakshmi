@@ -20,10 +20,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".dashboard.Dashboard"
-            android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".distributorsales.DistributorSales"
             android:label="@string/title_activity_distributor_sales"
             android:theme="@style/AppTheme"></activity>
