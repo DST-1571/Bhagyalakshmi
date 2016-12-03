@@ -9,10 +9,23 @@
     <string name="login_button_title">Sign In</string>
     <string name="drawer_my_profile">My Profile</string>
     <string name="drawer_change_password">Change Password</string>
+    <string name="drawer_location">Location</string>
     <string name="drawer_my_orders">My Orders</string>
+    <string name="drawer_sales_distributors_retailers">Sales/Distributors/Retailers</string>
     <string name="drawer_payments">Payments</string>
     <string name="drawer_messages">Messages</string>
+    <string name="retail_name">Name</string>
+    <string name="brand">Brand</string>
+    <string name="category">Category</string>
+    <string name="description">Description</string>
+    <string name="units">Units</string>
+    <string name="quantity">Quantity</string>
+    <string name="price">Price</string>
+    <string name="add">ADD</string>
+    <string name="reset">RESET</string>
+
     <string name="opendrawer">open</string>
     <string name="closedrawer">close</string>
     <string name="title_activity_distributor_sales">DistributorSales</string>
+    <string name="title_activity_location">Location</string>
 </resources>

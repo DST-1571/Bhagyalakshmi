@@ -13,7 +13,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_16dp">
+            android:padding="@dimen/dimen_16dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/drawer_my_profile"
                 android:textSize="@dimen/textsize_18sp"
-                android:layout_marginLeft="@dimen/margin_32dp"
+                android:layout_marginLeft="@dimen/dimen_32dp"
                 android:gravity="bottom" />
         </LinearLayout>
         <View
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/padding_16dp">
+            android:padding="@dimen/dimen_16dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,18 +44,48 @@
                 android:layout_height="wrap_content"
                 android:text="@string/drawer_change_password"
                 android:textSize="@dimen/textsize_18sp"
-                android:layout_marginLeft="@dimen/margin_32dp"
+                android:layout_marginLeft="@dimen/dimen_32dp"
                 android:gravity="bottom" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_1dp"
             android:background="@color/white_60"/>
+
+        //For Admin
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/dimen_16dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_map_marker_grey600_24dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/drawer_location"
+                android:textSize="@dimen/textsize_18sp"
+                android:layout_marginLeft="@dimen/dimen_32dp"
+                android:gravity="bottom" />
+        </LinearLayout>
+        <View
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1dp"
+            android:background="@color/white_60"/>
+
+
+        ///
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/padding_16dp">
+            android:padding="@dimen/dimen_16dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,18 +95,46 @@
                 android:layout_height="wrap_content"
                 android:text="@string/drawer_my_orders"
                 android:textSize="@dimen/textsize_18sp"
-                android:layout_marginLeft="@dimen/margin_32dp"
+                android:layout_marginLeft="@dimen/dimen_32dp"
                 android:gravity="bottom" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_1dp"
             android:background="@color/white_60"/>
+
+        //For Admin
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/dimen_16dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star_grey600_24dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/drawer_sales_distributors_retailers"
+                android:textSize="@dimen/textsize_18sp"
+                android:layout_marginLeft="@dimen/dimen_32dp"
+                android:gravity="bottom" />
+        </LinearLayout>
+        <View
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1dp"
+            android:background="@color/white_60"/>
+
+        ///
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/padding_16dp">
+            android:padding="@dimen/dimen_16dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/drawer_payments"
                 android:textSize="@dimen/textsize_18sp"
-                android:layout_marginLeft="@dimen/margin_32dp"
+                android:layout_marginLeft="@dimen/dimen_32dp"
                 android:gravity="bottom" />
         </LinearLayout>
         <View
@@ -97,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/padding_16dp">
+            android:padding="@dimen/dimen_16dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/drawer_messages"
                 android:textSize="@dimen/textsize_18sp"
-                android:layout_marginLeft="@dimen/margin_32dp"
+                android:layout_marginLeft="@dimen/dimen_32dp"
                 android:gravity="bottom" />
         </LinearLayout>
         <View
