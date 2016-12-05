@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 
 public class SalesPerson extends AppCompatActivity {
@@ -26,6 +27,8 @@ public class SalesPerson extends AppCompatActivity {
         toolbar.setTitle("BAGHYALAKSHMI TRADERS");
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,SalesPerson.this);
+        Class_Genric.drawerOnClicks(SalesPerson.this);
+
     }
 
 }

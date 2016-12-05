@@ -9,7 +9,9 @@
     android:background="@color/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".login.Login"
-    tools:showIn="@layout/activity_login">
+    tools:showIn="@layout/activity_login"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -85,6 +87,21 @@
                     android:gravity="center_vertical"
                     android:background="@android:color/transparent"
                     android:textColorHint="@color/black"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:layout_marginLeft="@dimen/dimen_20dp"
+                android:layout_marginRight="@dimen/dimen_20dp"
+                android:padding="@dimen/dimen_10dp"
+                android:orientation="horizontal"
+                android:background="@drawable/roundedcorner_background">
+               <Spinner
+                   android:id="@+id/spinner"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+               </Spinner>
             </LinearLayout>
             <Button
                 android:id="@+id/login_button"

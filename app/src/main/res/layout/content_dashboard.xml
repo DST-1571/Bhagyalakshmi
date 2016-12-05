@@ -12,6 +12,7 @@
     tools:showIn="@layout/activity_dashboard">
 
     <ScrollView
+        android:id="@+id/dashboard_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

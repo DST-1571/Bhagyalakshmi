@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 
 public class DistributorSalesOrders extends AppCompatActivity {
@@ -23,6 +24,8 @@ public class DistributorSalesOrders extends AppCompatActivity {
         toolbar.setTitle("BAGHYALAKSHMI TRADERS");
         setSupportActionBar(toolbar);
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,DistributorSalesOrders.this);
+        Class_Genric.drawerOnClicks(DistributorSalesOrders.this);
+
 
     }
 

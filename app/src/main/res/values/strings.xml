@@ -15,6 +15,7 @@
     <string name="drawer_sales_distributors_retailers">Sales/Distributors/Retailers</string>
     <string name="drawer_payments">Payments</string>
     <string name="drawer_messages">Messages</string>
+    <string name="drawer_logout">Logout</string>
     <string name="dashboard_retailers_distributors">Retailers and Distributors</string>
     <string name="dashboard_recent_order_details">Recent Order Details</string>
     <string name="dashboard_my_sales">My Sales</string>
@@ -44,10 +45,11 @@
     <string name="title_activity_location">Location</string>
     <string name="title_activity_distributor">Distributor</string>
     <string name="title_activity_retailer_look_up">RetailerLookUp</string>
+    <string name="title_activity_admin_orders">AdminOrders</string>
     <string name="title_activity_distributor_sales_orders">DistributorSalesOrders</string>
     <string name="title_activity_distributor_orders">DistributorOrders</string>
     <string name="select_distributor">Select Distributor</string>
-    <string name="title_activity_admin_orders">AdminOders</string>
-    <string name="title_activity_sales_person">SalesPerson</string>
-    <string name="title_activity_sales_person_lookup" />
+    <string name="title_activity_sales_person_orders">SalesPersonOrders</string>
+    <string name="title_activity_sales_person_lookup">SalesPersonLookUp</string>
+    <string name="title_activity_order_success">OrderSuccess</string>
 </resources>
