@@ -17,7 +17,6 @@ public class Dashboard extends AppCompatActivity {
     ActionBarDrawerToggle mDrawerToggle;
     RecyclerView mySalesRecycler;
 
-
     //test vcs
     @Override
     protected void onCreate(Bundle savedInstanceState) {
