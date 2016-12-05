@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.distributor.controller.Distributor">
+    tools:context="com.sourceedge.bhagyalakshmi.orders.distributor.controller.RetailerLookUp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,7 +26,6 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-
         <android.support.v4.widget.DrawerLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -37,8 +36,8 @@
             android:layout_below="@+id/appbarlayout">
 
             <include
-                android:id="@+id/content_distributor"
-                layout="@layout/content_distributor" />
+                android:id="@+id/content_retailer_look_up"
+                layout="@layout/content_retailer_look_up" />
             <include
                 layout="@layout/navigation_drawer"
                 android:layout_width="match_parent"
@@ -46,8 +45,7 @@
                 android:layout_gravity="start" />
 
         </android.support.v4.widget.DrawerLayout>
+
     </RelativeLayout>
-
-
 
 </android.support.design.widget.CoordinatorLayout>

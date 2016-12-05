@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.distributor.controller.Distributor">
-
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orders.controller.DistributorSalesOrders">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -37,8 +36,8 @@
             android:layout_below="@+id/appbarlayout">
 
             <include
-                android:id="@+id/content_distributor"
-                layout="@layout/content_distributor" />
+                android:id="@+id/content_distributor_sales_orders"
+                layout="@layout/content_distributor_sales_orders" />
             <include
                 layout="@layout/navigation_drawer"
                 android:layout_width="match_parent"
@@ -46,8 +45,7 @@
                 android:layout_gravity="start" />
 
         </android.support.v4.widget.DrawerLayout>
+    <include layout="@layout/content_distributor_sales_orders" />
     </RelativeLayout>
-
-
 
 </android.support.design.widget.CoordinatorLayout>
