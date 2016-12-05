@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
+import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
 import com.sourceedge.bhagyalakshmi.orders.sopport.Class_Genric;
 
 public class Login extends AppCompatActivity {
