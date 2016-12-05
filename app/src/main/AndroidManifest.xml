@@ -49,7 +49,12 @@
         <activity
             android:name=".location.Location"
             android:label="@string/title_activity_location"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".distributor.controller.Distributor"
+            android:label="@string/title_activity_distributor"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>
