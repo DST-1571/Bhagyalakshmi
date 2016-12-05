@@ -47,4 +47,7 @@
     <string name="title_activity_distributor_sales_orders">DistributorSalesOrders</string>
     <string name="title_activity_distributor_orders">DistributorOrders</string>
     <string name="select_distributor">Select Distributor</string>
+    <string name="title_activity_admin_orders">AdminOders</string>
+    <string name="title_activity_sales_person">SalesPerson</string>
+    <string name="title_activity_sales_person_lookup" />
 </resources>
