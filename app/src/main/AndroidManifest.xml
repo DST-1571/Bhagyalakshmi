@@ -31,7 +31,7 @@
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".distributorsales.DistributorSales"
+            android:name=".distributorsales.controller.DistributorSales"
             android:label="@string/title_activity_distributor_sales"
             android:theme="@style/AppTheme" />
         <!--
@@ -47,14 +47,13 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".location.Location"
+            android:name=".location.controller.Location"
             android:label="@string/title_activity_location"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".distributor.controller.Distributor"
-            android:label="@string/title_activity_distributor"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:name=".orders.controller.AdminOrders"
+            android:label="@string/title_activity_admin_orders"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.sourceedge.bhagyalakshmi.orders.location;
+package com.sourceedge.bhagyalakshmi.orders.location.controller;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

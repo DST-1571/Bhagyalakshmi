@@ -11,9 +11,17 @@
     <string name="drawer_change_password">Change Password</string>
     <string name="drawer_location">Location</string>
     <string name="drawer_my_orders">My Orders</string>
+    <string name="drawer_active_orders">Active Orders</string>
     <string name="drawer_sales_distributors_retailers">Sales/Distributors/Retailers</string>
     <string name="drawer_payments">Payments</string>
     <string name="drawer_messages">Messages</string>
+    <string name="dashboard_retailers_distributors">Retailers and Distributors</string>
+    <string name="dashboard_recent_order_details">Recent Order Details</string>
+    <string name="dashboard_my_sales">My Sales</string>
+    <string name="dashboard_statistics">Statistics</string>
+    <string name="admin_order_id">Order Id</string>
+    <string name="admin_name">Name</string>
+    <string name="admin_placed_by">Placed By</string>
     <string name="retail_name">Name</string>
     <string name="brand">Brand</string>
     <string name="category">Category</string>
