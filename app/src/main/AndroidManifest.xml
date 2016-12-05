@@ -51,8 +51,8 @@
             android:label="@string/title_activity_location"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".orders.controller.AdminOrders"
-            android:label="@string/title_activity_admin_orders"
+            android:name=".salesperson.controller.SalesPerson"
+            android:label="@string/title_activity_sales_person"
             android:theme="@style/AppTheme"></activity>
     </application>
 

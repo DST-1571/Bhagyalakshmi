@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_sales_person"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.sourceedge.bhagyalakshmi.orders.salesperson.controller.SalesPerson"
+    tools:showIn="@layout/activity_sales_person">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary_400"
+        android:padding="@dimen/dimen_15dp"
+        android:text="John Doe - Sales (SBL)"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_15dp"
+            android:text="@string/select_distributor"
+            android:textSize="@dimen/textsize_16sp"
+            android:textColor="@color/black"
+            android:id="@+id/textView" />
+
+        <RelativeLayout
+            android:id="@+id/layout1"
+            android:layout_below="@id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/primary_outline">
+
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/search_icon"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="@dimen/dimen_15dp" />
+
+            <ImageView
+                android:id="@+id/search_icon"
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_magnify_grey600_24dp" />
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="@dimen/dimen_100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/reset"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_button"
+            android:layout_below="@id/layout1"
+
+            android:layout_marginRight="@dimen/dimen_30dp"
+            android:id="@+id/button" />
+    </RelativeLayout>
+
+
+</LinearLayout>
