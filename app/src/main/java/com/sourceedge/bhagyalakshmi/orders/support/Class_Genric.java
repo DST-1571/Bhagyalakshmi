@@ -1,4 +1,4 @@
-package com.sourceedge.bhagyalakshmi.orders.sopport;
+package com.sourceedge.bhagyalakshmi.orders.support;
 
 import android.app.Activity;
 import android.content.Context;

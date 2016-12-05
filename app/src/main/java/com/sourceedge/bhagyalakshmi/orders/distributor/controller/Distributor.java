@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.sopport.Class_Genric;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 
 public class Distributor extends AppCompatActivity {
 

@@ -45,7 +45,6 @@
                 android:layout_gravity="start" />
 
         </android.support.v4.widget.DrawerLayout>
-    <include layout="@layout/content_distributor_sales_orders" />
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

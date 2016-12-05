@@ -23,6 +23,8 @@
     <string name="admin_name">Name</string>
     <string name="admin_placed_by">Placed By</string>
     <string name="distributorsales_category_distributor">Category/Description</string>
+    <string name="distributorsales_qty_units">Qty/Units</string>
+    <string name="distributorsales_price">Price</string>
     <string name="retaillookup_title">Select Retailer</string>
     <string name="retail_name">Name</string>
     <string name="brand">Brand</string>
@@ -34,6 +36,7 @@
     <string name="add">ADD</string>
     <string name="reset">RESET</string>
     <string name="select">SELECT</string>
+    <string name="submit">SUBMIT</string>
 
     <string name="opendrawer">open</string>
     <string name="closedrawer">close</string>
@@ -42,4 +45,6 @@
     <string name="title_activity_distributor">Distributor</string>
     <string name="title_activity_retailer_look_up">RetailerLookUp</string>
     <string name="title_activity_distributor_sales_orders">DistributorSalesOrders</string>
+    <string name="title_activity_distributor_orders">DistributorOrders</string>
+    <string name="select_distributor">Select Distributor</string>
 </resources>
