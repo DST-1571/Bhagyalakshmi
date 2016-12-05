@@ -75,6 +75,7 @@
                     android:background="@color/view"
                     android:layout_margin="@dimen/dimen_5dp"
                     android:weightSum="3">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
