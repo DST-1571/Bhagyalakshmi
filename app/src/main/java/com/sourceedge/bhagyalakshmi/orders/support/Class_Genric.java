@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.location.controller.Location;
@@ -44,6 +46,18 @@ public class Class_Genric {
             ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         else
             ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    public static void applyFontForToolbarTitle(Toolbar toolbar,Activity context){
+        for(int i = 0; i < toolbar.getChildCount(); i++){
+            View view = toolbar.getChildAt(i);
+            if(view instanceof TextView){
+                TextView tv = (TextView) view;
+                Typeface titleFont = Typeface.
+                        createFromAsset(context.getAssets(), "fonts/RobotoCondensed-Regular.ttf");
+                tv.setTypeface(Typeface.SANS_SERIF,Typeface.NORMAL);
+            }
+        }
     }
 
 

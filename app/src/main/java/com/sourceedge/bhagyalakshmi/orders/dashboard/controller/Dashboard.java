@@ -1,6 +1,5 @@
 package com.sourceedge.bhagyalakshmi.orders.dashboard.controller;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,12 +19,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.dashboard.view.mySales_Adapter;
-import com.sourceedge.bhagyalakshmi.orders.location.controller.Location;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.AdminOrders;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.DistributorOrders;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.DistributorSalesOrders;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.SalesPersonOrders;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 
 public class Dashboard extends AppCompatActivity {
@@ -35,8 +28,7 @@ public class Dashboard extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     ScrollView dashboard_scrollview;
     TextView total_order_count;
-    CardView totalOrder,adminRetailersDistributors,distributorOrderDetails,mySalesOrders,statistics;
-    RecyclerView mySalesRecycler,adminRetailersDistributorsRecyclerview,distributorOrderDetailsRecyclerview;
+    CardView totalOrder,adminRetailersDistributors,statistics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +37,9 @@ public class Dashboard extends AppCompatActivity {
         Class_Genric.setOrientation(Dashboard.this);
         sharedPreferences = getSharedPreferences(Class_Genric.MyPref, Dashboard.MODE_PRIVATE);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("BAGHYALAKSHMI TRADERS");
+        toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
+        Class_Genric.applyFontForToolbarTitle(toolbar,Dashboard.this);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         total_order_count=(TextView)findViewById(R.id.total_order_count);
         animateTextView(0,157,total_order_count);
@@ -55,44 +48,21 @@ public class Dashboard extends AppCompatActivity {
 
         totalOrder=(CardView)findViewById(R.id.total_order);   //
         adminRetailersDistributors=(CardView)findViewById(R.id.admin_retailers_distributors);
-        distributorOrderDetails=(CardView)findViewById(R.id.distributor_order_details);
-        mySalesOrders=(CardView)findViewById(R.id.my_sales_orders);
+
         statistics=(CardView)findViewById(R.id.statistics);//
-
-        mySalesRecycler= (RecyclerView) findViewById(R.id.my_sales_recycler);
-        adminRetailersDistributorsRecyclerview=(RecyclerView)findViewById(R.id.admin_retailers_distributors_recyclerview);
-        distributorOrderDetailsRecyclerview=(RecyclerView)findViewById(R.id.distributor_order_details_recyclerview);
-
-        mySalesRecycler.setLayoutManager(new LinearLayoutManager(Dashboard.this));
-        adminRetailersDistributorsRecyclerview.setLayoutManager(new LinearLayoutManager(Dashboard.this));
-        distributorOrderDetailsRecyclerview.setLayoutManager(new LinearLayoutManager(Dashboard.this));
-
-        mySalesRecycler.setAdapter(new mySales_Adapter());
-        adminRetailersDistributorsRecyclerview.setAdapter(new mySales_Adapter());
-        distributorOrderDetailsRecyclerview.setAdapter(new mySales_Adapter());
-
+        onClicks();
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,Dashboard.this);
         Class_Genric.drawerOnClicks(Dashboard.this);
-        onClicks();
-
 
         switch (Class_Genric.getType(sharedPreferences.getString(Class_Genric.Sp_LoginType, ""))) {
             case Class_Genric.ADMIN:
-                mySalesOrders.setVisibility(View.GONE);
-                distributorOrderDetails.setVisibility(View.GONE);
                 break;
             case Class_Genric.DISTRIBUTORSALES:
-                adminRetailersDistributors.setVisibility(View.GONE);
-                mySalesOrders.setVisibility(View.GONE);
                 break;
             case Class_Genric.DISTRIBUTOR:
-                adminRetailersDistributors.setVisibility(View.GONE);
-                distributorOrderDetails.setVisibility(View.GONE);
-                mySalesOrders.setVisibility(View.GONE);
+
                 break;
             case Class_Genric.SALESPERSON:
-                adminRetailersDistributors.setVisibility(View.GONE);
-                distributorOrderDetails.setVisibility(View.GONE);
                 break;
         }
 
