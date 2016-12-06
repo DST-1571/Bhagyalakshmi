@@ -23,6 +23,7 @@ public class DistributorSalesOrders extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("BAGHYALAKSHMI TRADERS");
         setSupportActionBar(toolbar);
+        drawer=(DrawerLayout)findViewById(R.id.navigation_drawer);
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,DistributorSalesOrders.this);
         Class_Genric.drawerOnClicks(DistributorSalesOrders.this);
 

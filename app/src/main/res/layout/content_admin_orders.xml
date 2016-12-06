@@ -8,7 +8,9 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sourceedge.bhagyalakshmi.orders.orders.controller.AdminOrders"
-    tools:showIn="@layout/activity_admin_orders">
+    tools:showIn="@layout/activity_admin_orders"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,6 +45,7 @@
                     android:layout_toLeftOf="@+id/search_icon"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:background="@android:color/transparent"
                     android:padding="@dimen/dimen_15dp" />
 
                 <ImageView

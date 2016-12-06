@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.salesperson.controller.SalesPerson">
-
+    tools:context="com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
@@ -24,28 +24,28 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-        <android.support.v4.widget.DrawerLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/navigation_drawer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/appbarlayout">
+    <android.support.v4.widget.DrawerLayout
+        android:layout_toRightOf="@+id/drawer"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/navigation_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appbarlayout">
 
-            <include
-                android:id="@+id/content_sales_person"
-                layout="@layout/content_sales_person" />
-            <include
-                layout="@layout/navigation_drawer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="start" />
+        <include
+            android:id="@+id/content_dashboard"
+            layout="@layout/content_dashboard" />
 
-        </android.support.v4.widget.DrawerLayout>
 
+    </android.support.v4.widget.DrawerLayout>
+        <include
+            android:id="@+id/drawer"
+            android:layout_below="@+id/appbarlayout"
+            layout="@layout/navigation_drawer"
+            android:layout_width="300dp"
+            android:layout_height="match_parent" />
     </RelativeLayout>
-
-
 
 </android.support.design.widget.CoordinatorLayout>

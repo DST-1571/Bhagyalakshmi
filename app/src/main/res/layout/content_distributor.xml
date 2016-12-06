@@ -8,7 +8,9 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sourceedge.bhagyalakshmi.orders.distributor.controller.Distributor"
-    tools:showIn="@layout/activity_distributor">
+    tools:showIn="@layout/activity_distributor"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:layout_width="match_parent"

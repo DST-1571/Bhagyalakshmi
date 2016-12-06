@@ -100,6 +100,7 @@ public class Class_Genric {
                 distributorSalesPayments.setVisibility(View.GONE);
                 distributorPayments.setVisibility(View.GONE);
                 salesmanPayments.setVisibility(View.GONE);
+                retailers.setVisibility(View.GONE);
                 location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -190,6 +191,7 @@ public class Class_Genric {
                 distributorSalesPayments.setVisibility(View.GONE);
                 distributorPayments.setVisibility(View.GONE);
                 salesDistributorRetailers.setVisibility(View.GONE);
+                retailers.setVisibility(View.GONE);
                 salesmanMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
