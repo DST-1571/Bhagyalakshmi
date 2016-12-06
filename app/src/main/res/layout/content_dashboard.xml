@@ -42,6 +42,7 @@
                     android:padding="@dimen/dimen_60dp">
 
                     <TextView
+                        android:id="@+id/total_order_count"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -96,7 +97,7 @@
 
                     <android.support.v7.widget.RecyclerView
                         android:padding="@dimen/dimen_10dp"
-                        android:id="@+id/my_sales_recycler"
+                        android:id="@+id/admin_retailers_distributors_recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_150dp"></android.support.v7.widget.RecyclerView>
                 </LinearLayout>
@@ -138,7 +139,7 @@
 
                     <android.support.v7.widget.RecyclerView
                         android:padding="@dimen/dimen_10dp"
-                        android:id="@+id/recent_order_details_recycler"
+                        android:id="@+id/distributor_order_details_recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_150dp"></android.support.v7.widget.RecyclerView>
                 </LinearLayout>
@@ -180,7 +181,7 @@
 
                     <android.support.v7.widget.RecyclerView
                         android:padding="@dimen/dimen_10dp"
-                        android:id="@+id/retailers_distributors_recycler"
+                        android:id="@+id/my_sales_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_150dp"></android.support.v7.widget.RecyclerView>
                 </LinearLayout>

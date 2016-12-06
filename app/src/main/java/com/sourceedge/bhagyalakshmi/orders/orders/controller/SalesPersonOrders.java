@@ -6,17 +6,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
+import com.sourceedge.bhagyalakshmi.orders.orders.view.SalesPersonOrdersAdapter;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 
 public class SalesPersonOrders extends AppCompatActivity {
     Toolbar toolbar;
     DrawerLayout drawer;
     ActionBarDrawerToggle mDrawerToggle;
+    RecyclerView salesPersonOrdersRecyclerview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +30,9 @@ public class SalesPersonOrders extends AppCompatActivity {
         toolbar.setTitle("BAGHYALAKSHMI TRADERS");
         setSupportActionBar(toolbar);
         drawer=(DrawerLayout)findViewById(R.id.navigation_drawer);
+        salesPersonOrdersRecyclerview=(RecyclerView)findViewById(R.id.sales_person_orders_recyclerview);
+        salesPersonOrdersRecyclerview.setLayoutManager(new LinearLayoutManager(SalesPersonOrders.this));
+        salesPersonOrdersRecyclerview.setAdapter(new SalesPersonOrdersAdapter(SalesPersonOrders.this));
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,SalesPersonOrders.this);
         Class_Genric.drawerOnClicks(SalesPersonOrders.this);
 

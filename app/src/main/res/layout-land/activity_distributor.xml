@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard">
+    tools:context="com.sourceedge.bhagyalakshmi.orders.distributor.controller.Distributor">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbarlayout"
@@ -24,25 +26,28 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-    <android.support.v4.widget.DrawerLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/navigation_drawer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/appbarlayout">
 
-        <include
-            android:id="@+id/content_dashboard"
-            layout="@layout/content_dashboard" />
-        <include
-            layout="@layout/navigation_drawer"
-            android:layout_width="@dimen/dimen_300dp"
+        <android.support.v4.widget.DrawerLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation_drawer"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="start" />
+            android:layout_below="@+id/appbarlayout">
 
-    </android.support.v4.widget.DrawerLayout>
+            <include
+                android:id="@+id/content_distributor"
+                layout="@layout/content_distributor" />
+            <include
+                layout="@layout/navigation_drawer"
+                android:layout_width="@dimen/dimen_300dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start" />
+
+        </android.support.v4.widget.DrawerLayout>
     </RelativeLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>
