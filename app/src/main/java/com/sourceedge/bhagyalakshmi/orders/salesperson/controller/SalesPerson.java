@@ -24,7 +24,7 @@ public class SalesPerson extends AppCompatActivity {
          toolbar = (Toolbar) findViewById(R.id.toolbar);
         Class_Genric.setOrientation(SalesPerson.this);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("BAGHYALAKSHMI TRADERS");
+        toolbar.setTitle("Bhagyalakshmi Traders");
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,SalesPerson.this);
         Class_Genric.drawerOnClicks(SalesPerson.this);

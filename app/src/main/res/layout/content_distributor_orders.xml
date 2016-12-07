@@ -76,33 +76,30 @@
                     <LinearLayout
                         android:id="@+id/order_header"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/dimen_80dp"
                         android:orientation="horizontal"
                         android:background="@color/view"
                         android:weightSum="4">
 
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:text="@string/distributorsales_category_distributor"
                             android:textSize="@dimen/textsize_18sp"
                             android:textColor="@color/colorPrimary"
-                            android:padding="@dimen/dimen_10dp"
-                            android:maxLines="1"
                             android:gravity="center"/>
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:text="@string/distributorsales_qty_units"
                             android:textSize="@dimen/textsize_18sp"
                             android:textColor="@color/colorPrimary"
-                            android:padding="@dimen/dimen_10dp"
                             android:gravity="center"/>
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:text="@string/distributorsales_price"
                             android:textSize="@dimen/textsize_18sp"

@@ -19,7 +19,7 @@ public class DistributorOrdersAdapter extends RecyclerView.Adapter<DistributorOr
     }
     @Override
     public DistributorOrdersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_admin_orders,parent,false);
+        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_orders,parent,false);
         ViewHolder vh=new ViewHolder(v);
         return vh;
     }

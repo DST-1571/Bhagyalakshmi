@@ -23,7 +23,7 @@ public class DistributorSales extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Class_Genric.setOrientation(DistributorSales.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("BAGHYALAKSHMI TRADERS");
+        toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,DistributorSales.this);

@@ -19,7 +19,7 @@ public class DistributorSalesOrdersAdapter extends RecyclerView.Adapter<Distribu
     }
     @Override
     public DistributorSalesOrdersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_admin_orders,parent,false);
+        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_orders,parent,false);
         ViewHolder vh=new ViewHolder(v);
         return vh;
     }
@@ -31,7 +31,7 @@ public class DistributorSalesOrdersAdapter extends RecyclerView.Adapter<Distribu
 
     @Override
     public int getItemCount() {
-        return 0;
+        return 10;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

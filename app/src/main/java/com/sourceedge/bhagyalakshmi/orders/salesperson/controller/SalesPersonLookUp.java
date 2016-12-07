@@ -20,7 +20,7 @@ public class SalesPersonLookUp extends AppCompatActivity {
         setContentView(R.layout.activity_sales_person_lookup);
         Class_Genric.setOrientation(SalesPersonLookUp.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("BAGHYALAKSHMI TRADERS");
+        toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,SalesPersonLookUp.this);

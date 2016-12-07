@@ -25,7 +25,7 @@ public class DistributorSalesOrders extends AppCompatActivity {
         setContentView(R.layout.activity_distributor_sales_orders);
         Class_Genric.setOrientation(DistributorSalesOrders.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("BAGHYALAKSHMI TRADERS");
+        toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         drawer=(DrawerLayout)findViewById(R.id.navigation_drawer);
         distributorSalesOrdersRecyclerview=(RecyclerView)findViewById(R.id.distributor_sales_orders_recyclerview);

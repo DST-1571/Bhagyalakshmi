@@ -24,7 +24,7 @@ public class AdminOrders extends AppCompatActivity {
         setContentView(R.layout.activity_admin_orders);
         Class_Genric.setOrientation(AdminOrders.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("BAGHYALAKSHMI TRADERS");
+        toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         adminOrderRecyclerview=(RecyclerView)findViewById(R.id.admin_order_recyclerview);
