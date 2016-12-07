@@ -77,6 +77,10 @@
         <activity
             android:name=".orders.controller.OrderSuccess"
             android:label="@string/title_activity_order_success"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".changepassword.ChangePassword"
+            android:label="@string/title_activity_change_password"
             android:theme="@style/AppTheme"></activity>
     </application>
 

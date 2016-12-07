@@ -7,6 +7,8 @@
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="login_button_title">Sign In</string>
+    <string name="save_button_title">Save</string>
+    <string name="cancel_button_title">Cancel</string>
     <string name="drawer_my_profile">My Profile</string>
     <string name="drawer_change_password">Change Password</string>
     <string name="drawer_location">Location</string>
@@ -53,4 +55,8 @@
     <string name="title_activity_sales_person_lookup">SalesPersonLookUp</string>
     <string name="title_activity_order_success">OrderSuccess</string>
     <string name="viewmore">View More</string>
+    <string name="title_activity_change_password">ChangePassword</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

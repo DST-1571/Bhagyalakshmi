@@ -30,5 +30,6 @@
     <dimen name="dimen_120dp">120dp</dimen>
     <dimen name="dimen_300dp">300dp</dimen>
     <dimen name="dimen_400dp">400dp</dimen>
-
+    <dimen name="dimen_0dp">0dp</dimen>
+<dimen name="dimen_1dp">1dp</dimen>
 </resources>
