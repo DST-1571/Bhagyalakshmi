@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.changepassword.ChangePassword;
 import com.sourceedge.bhagyalakshmi.orders.location.controller.Location;
 import com.sourceedge.bhagyalakshmi.orders.login.Login;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.AdminOrders;
@@ -232,7 +233,8 @@ public class Class_Genric {
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                a.startActivity(new Intent(a, ChangePassword.class));
+                a.finish();
             }
         });
 

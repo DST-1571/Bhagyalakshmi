@@ -27,6 +27,8 @@ public class ChangePassword extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Class_Genric.applyFontForToolbarTitle(toolbar,ChangePassword.this);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
+        Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,ChangePassword.this);
+        Class_Genric.drawerOnClicks(ChangePassword.this);
 
     }
 
