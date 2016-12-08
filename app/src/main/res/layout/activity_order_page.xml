@@ -5,12 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".login.controller.RetailerLookUp">
-
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbarlayout"
@@ -26,6 +24,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+
         <android.support.v4.widget.DrawerLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -36,16 +35,23 @@
             android:layout_below="@+id/appbarlayout">
 
             <include
-                android:id="@+id/content_retailer_look_up"
-                layout="@layout/content_retailer_look_up" />
+                android:id="@+id/content_order_page"
+                layout="@layout/content_order_page" />
             <include
                 layout="@layout/navigation_drawer"
-                android:layout_width="@dimen/dimen_300dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="start" />
 
         </android.support.v4.widget.DrawerLayout>
-
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_plus_white_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

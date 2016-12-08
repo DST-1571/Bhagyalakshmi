@@ -24,9 +24,10 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.changepassword.ChangePassword;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.RetailerLookUp;
+import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_LookUp;
 import com.sourceedge.bhagyalakshmi.orders.location.controller.Location;
 import com.sourceedge.bhagyalakshmi.orders.login.Login;
+import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.AdminOrders;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.DistributorOrders;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.DistributorSalesOrders;
@@ -270,7 +271,7 @@ public class Class_Genric {
                 retailers.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, RetailerLookUp.class));
+                        a.startActivity(new Intent(a, Order_Page.class));
                         a.finish();
                     }
                 });

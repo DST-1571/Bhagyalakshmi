@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.RetailerLookUp"
+    tools:context=".distributorsales.controller.Retailer_LookUp"
     tools:showIn="@layout/activity_retailer_look_up"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
@@ -23,60 +23,114 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dimen_10dp"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingBottom="@dimen/dimen_10dp"
+            android:orientation="vertical"
+            android:background="@color/white">
 
-            <TextView
+            <LinearLayout
+                android:layout_above="@+id/select"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_15dp"
-                android:text="@string/retaillookup_title"
-                android:textColor="@color/black"
-                android:textSize="@dimen/textsize_16sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/dimen_10dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:background="@drawable/primary_outline">
-
-                <EditText
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/search_icon"
-                    android:inputType="text"
-                    android:maxLines="1"
                     android:padding="@dimen/dimen_15dp"
-                    android:background="@android:color/transparent"/>
+                    android:text="@string/retaillookup_title"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textsize_16sp" />
 
-                <ImageView
-                    android:id="@+id/search_icon"
-                    android:layout_width="@dimen/dimen_50dp"
-                    android:layout_height="@dimen/dimen_50dp"
-                    android:layout_alignParentRight="true"
-                    android:padding="@dimen/dimen_10dp"
-                    android:src="@drawable/ic_magnify_grey600_24dp" />
-            </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/search_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:background="@drawable/primary_outline">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/search_icon"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:padding="@dimen/dimen_15dp"
+                        android:background="@android:color/transparent"/>
+
+                    <ImageView
+                        android:id="@+id/search_icon"
+                        android:layout_width="@dimen/dimen_50dp"
+                        android:layout_height="@dimen/dimen_50dp"
+                        android:layout_alignParentRight="true"
+                        android:padding="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_magnify_grey600_24dp" />
+                </RelativeLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/retailer_lookup"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:padding="@dimen/dimen_5dp">
+                </android.support.v7.widget.RecyclerView>
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total"
+                        android:textSize="@dimen/dimen_20dp"
+                        android:layout_centerInParent="true"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:textSize="@dimen/dimen_20dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/total" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+
         </LinearLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:layout_gravity="center"
+        android:text="@string/submit"
+        android:textSize="@dimen/textsize_18sp"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_10dp"/>
 
-        <Button
-            android:id="@+id/select"
-            android:layout_width="@dimen/dimen_120dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/select"
-            android:textSize="@dimen/textsize_18sp"
-            android:textColor="@color/white"
-            android:background="@color/colorPrimary"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
 

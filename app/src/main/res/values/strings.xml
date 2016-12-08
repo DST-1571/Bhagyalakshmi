@@ -59,4 +59,5 @@
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="title_activity_order__page">Order_Page</string>
 </resources>

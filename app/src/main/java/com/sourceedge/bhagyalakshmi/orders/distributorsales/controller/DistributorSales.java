@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 
 public class DistributorSales extends AppCompatActivity {

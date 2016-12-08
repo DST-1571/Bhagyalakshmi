@@ -22,7 +22,7 @@ public class ChangePassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
         Class_Genric.setOrientation(ChangePassword.this);
-         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         Class_Genric.applyFontForToolbarTitle(toolbar,ChangePassword.this);
