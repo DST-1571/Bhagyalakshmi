@@ -16,24 +16,38 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.Switch;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.games.Player;
+import com.google.gson.Gson;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
+import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
+import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_Application;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_Urls;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class Login extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Button loginButton;
@@ -41,6 +55,8 @@ public class Login extends AppCompatActivity implements AdapterView.OnItemSelect
     Spinner spinner;
     String item = "";
     SharedPreferences sharedPreferences;
+    int mStatusCode=0;
+    Gson gson;
 
 
     @Override
@@ -61,7 +77,7 @@ public class Login extends AppCompatActivity implements AdapterView.OnItemSelect
         categories.add("Distributor Sales");
         categories.add("Distributor");
         categories.add("Sales Person");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.custtom_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         onClicks();
@@ -72,43 +88,67 @@ public class Login extends AppCompatActivity implements AdapterView.OnItemSelect
         }
     }
 
+
+    public void requestWithSomeHttpHeaders() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        ArrayList<KeyValuePair> params= new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("UserName",username.getText().toString()));
+        params.add(new KeyValuePair("Password",password.getText().toString()));
+        StringRequest postRequest = new StringRequest(Request.Method.GET,Class_Genric.generateUrl(Class_Urls.Login,params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                switch (mStatusCode){
+                    case 200:
+                        try {
+                            gson=new Gson();
+                            JSONObject jsonObject=new JSONObject(response);
+                            Class_ModelDB.setCurrentuserModel(gson.fromJson(jsonObject.toString(),CurrentUser.class));
+                            startActivity(new Intent(Login.this, Dashboard.class));
+                            finish();
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                switch (mStatusCode){
+                    case 400:
+                        password.setError("");
+                        break;
+                    case 401:
+                        break;
+                    case 404:
+                        break;
+                }
+            }
+        })
+        {
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+            mStatusCode = response.statusCode;
+            return super.parseNetworkResponse(response);
+        }
+        };
+        queue.add(postRequest);
+    }
+
+
+
+
     private void onClicks() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if (username.getText() != null) {
+                if (username.getText() != null) {
                     if (password.getText() != null) {
-                        RequestQueue queue = Volley.newRequestQueue(Login.this);
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("UserName", username.getText().toString());
-                        params.put("Password", password.getText().toString());
-                        GenricData.ShowDialog(MyStore.this, "Loading..", true);
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "", new JSONObject(params), new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                            GenricData.ShowDialog(MyStore.this, "Loading..", false);
-                            if (GenricData.sucess(response)) {
-                                if (response.optString("IsSuccess").matches("true")) {
-
-                                } else {
-
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                            GenricData.apiError(MyStore.this, error);
-                            GenricData.ShowDialog(MyStore.this, "Loading..", false);
-                                Log.d("Error", "error");
-                            }
-                        });
-                        queue.add(jsonObjectRequest);
-                        ApplicationClass.makerequest(jsonObjReq1);
+                        requestWithSomeHttpHeaders();
                     } else password.setError("Field cannot be empty");
-                } else username.setError("Field cannot be empty");*/
+                } else username.setError("Field cannot be empty");
 
-                startActivity(new Intent(Login.this, Dashboard.class));
-                finish();
+
             }
         });
     }

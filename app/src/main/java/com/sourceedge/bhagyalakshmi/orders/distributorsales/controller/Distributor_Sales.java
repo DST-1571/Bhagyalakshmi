@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 
-public class DistributorSales extends AppCompatActivity {
+public class Distributor_Sales extends AppCompatActivity {
     Toolbar toolbar;
     DrawerLayout drawer;
     ActionBarDrawerToggle mDrawerToggle;
@@ -20,13 +20,13 @@ public class DistributorSales extends AppCompatActivity {
         setContentView(R.layout.activity_distributor_sales);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Class_Genric.setOrientation(DistributorSales.this);
+        Class_Genric.setOrientation(Distributor_Sales.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
-        Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,DistributorSales.this);
-        Class_Genric.drawerOnClicks(DistributorSales.this);
+        Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,Distributor_Sales.this);
+        Class_Genric.drawerOnClicks(Distributor_Sales.this);
 
     }
 }

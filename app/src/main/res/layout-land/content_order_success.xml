@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.orders.controller.OrderSuccess"
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orders.controller.Order_Success"
     tools:showIn="@layout/activity_order_success"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">

@@ -23,17 +23,19 @@ import android.widget.Toast;
 import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.changepassword.ChangePassword;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_LookUp;
+import com.sourceedge.bhagyalakshmi.orders.changepassword.Change_Password;
+import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.location.controller.Location;
 import com.sourceedge.bhagyalakshmi.orders.login.Login;
-import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.AdminOrders;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.DistributorOrders;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.DistributorSalesOrders;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.SalesPersonOrders;
+import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
+import com.sourceedge.bhagyalakshmi.orders.orders.controller.Admin_Orders;
+import com.sourceedge.bhagyalakshmi.orders.orders.controller.Distributor_Orders;
+import com.sourceedge.bhagyalakshmi.orders.orders.controller.Distributor_Sales_Orders;
+import com.sourceedge.bhagyalakshmi.orders.orders.controller.Sales_Person_Orders;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 /**
@@ -239,7 +241,7 @@ public class Class_Genric {
                 activeOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, AdminOrders.class));
+                        a.startActivity(new Intent(a, Admin_Orders.class));
                         a.finish();
                     }
                 });
@@ -263,7 +265,7 @@ public class Class_Genric {
                 distributorSalesMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, DistributorSalesOrders.class));
+                        a.startActivity(new Intent(a, Distributor_Sales_Orders.class));
                         a.finish();
                     }
                 });
@@ -271,7 +273,7 @@ public class Class_Genric {
                 retailers.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, Order_Page.class));
+                        a.startActivity(new Intent(a, Retailer_Lookup.class));
                         a.finish();
                     }
                 });
@@ -297,7 +299,7 @@ public class Class_Genric {
                 distributorMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, DistributorOrders.class));
+                        a.startActivity(new Intent(a, Distributor_Orders.class));
                         a.finish();
                     }
                 });
@@ -323,7 +325,7 @@ public class Class_Genric {
                 salesmanMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, SalesPersonOrders.class));
+                        a.startActivity(new Intent(a, Sales_Person_Orders.class));
                         a.finish();
                     }
                 });
@@ -346,7 +348,7 @@ public class Class_Genric {
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                a.startActivity(new Intent(a, ChangePassword.class));
+                a.startActivity(new Intent(a, Change_Password.class));
                 a.finish();
             }
         });
@@ -380,7 +382,7 @@ public class Class_Genric {
             public void onClick(View v) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear().commit();
-                ModelDB.ClearDB();
+                Class_ModelDB.ClearDB();
                 a.startActivity(new Intent(a, Login.class));
                 a.finish();
             }
@@ -392,5 +394,18 @@ public class Class_Genric {
             }
         });
         dialog.show();
+    }
+
+    public static String generateUrl(String Url, ArrayList<KeyValuePair> params){
+        if(params.size()>0)
+        {
+            Url+="?";
+            for (KeyValuePair data : params) {
+                if(data.getKey().trim().length()>0)
+                    Url+=data.getKey()+"="+data.getValue()+"&&";
+            }
+            Url=Url.substring(0,Url.length()-2);
+        }
+        return Url;
     }
 }

@@ -12,7 +12,7 @@ import com.android.volley.toolbox.Volley;
 /**
  * Created by tarun jain on 06-01-2016.
  */
-public class ApplicationClass extends Application {
+public class Class_Application extends Application {
    public static SharedPreferences sharedPreferences;
    public static RequestQueue mRequestQueue;
    private static Context context;

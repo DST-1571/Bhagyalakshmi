@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.orders.controller.DistributorOrders"
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orders.controller.Distributor_Orders"
     tools:showIn="@layout/activity_distributor_orders"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">

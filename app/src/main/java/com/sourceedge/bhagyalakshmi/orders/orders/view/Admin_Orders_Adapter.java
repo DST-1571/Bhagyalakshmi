@@ -12,20 +12,21 @@ import com.sourceedge.bhagyalakshmi.orders.R;
  * Created by Centura User1 on 06-12-2016.
  */
 
-public class DistributorOrdersAdapter extends RecyclerView.Adapter<DistributorOrdersAdapter.ViewHolder> {
+public class Admin_Orders_Adapter extends RecyclerView.Adapter<Admin_Orders_Adapter.ViewHolder> {
     Context mContext;
-    public DistributorOrdersAdapter(Context context){
+    public Admin_Orders_Adapter(Context context){
         this.mContext=context;
     }
+
     @Override
-    public DistributorOrdersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_orders,parent,false);
+    public Admin_Orders_Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_admin_orders,parent,false);
         ViewHolder vh=new ViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(DistributorOrdersAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(Admin_Orders_Adapter.ViewHolder holder, int position) {
 
     }
 

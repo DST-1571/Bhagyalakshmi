@@ -1,5 +1,6 @@
 package com.sourceedge.bhagyalakshmi.orders.support;
 
+import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
 import com.sourceedge.bhagyalakshmi.orders.models.OrderProduct;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * Created by Centura User1 on 08-12-2016.
  */
 
-public class ModelDB {
+public class Class_ModelDB {
 
     private static Order orderModel=new Order();
     private static ArrayList<Order> orderList=new ArrayList<Order>();
@@ -29,6 +30,9 @@ public class ModelDB {
     private static User userModel=new User();
     private static ArrayList<User> userList=new ArrayList<User>();
 
+    private static CurrentUser currentuserModel=new CurrentUser();
+
+
 
 
 
@@ -39,7 +43,7 @@ public class ModelDB {
     }
 
     public static void setOrderModel(Order orderModel) {
-        ModelDB.orderModel = orderModel;
+        Class_ModelDB.orderModel = orderModel;
     }
 
     public static ArrayList<Order> getOrderList() {
@@ -47,7 +51,7 @@ public class ModelDB {
     }
 
     public static void setOrderList(ArrayList<Order> orderList) {
-        ModelDB.orderList = orderList;
+        Class_ModelDB.orderList = orderList;
     }
 
     public static OrderProduct getOrderProductModel() {
@@ -55,7 +59,7 @@ public class ModelDB {
     }
 
     public static void setOrderProductModel(OrderProduct orderProductModel) {
-        ModelDB.orderProductModel = orderProductModel;
+        Class_ModelDB.orderProductModel = orderProductModel;
     }
 
     public static ArrayList<OrderProduct> getOrderProductList() {
@@ -63,7 +67,7 @@ public class ModelDB {
     }
 
     public static void setOrderProductList(ArrayList<OrderProduct> orderProductList) {
-        ModelDB.orderProductList = orderProductList;
+        Class_ModelDB.orderProductList = orderProductList;
     }
 
     public static Product getProductModel() {
@@ -71,7 +75,7 @@ public class ModelDB {
     }
 
     public static void setProductModel(Product productModel) {
-        ModelDB.productModel = productModel;
+        Class_ModelDB.productModel = productModel;
     }
 
     public static ArrayList<Product> getProductList() {
@@ -79,7 +83,7 @@ public class ModelDB {
     }
 
     public static void setProductList(ArrayList<Product> productList) {
-        ModelDB.productList = productList;
+        Class_ModelDB.productList = productList;
     }
 
     public static Role getRoleModel() {
@@ -87,7 +91,7 @@ public class ModelDB {
     }
 
     public static void setRoleModel(Role roleModel) {
-        ModelDB.roleModel = roleModel;
+        Class_ModelDB.roleModel = roleModel;
     }
 
     public static ArrayList<Role> getRoleList() {
@@ -95,7 +99,7 @@ public class ModelDB {
     }
 
     public static void setRoleList(ArrayList<Role> roleList) {
-        ModelDB.roleList = roleList;
+        Class_ModelDB.roleList = roleList;
     }
 
     public static User getUserModel() {
@@ -103,7 +107,7 @@ public class ModelDB {
     }
 
     public static void setUserModel(User userModel) {
-        ModelDB.userModel = userModel;
+        Class_ModelDB.userModel = userModel;
     }
 
     public static ArrayList<User> getUserList() {
@@ -111,7 +115,15 @@ public class ModelDB {
     }
 
     public static void setUserList(ArrayList<User> userList) {
-        ModelDB.userList = userList;
+        Class_ModelDB.userList = userList;
+    }
+
+    public static CurrentUser getCurrentuserModel() {
+        return currentuserModel;
+    }
+
+    public static void setCurrentuserModel(CurrentUser currentuserModel) {
+        Class_ModelDB.currentuserModel = currentuserModel;
     }
 
     public static void ClearDB(){

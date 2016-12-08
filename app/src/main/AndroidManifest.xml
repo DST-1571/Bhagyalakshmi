@@ -31,7 +31,7 @@
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".distributorsales.controller.DistributorSales"
+            android:name=".distributorsales.controller.Distributor_Sales"
             android:label="@string/title_activity_distributor_sales"
             android:theme="@style/AppTheme" />
         <!--
@@ -51,35 +51,35 @@
             android:label="@string/title_activity_location"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".orders.controller.AdminOrders"
+            android:name=".orders.controller.Admin_Orders"
             android:label="@string/title_activity_admin_orders"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".distributorsales.controller.Retailer_LookUp"
+            android:name=".distributorsales.controller.Retailer_Lookup"
             android:label="@string/title_activity_retailer_look_up"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".orders.controller.DistributorSalesOrders"
+            android:name=".orders.controller.Distributor_Sales_Orders"
             android:label="@string/title_activity_distributor_sales_orders"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".orders.controller.DistributorOrders"
+            android:name=".orders.controller.Distributor_Orders"
             android:label="@string/title_activity_distributor_orders"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".orders.controller.SalesPersonOrders"
+            android:name=".orders.controller.Sales_Person_Orders"
             android:label="@string/title_activity_sales_person_orders"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".salesperson.controller.SalesPersonLookUp"
+            android:name=".salesperson.controller.Sales_Person_Lookup"
             android:label="@string/title_activity_sales_person_orders"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".orders.controller.OrderSuccess"
+            android:name=".orders.controller.Order_Success"
             android:label="@string/title_activity_order_success"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".changepassword.ChangePassword"
+            android:name=".changepassword.Change_Password"
             android:label="@string/title_activity_change_password"
             android:theme="@style/AppTheme" />
         <activity

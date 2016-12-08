@@ -3,23 +3,17 @@ package com.sourceedge.bhagyalakshmi.orders.support;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 /**
  * Created by Centura User1 on 08-12-2016.
  */
 
-public class DBHelper extends SQLiteOpenHelper {
-    SharedPreferences sharedPreferences = ApplicationClass.sharedPreferences;
+public class Class_DBHelper extends SQLiteOpenHelper {
+    SharedPreferences sharedPreferences = Class_Application.sharedPreferences;
     public static final String DATABASE_NAME = "Bhagyalaksmi_Traders.db";
     Gson gson = new Gson();
     ContentValues contentValues = new ContentValues();
@@ -27,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static String TableName = "TableName";
     public static String Data = "Data";
 
-    public DBHelper(Context context) {
+    public Class_DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
         sharedPreferences = context.getSharedPreferences(Class_Genric.MyPref, context.MODE_PRIVATE);
     }

@@ -9,11 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
-import com.sourceedge.bhagyalakshmi.orders.orders.view.AdminOrdersAdapter;
+import com.sourceedge.bhagyalakshmi.orders.orders.view.Admin_Orders_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 
-public class AdminOrders extends AppCompatActivity {
+public class Admin_Orders extends AppCompatActivity {
     Toolbar toolbar;
     DrawerLayout drawer;
     ActionBarDrawerToggle mDrawerToggle;
@@ -22,16 +21,16 @@ public class AdminOrders extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_orders);
-        Class_Genric.setOrientation(AdminOrders.this);
+        Class_Genric.setOrientation(Admin_Orders.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         adminOrderRecyclerview=(RecyclerView)findViewById(R.id.admin_order_recyclerview);
-        adminOrderRecyclerview.setLayoutManager(new LinearLayoutManager(AdminOrders.this));
-        adminOrderRecyclerview.setAdapter(new AdminOrdersAdapter(AdminOrders.this));
-        Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,AdminOrders.this);
-        Class_Genric.drawerOnClicks(AdminOrders.this);
+        adminOrderRecyclerview.setLayoutManager(new LinearLayoutManager(Admin_Orders.this));
+        adminOrderRecyclerview.setAdapter(new Admin_Orders_Adapter(Admin_Orders.this));
+        Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,Admin_Orders.this);
+        Class_Genric.drawerOnClicks(Admin_Orders.this);
 
     }
 
