@@ -82,9 +82,12 @@ public class Login extends AppCompatActivity implements AdapterView.OnItemSelect
                         Map<String, String> params = new HashMap<String, String>();
                         params.put("UserName", username.getText().toString());
                         params.put("Password", password.getText().toString());
+                        GenricData.ShowDialog(MyStore.this, "Loading..", true);
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "", new JSONObject(params), new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
+                            GenricData.ShowDialog(MyStore.this, "Loading..", false);
+                            if (GenricData.sucess(response)) {
                                 if (response.optString("IsSuccess").matches("true")) {
 
                                 } else {
@@ -94,10 +97,13 @@ public class Login extends AppCompatActivity implements AdapterView.OnItemSelect
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                            GenricData.apiError(MyStore.this, error);
+                            GenricData.ShowDialog(MyStore.this, "Loading..", false);
                                 Log.d("Error", "error");
                             }
                         });
                         queue.add(jsonObjectRequest);
+                        ApplicationClass.makerequest(jsonObjReq1);
                     } else password.setError("Field cannot be empty");
                 } else username.setError("Field cannot be empty");*/
 

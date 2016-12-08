@@ -1,18 +1,27 @@
 package com.sourceedge.bhagyalakshmi.orders.support;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
+import com.android.volley.VolleyError;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.changepassword.ChangePassword;
 import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.RetailerLookUp;
@@ -22,6 +31,8 @@ import com.sourceedge.bhagyalakshmi.orders.orders.controller.AdminOrders;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.DistributorOrders;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.DistributorSalesOrders;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.SalesPersonOrders;
+
+import org.json.JSONObject;
 
 
 /**
@@ -38,10 +49,43 @@ public class Class_Genric {
     public static final int SALESPERSON=4;
     public static final String Sp_Username = "Username";
     public static final String Sp_Password = "Password";
+    public static boolean progressAlive = false;
+    static ProgressDialog pDialog;
+
+    static Button button;
+    static Button button1;
 
     public static LinearLayout myProfile, changePassword, location, distributorSalesMyOrders, activeOrders, distributorMyOrders,salesmanMyOrders,salesDistributorRetailers,retailers, distributorSalesPayments,distributorPayments,salesmanPayments, messages, logout;
     public static Activity a;
     static SharedPreferences sharedPreferences;
+
+    public static void ShowDialog(Context context, String message, Boolean flag) {
+        if (flag) {
+            if (progressAlive) {
+                pDialog.cancel();
+                progressAlive = false;
+            }
+            {
+               /* pDialog=new Dialog(context);
+                pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                pDialog.setContentView(R.layout.customload);*/
+
+                pDialog = new ProgressDialog(context);
+                pDialog.setMessage(message);
+                if (message.contains("Loading"))
+                    pDialog.setCanceledOnTouchOutside(false);
+                progressAlive = true;
+                pDialog.show();
+            }
+        } else {
+            if (progressAlive) {
+                pDialog.dismiss();
+                pDialog.cancel();
+                progressAlive = false;
+            }
+        }
+    }
 
     public static void setOrientation(Context mContext) {
         if (mContext.getResources().getBoolean(R.bool.isPhone))
@@ -80,6 +124,72 @@ public class Class_Genric {
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
     }
 
+    public static boolean NetCheck(final Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        final boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if (isConnected == false) {
+            /*Toast.makeText(context, "Please Check Internet Connectivity", Toast.LENGTH_LONG).show();
+            return false;*/
+            try {
+                final Dialog dialog = new Dialog(context);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.checkinternet);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+                Button btn = (Button) dialog.findViewById(R.id.btn);
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                        NetCheck(context);
+                    }
+                });
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        }
+        return true;
+    }
+
+    public static boolean success(JSONObject result) {
+        if (result.optString("IsSuccess").matches("true"))
+            return true;
+        else return false;
+    }
+
+    public static String getError(JSONObject result) {
+        String Error = result.optString("Errors");
+        if (Error != null)
+            if (Error.length() > 2)
+                Error = Error.substring(1, Error.length() - 2);
+        return Error;
+    }
+
+
+    public static void apiError(final Context context, VolleyError volleyError) {
+        if (volleyError instanceof NoConnectionError) {
+            try {
+                final Dialog dialog = new Dialog(context);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.checkinternet);
+                dialog.show();
+                Button btn = (Button) dialog.findViewById(R.id.btn);
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                        //NetCheck(context);
+                    }
+                });
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        } else {
+            Toast.makeText(context, "Server Down! Please get back Later", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public static int getType(String Sp_LoginType) {
         if (Sp_LoginType.matches("Admin"))
             return ADMIN;
@@ -90,7 +200,7 @@ public class Class_Genric {
         else return SALESPERSON;
     }
 
-    public static void drawerOnClicks(Context context) {
+    public static void drawerOnClicks(final Context context) {
         a = (Activity) context;
         sharedPreferences = a.getSharedPreferences(MyPref, a.MODE_PRIVATE);
         myProfile = (LinearLayout) a.findViewById(R.id.my_profile);
@@ -250,11 +360,36 @@ public class Class_Genric {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logout(a);
+            }
+        });
+    }
+
+    public static void logout(Context context){
+        a = ((Activity) context);
+        //db = new DbHelper(context);
+        sharedPreferences = a.getSharedPreferences(Class_Genric.MyPref, a.MODE_PRIVATE);
+        final Dialog dialog = new Dialog(a);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.logout_alert);
+        button = (Button) dialog.findViewById(R.id.btn);
+        button1 = (Button) dialog.findViewById(R.id.btn1);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear().commit();
+                ModelDB.ClearDB();
                 a.startActivity(new Intent(a, Login.class));
                 a.finish();
             }
         });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
     }
 }
