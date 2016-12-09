@@ -36,6 +36,7 @@ import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Application;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Urls;
 
 import org.json.JSONException;
@@ -89,62 +90,13 @@ public class Login extends AppCompatActivity implements AdapterView.OnItemSelect
     }
 
 
-    public void requestWithSomeHttpHeaders() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        ArrayList<KeyValuePair> params= new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("UserName",username.getText().toString()));
-        params.add(new KeyValuePair("Password",password.getText().toString()));
-        StringRequest postRequest = new StringRequest(Request.Method.GET,Class_Genric.generateUrl(Class_Urls.Login,params), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                switch (mStatusCode){
-                    case 200:
-                        try {
-                            gson=new Gson();
-                            JSONObject jsonObject=new JSONObject(response);
-                            Class_ModelDB.setCurrentuserModel(gson.fromJson(jsonObject.toString(),CurrentUser.class));
-                            startActivity(new Intent(Login.this, Dashboard.class));
-                            finish();
-                            break;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                switch (mStatusCode){
-                    case 400:
-                        password.setError("");
-                        break;
-                    case 401:
-                        break;
-                    case 404:
-                        break;
-                }
-            }
-        })
-        {
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-            mStatusCode = response.statusCode;
-            return super.parseNetworkResponse(response);
-        }
-        };
-        queue.add(postRequest);
-    }
-
-
-
-
     private void onClicks() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (username.getText() != null) {
                     if (password.getText() != null) {
-                        requestWithSomeHttpHeaders();
+                        Class_SyncApi.LoginApi(Login.this,username,password);
                     } else password.setError("Field cannot be empty");
                 } else username.setError("Field cannot be empty");
 

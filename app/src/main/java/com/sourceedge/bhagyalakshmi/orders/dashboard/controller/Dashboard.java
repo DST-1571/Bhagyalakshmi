@@ -19,7 +19,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.login.Login;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
 public class Dashboard extends AppCompatActivity {
     Toolbar toolbar;
@@ -42,6 +44,8 @@ public class Dashboard extends AppCompatActivity {
         Class_Genric.applyFontForToolbarTitle(toolbar,Dashboard.this);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         total_order_count=(TextView)findViewById(R.id.total_order_count);
+        Class_SyncApi.DistributorApi(Dashboard.this);
+        Class_SyncApi.DistributorIdApi(Dashboard.this);
         animateTextView(0,157,total_order_count);
 
         dashboard_scrollview=(ScrollView)findViewById(R.id.dashboard_scrollview);
