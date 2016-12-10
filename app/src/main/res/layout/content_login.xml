@@ -69,22 +69,6 @@
                     android:textColorHint="@color/black"/>
             </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-
-                android:paddingTop="@dimen/dimen_20dp"
-                android:paddingLeft="@dimen/dimen_4dp"
-                android:paddingBottom="@dimen/dimen_4dp"
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </Spinner>
-            <View
-                android:layout_marginBottom="@dimen/dimen_20dp"
-                android:layout_marginLeft="@dimen/dimen_2dp"
-                android:layout_marginRight="@dimen/dimen_2dp"
-                android:layout_width="match_parent"
-                android:background="@color/cardview_dark_background"
-                android:layout_height="1dp"/>
 
             <Button
                 android:id="@+id/login_button"

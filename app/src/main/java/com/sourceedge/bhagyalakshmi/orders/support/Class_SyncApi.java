@@ -79,7 +79,7 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode=error.networkResponse.statusCode;
+                mStatusCode = error.networkResponse.statusCode;
                 switch (mStatusCode){
                     case 400:
                         username.setError("Username or Password Invalid");

@@ -50,10 +50,9 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class Login extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Login extends AppCompatActivity  {
     Button loginButton;
     EditText username, password;
-    Spinner spinner;
     String item = "";
     SharedPreferences sharedPreferences;
     int mStatusCode=0;
@@ -71,16 +70,8 @@ public class Login extends AppCompatActivity implements AdapterView.OnItemSelect
         loginButton = (Button) findViewById(R.id.login_button);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
-        spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setOnItemSelectedListener(this);
-        List<String> categories = new ArrayList<String>();
-        categories.add("Admin");
-        categories.add("Distributor Sales");
-        categories.add("Distributor");
-        categories.add("Sales Person");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, categories);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(dataAdapter);
+
+
         onClicks();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -94,8 +85,8 @@ public class Login extends AppCompatActivity implements AdapterView.OnItemSelect
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (username.getText() != null) {
-                    if (password.getText() != null) {
+                if (!("".equals(username.getText().toString().trim()))) {
+                    if (!("".equals(password.getText().toString().trim()))) {
                         Class_SyncApi.LoginApi(Login.this,username,password);
                     } else password.setError("Field cannot be empty");
                 } else username.setError("Field cannot be empty");
@@ -105,19 +96,6 @@ public class Login extends AppCompatActivity implements AdapterView.OnItemSelect
         });
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        item = parent.getItemAtPosition(position).toString();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Class_Genric.LoginType, item);
-        editor.commit();
-        // Showing selected spinner item
-        //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-    }
 
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
-    }
 
 }
