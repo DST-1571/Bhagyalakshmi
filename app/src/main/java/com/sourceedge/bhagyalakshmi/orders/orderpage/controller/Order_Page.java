@@ -12,8 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.distributor.controller.Distributor;
 import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.view.Order_Page_Adapter;
+import com.sourceedge.bhagyalakshmi.orders.salesperson.controller.Sales_Person_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 
 public class Order_Page extends AppCompatActivity {
@@ -46,7 +48,19 @@ public class Order_Page extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Order_Page.this, Retailer_Lookup.class));
+                switch (Class_Genric.getType(Class_Genric.LoginType)){
+                    case Class_Genric.ADMIN:
+                        break;
+                    case Class_Genric.DISTRIBUTORSALES:
+                        startActivity(new Intent(Order_Page.this, Retailer_Lookup.class));
+                        break;
+                    case Class_Genric.DISTRIBUTOR:
+                        break;
+                    case Class_Genric.SALESPERSON:
+                        startActivity(new Intent(Order_Page.this, Sales_Person_Lookup.class));
+                        break;
+                }
+
             }
         });
     }

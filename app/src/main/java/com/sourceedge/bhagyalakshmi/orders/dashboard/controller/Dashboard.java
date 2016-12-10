@@ -50,26 +50,27 @@ public class Dashboard extends AppCompatActivity {
             case Class_Genric.ADMIN:
                 break;
             case Class_Genric.DISTRIBUTORSALES:
+                Class_SyncApi.RetailerApi(Dashboard.this);
                 break;
             case Class_Genric.DISTRIBUTOR:
                 break;
             case Class_Genric.SALESPERSON:
+                Class_SyncApi.DistributorApi(Dashboard.this);
                 break;
 
         }
-        Class_SyncApi.DistributorApi(Dashboard.this);
-        //Class_SyncApi.DistributorIdApi(Dashboard.this);
-        Class_SyncApi.RetailerApi(Dashboard.this);
+        Class_SyncApi.ProductApi(Dashboard.this);
+
+
+       /* Class_SyncApi.DistributorIdApi(Dashboard.this);
         Class_SyncApi.RetailerIdApi(Dashboard.this);
 
-        Class_SyncApi.ProductApi(Dashboard.this);
         Class_SyncApi.ProductIdApi(Dashboard.this);
         Class_SyncApi.PlaceOrderApi(Dashboard.this);
         Class_SyncApi.OrderApi(Dashboard.this);
-        Class_SyncApi.OrderIdApi(Dashboard.this);
+        Class_SyncApi.OrderIdApi(Dashboard.this);*/
 
-
-        animateTextView(0,157,total_order_count);
+        animateTextView(0,Class_ModelDB.getOrderList().size(),total_order_count);
 
         dashboard_scrollview=(ScrollView)findViewById(R.id.dashboard_scrollview);
 

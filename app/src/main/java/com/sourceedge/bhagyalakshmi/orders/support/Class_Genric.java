@@ -28,10 +28,12 @@ import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_
 import com.sourceedge.bhagyalakshmi.orders.location.controller.Location;
 import com.sourceedge.bhagyalakshmi.orders.login.Login;
 import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
+import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.Admin_Orders;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.Distributor_Orders;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.Distributor_Sales_Orders;
 import com.sourceedge.bhagyalakshmi.orders.orders.controller.Sales_Person_Orders;
+import com.sourceedge.bhagyalakshmi.orders.salesperson.controller.Sales_Person_Lookup;
 
 import org.json.JSONObject;
 
@@ -320,12 +322,18 @@ public class Class_Genric {
                 distributorMyOrders.setVisibility(View.GONE);
                 distributorSalesPayments.setVisibility(View.GONE);
                 distributorPayments.setVisibility(View.GONE);
-                salesDistributorRetailers.setVisibility(View.GONE);
                 retailers.setVisibility(View.GONE);
+                salesDistributorRetailers.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        a.startActivity(new Intent(a, Sales_Person_Lookup.class));
+                        a.finish();
+                    }
+                });
                 salesmanMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, Sales_Person_Orders.class));
+                        a.startActivity(new Intent(a, Order_Page.class));
                         a.finish();
                     }
                 });
