@@ -267,7 +267,7 @@ public class Class_Genric {
                 distributorSalesMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, Distributor_Sales_Orders.class));
+                        a.startActivity(new Intent(a, Order_Page.class));
                         a.finish();
                     }
                 });
@@ -322,14 +322,8 @@ public class Class_Genric {
                 distributorMyOrders.setVisibility(View.GONE);
                 distributorSalesPayments.setVisibility(View.GONE);
                 distributorPayments.setVisibility(View.GONE);
+                salesDistributorRetailers.setVisibility(View.GONE);
                 retailers.setVisibility(View.GONE);
-                salesDistributorRetailers.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        a.startActivity(new Intent(a, Sales_Person_Lookup.class));
-                        a.finish();
-                    }
-                });
                 salesmanMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
