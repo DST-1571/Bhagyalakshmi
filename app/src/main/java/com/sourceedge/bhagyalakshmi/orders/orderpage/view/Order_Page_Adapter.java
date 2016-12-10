@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.models.Order;
+
+import java.util.ArrayList;
 
 /**
  * Created by Centura on 08-12-2016.
@@ -14,8 +17,10 @@ import com.sourceedge.bhagyalakshmi.orders.R;
 
 public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.ViewHolder> {
     Context mcontext;
-    public Order_Page_Adapter(Context context){
+    ArrayList<Order> data;
+    public Order_Page_Adapter(Context context, ArrayList<Order> model){
         this.mcontext= context;
+        this.data=model;
     }
 
     @Override

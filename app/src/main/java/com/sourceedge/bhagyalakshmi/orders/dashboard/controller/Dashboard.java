@@ -50,11 +50,14 @@ public class Dashboard extends AppCompatActivity {
             case Class_Genric.ADMIN:
                 break;
             case Class_Genric.DISTRIBUTORSALES:
+                Class_SyncApi.OrderApi(Dashboard.this);
                 Class_SyncApi.RetailerApi(Dashboard.this);
                 break;
             case Class_Genric.DISTRIBUTOR:
+                Class_SyncApi.OrderApi(Dashboard.this);
                 break;
             case Class_Genric.SALESPERSON:
+                Class_SyncApi.OrderApi(Dashboard.this);
                 Class_SyncApi.DistributorApi(Dashboard.this);
                 break;
 

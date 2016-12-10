@@ -17,6 +17,7 @@ import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_
 import com.sourceedge.bhagyalakshmi.orders.orderpage.view.Order_Page_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.salesperson.controller.Sales_Person_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 
 public class Order_Page extends AppCompatActivity {
     Toolbar toolbar;
@@ -36,7 +37,7 @@ public class Order_Page extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         orderPageRecyclerView= (RecyclerView) findViewById(R.id.order_page_recyclerView);
         orderPageRecyclerView.setLayoutManager(new LinearLayoutManager(Order_Page.this));
-        orderPageRecyclerView.setAdapter(new Order_Page_Adapter(Order_Page.this));
+        orderPageRecyclerView.setAdapter(new Order_Page_Adapter(Order_Page.this, Class_ModelDB.getOrderList()));
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,Order_Page.this);
         Class_Genric.drawerOnClicks(Order_Page.this);
         onClicks();
