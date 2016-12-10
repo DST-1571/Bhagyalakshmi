@@ -110,7 +110,7 @@ public class Login extends AppCompatActivity implements AdapterView.OnItemSelect
         // On selecting a spinner item
         item = parent.getItemAtPosition(position).toString();
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Class_Genric.Sp_LoginType, item);
+        editor.putString(Class_Genric.LoginType, item);
         editor.commit();
         // Showing selected spinner item
         //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();

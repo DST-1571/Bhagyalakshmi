@@ -1,37 +1,40 @@
 package com.sourceedge.bhagyalakshmi.orders.models;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Role {
-    private String id;
-    private String name;
-    private String timeStamp;
+    private String Id;
+    private String Name;
+    private String TimeStamp;
 
     public Role(){
-        id="";
-        name="";
-        timeStamp="";
+        Id="";
+        Name="";
+        TimeStamp="";
     }
 
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        Id = id;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        Name = name;
     }
 
     public String getTimeStamp() {
-        return timeStamp;
+        return TimeStamp;
     }
 
     public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
+        TimeStamp = timeStamp;
     }
 }

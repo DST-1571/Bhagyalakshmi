@@ -7,7 +7,6 @@ package com.sourceedge.bhagyalakshmi.orders.models;
 public class OrderProduct {
 
     private String Id;
-    private String OrderId;
     private String ProductId;
     private Double Quantity;
     private Double Price;
@@ -15,7 +14,6 @@ public class OrderProduct {
 
     public OrderProduct(){
         Id="";
-        OrderId="";
         ProductId="";
         Quantity=0.0;
         Price=0.0;
@@ -28,14 +26,6 @@ public class OrderProduct {
 
     public void setId(String id) {
         Id = id;
-    }
-
-    public String getOrderId() {
-        return OrderId;
-    }
-
-    public void setOrderId(String orderId) {
-        OrderId = orderId;
     }
 
     public String getProductId() {

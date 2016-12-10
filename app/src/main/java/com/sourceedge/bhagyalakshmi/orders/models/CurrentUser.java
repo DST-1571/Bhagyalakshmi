@@ -5,57 +5,57 @@ package com.sourceedge.bhagyalakshmi.orders.models;
  */
 
 public class CurrentUser {
-    private String id;
-    private String name;
-    private String userType;
-    private String token;
-    private String acl;
+    private String Id;
+    private String Name;
+    private String UserType;
+    private String Token;
+    private String Acl;
 
     public CurrentUser(){
-        id="";
-        name="";
-        userType="";
-        token="";
-        acl="";
+        Id="";
+        Name="";
+        UserType="";
+        Token="";
+        Acl="";
     }
 
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        Id = id;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        Name = name;
     }
 
     public String getUserType() {
-        return userType;
+        return UserType;
     }
 
     public void setUserType(String userType) {
-        this.userType = userType;
+        UserType = userType;
     }
 
     public String getToken() {
-        return token;
+        return Token;
     }
 
     public void setToken(String token) {
-        this.token = token;
+        Token = token;
     }
 
     public String getAcl() {
-        return acl;
+        return Acl;
     }
 
     public void setAcl(String acl) {
-        this.acl = acl;
+        Acl = acl;
     }
 }

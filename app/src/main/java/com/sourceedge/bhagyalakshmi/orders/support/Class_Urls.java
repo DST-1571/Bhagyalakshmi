@@ -9,4 +9,12 @@ public class Class_Urls {
     public static final String Login=Parent+"login";
     public static final String Distributor=Parent+"distributor";
     public static final String DistributorId=Parent+"distributor/id";
+    public static final String Retailer=Parent+"retailer";
+    public static final String RetailerId=Parent+"retailer/id";
+    public static final String Product=Parent+"product";
+    public static final String ProductId=Parent+"product/id";
+    public static final String PlaceOrder=Parent+"placeorder";
+    public static final String Order=Parent+"order";
+    public static final String OrderId=Parent+"order/id";
+
 }

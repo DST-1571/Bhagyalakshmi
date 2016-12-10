@@ -12,26 +12,20 @@ public class Order {
     private ArrayList<OrderProduct> Products;
     private String ClientId;
     private String UserId;
-    private Double Quantity;
-    private Double Price;
     private Double TotalAmount;
-    private String Unit;
     private String Status;
     private String OrderNumber;
-    private Date TimeStamp;
+    private String TimeStamp;
 
     public Order(){
         Id="";
         Products=new ArrayList<OrderProduct>();
         ClientId="";
         UserId="";
-        Quantity=0.0;
-        Price=0.0;
         TotalAmount=0.0;
-        Unit="";
         Status="";
         OrderNumber="";
-        TimeStamp=new Date();
+        TimeStamp="";
     }
 
     public String getId() {
@@ -66,36 +60,12 @@ public class Order {
         UserId = userId;
     }
 
-    public Double getQuantity() {
-        return Quantity;
-    }
-
-    public void setQuantity(Double quantity) {
-        Quantity = quantity;
-    }
-
-    public Double getPrice() {
-        return Price;
-    }
-
-    public void setPrice(Double price) {
-        Price = price;
-    }
-
     public Double getTotalAmount() {
         return TotalAmount;
     }
 
     public void setTotalAmount(Double totalAmount) {
         TotalAmount = totalAmount;
-    }
-
-    public String getUnit() {
-        return Unit;
-    }
-
-    public void setUnit(String unit) {
-        Unit = unit;
     }
 
     public String getStatus() {
@@ -114,11 +84,11 @@ public class Order {
         OrderNumber = orderNumber;
     }
 
-    public Date getTimeStamp() {
+    public String getTimeStamp() {
         return TimeStamp;
     }
 
-    public void setTimeStamp(Date timeStamp) {
+    public void setTimeStamp(String timeStamp) {
         TimeStamp = timeStamp;
     }
 }

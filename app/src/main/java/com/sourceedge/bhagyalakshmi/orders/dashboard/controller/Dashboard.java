@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.login.Login;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
 public class Dashboard extends AppCompatActivity {
@@ -44,8 +45,30 @@ public class Dashboard extends AppCompatActivity {
         Class_Genric.applyFontForToolbarTitle(toolbar,Dashboard.this);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         total_order_count=(TextView)findViewById(R.id.total_order_count);
+
+        switch (Class_Genric.getType(Class_Genric.LoginType)){
+            case Class_Genric.ADMIN:
+                break;
+            case Class_Genric.DISTRIBUTORSALES:
+                break;
+            case Class_Genric.DISTRIBUTOR:
+                break;
+            case Class_Genric.SALESPERSON:
+                break;
+
+        }
         Class_SyncApi.DistributorApi(Dashboard.this);
-        Class_SyncApi.DistributorIdApi(Dashboard.this);
+        //Class_SyncApi.DistributorIdApi(Dashboard.this);
+        Class_SyncApi.RetailerApi(Dashboard.this);
+        Class_SyncApi.RetailerIdApi(Dashboard.this);
+
+        Class_SyncApi.ProductApi(Dashboard.this);
+        Class_SyncApi.ProductIdApi(Dashboard.this);
+        Class_SyncApi.PlaceOrderApi(Dashboard.this);
+        Class_SyncApi.OrderApi(Dashboard.this);
+        Class_SyncApi.OrderIdApi(Dashboard.this);
+
+
         animateTextView(0,157,total_order_count);
 
         dashboard_scrollview=(ScrollView)findViewById(R.id.dashboard_scrollview);
@@ -58,17 +81,6 @@ public class Dashboard extends AppCompatActivity {
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,Dashboard.this);
         Class_Genric.drawerOnClicks(Dashboard.this);
 
-        switch (Class_Genric.getType(sharedPreferences.getString(Class_Genric.Sp_LoginType, ""))) {
-            case Class_Genric.ADMIN:
-                break;
-            case Class_Genric.DISTRIBUTORSALES:
-                break;
-            case Class_Genric.DISTRIBUTOR:
-
-                break;
-            case Class_Genric.SALESPERSON:
-                break;
-        }
 
     }
 

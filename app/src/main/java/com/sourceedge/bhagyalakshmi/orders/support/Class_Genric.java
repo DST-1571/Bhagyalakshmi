@@ -45,13 +45,13 @@ import java.util.ArrayList;
 public class Class_Genric {
 
     public static final String MyPref = "MyPref";
-    public static final String Sp_LoginType = "LoginType";
-    public static final int ADMIN=1;
-    public static final int DISTRIBUTORSALES=2;
-    public static final int DISTRIBUTOR=3;
-    public static final int SALESPERSON=4;
-    public static final String Sp_Username = "Username";
-    public static final String Sp_Password = "Password";
+    public static final String LoginType = Class_ModelDB.getCurrentuserModel().getUserType().toString();
+    public static final String ADMIN="1";
+    public static final String DISTRIBUTORSALES="2";
+    public static final String DISTRIBUTOR="3";
+    public static final String SALESPERSON="4";
+    public static final String Sp_Status = "Status";
+    public static final String Sp_OrderNumber = "OrderNumber";
     public static boolean progressAlive = false;
     static ProgressDialog pDialog;
 
@@ -193,12 +193,12 @@ public class Class_Genric {
         }
     }
 
-    public static int getType(String Sp_LoginType) {
-        if (Sp_LoginType.matches("Admin"))
+    public static String getType(String LoginType) {
+        if (LoginType.matches("Admin"))
             return ADMIN;
-        if (Sp_LoginType.matches("Distributor Sales"))
+        if (LoginType.matches("Distributor Sales"))
             return DISTRIBUTORSALES;
-        if (Sp_LoginType.matches("Distributor"))
+        if (LoginType.matches("Distributor"))
             return DISTRIBUTOR;
         else return SALESPERSON;
     }
@@ -221,7 +221,7 @@ public class Class_Genric {
         messages = (LinearLayout) a.findViewById(R.id.messages);
         logout = (LinearLayout) a.findViewById(R.id.logout);
 
-        switch (getType(sharedPreferences.getString(Sp_LoginType, ""))) {
+        switch (getType(Class_Genric.LoginType)) {
             case ADMIN:
                 distributorSalesMyOrders.setVisibility(View.GONE);
                 distributorMyOrders.setVisibility(View.GONE);
