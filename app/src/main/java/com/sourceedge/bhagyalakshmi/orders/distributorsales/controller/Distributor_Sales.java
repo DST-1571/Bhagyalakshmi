@@ -7,12 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 
 public class Distributor_Sales extends AppCompatActivity {
     Toolbar toolbar;
+    TextView userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

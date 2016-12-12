@@ -76,6 +76,10 @@
             android:label="@string/title_activity_sales_person_orders"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".salesperson.controller.Sales_Person"
+            android:label="@string/title_activity_sales_person"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".orders.controller.Order_Success"
             android:label="@string/title_activity_order_success"
             android:theme="@style/AppTheme" />

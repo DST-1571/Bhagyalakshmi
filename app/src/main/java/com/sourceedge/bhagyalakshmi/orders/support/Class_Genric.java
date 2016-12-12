@@ -48,10 +48,10 @@ public class Class_Genric {
 
     public static final String MyPref = "MyPref";
     public static final String LoginType = Class_ModelDB.getCurrentuserModel().getUserType().toString();
-    public static final String ADMIN="1";
-    public static final String DISTRIBUTORSALES="2";
-    public static final String DISTRIBUTOR="3";
-    public static final String SALESPERSON="4";
+    public static final int ADMIN=1;
+    public static final int DISTRIBUTORSALES=2;
+    public static final int DISTRIBUTOR=3;
+    public static final int SALESPERSON=4;
     public static final String Sp_Status = "Status";
     public static final String Sp_OrderNumber = "OrderNumber";
     public static boolean progressAlive = false;
@@ -195,10 +195,10 @@ public class Class_Genric {
         }
     }
 
-    public static String getType(String LoginType) {
+    public static int getType(String LoginType) {
         if (LoginType.matches("Admin"))
             return ADMIN;
-        if (LoginType.matches("Distributor Sales"))
+        if (LoginType.matches("DistributorSalesMan"))
             return DISTRIBUTORSALES;
         if (LoginType.matches("Distributor"))
             return DISTRIBUTOR;
@@ -223,7 +223,7 @@ public class Class_Genric {
         messages = (LinearLayout) a.findViewById(R.id.messages);
         logout = (LinearLayout) a.findViewById(R.id.logout);
 
-        switch (getType(Class_Genric.LoginType)) {
+        switch (getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
             case ADMIN:
                 distributorSalesMyOrders.setVisibility(View.GONE);
                 distributorMyOrders.setVisibility(View.GONE);
@@ -236,7 +236,6 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Location.class));
-                        a.finish();
                     }
                 });
 
@@ -244,7 +243,6 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Admin_Orders.class));
-                        a.finish();
                     }
                 });
                 salesDistributorRetailers.setOnClickListener(new View.OnClickListener() {
@@ -268,7 +266,6 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Order_Page.class));
-                        a.finish();
                     }
                 });
 
@@ -276,7 +273,6 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Retailer_Lookup.class));
-                        a.finish();
                     }
                 });
 
@@ -302,7 +298,6 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Distributor_Orders.class));
-                        a.finish();
                     }
                 });
 
@@ -328,7 +323,6 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Order_Page.class));
-                        a.finish();
                     }
                 });
 
@@ -351,7 +345,6 @@ public class Class_Genric {
             @Override
             public void onClick(View view) {
                 a.startActivity(new Intent(a, Change_Password.class));
-                a.finish();
             }
         });
 

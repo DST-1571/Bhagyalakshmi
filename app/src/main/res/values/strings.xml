@@ -53,6 +53,7 @@
     <string name="select_distributor">Select Distributor</string>
     <string name="title_activity_sales_person_orders">SalesPersonOrders</string>
     <string name="title_activity_sales_person_lookup">SalesPersonLookUp</string>
+    <string name="title_activity_sales_person">SalesPerson</string>
     <string name="title_activity_order_success">OrderSuccess</string>
     <string name="viewmore">View More</string>
     <string name="title_activity_change_password">ChangePassword</string>

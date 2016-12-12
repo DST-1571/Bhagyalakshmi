@@ -46,12 +46,13 @@ public class Dashboard extends AppCompatActivity {
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         total_order_count=(TextView)findViewById(R.id.total_order_count);
 
-        switch (Class_Genric.getType(Class_Genric.LoginType)){
+        String s=Class_ModelDB.getCurrentuserModel().getUserType();
+        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())){
             case Class_Genric.ADMIN:
                 break;
             case Class_Genric.DISTRIBUTORSALES:
-                Class_SyncApi.OrderApi(Dashboard.this);
                 Class_SyncApi.RetailerApi(Dashboard.this);
+                Class_SyncApi.OrderApi(Dashboard.this);
                 break;
             case Class_Genric.DISTRIBUTOR:
                 Class_SyncApi.OrderApi(Dashboard.this);

@@ -1,5 +1,6 @@
 package com.sourceedge.bhagyalakshmi.orders.orderpage.controller;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -37,10 +38,10 @@ public class Order_Page extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         orderPageRecyclerView= (RecyclerView) findViewById(R.id.order_page_recyclerView);
         orderPageRecyclerView.setLayoutManager(new LinearLayoutManager(Order_Page.this));
-        orderPageRecyclerView.setAdapter(new Order_Page_Adapter(Order_Page.this, Class_ModelDB.getOrderList()));
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,Order_Page.this);
         Class_Genric.drawerOnClicks(Order_Page.this);
         onClicks();
+        InitializeAdapter(Order_Page.this);
 
 
     }
@@ -49,7 +50,7 @@ public class Order_Page extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (Class_Genric.getType(Class_Genric.LoginType)){
+                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())){
                     case Class_Genric.ADMIN:
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
@@ -61,9 +62,12 @@ public class Order_Page extends AppCompatActivity {
                         startActivity(new Intent(Order_Page.this, Sales_Person_Lookup.class));
                         break;
                 }
-
             }
         });
+    }
+
+    private void InitializeAdapter(Context context) {
+        orderPageRecyclerView.setAdapter(new Order_Page_Adapter(context, Class_ModelDB.getOrderList()));
     }
 
 }

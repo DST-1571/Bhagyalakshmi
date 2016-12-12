@@ -10,8 +10,8 @@ import java.util.Date;
 public class Order {
     private String Id;
     private ArrayList<OrderProduct> Products;
-    private String ClientId;
-    private String UserId;
+    private OrderRole User;
+    private OrderRole Client;
     private Double TotalAmount;
     private String Status;
     private String OrderNumber;
@@ -20,8 +20,8 @@ public class Order {
     public Order(){
         Id="";
         Products=new ArrayList<OrderProduct>();
-        ClientId="";
-        UserId="";
+        User=new OrderRole();
+        Client=new OrderRole();
         TotalAmount=0.0;
         Status="";
         OrderNumber="";
@@ -44,20 +44,20 @@ public class Order {
         Products = products;
     }
 
-    public String getClientId() {
-        return ClientId;
+    public OrderRole getUser() {
+        return User;
     }
 
-    public void setClientId(String clientId) {
-        ClientId = clientId;
+    public void setUser(OrderRole user) {
+        User = user;
     }
 
-    public String getUserId() {
-        return UserId;
+    public OrderRole getClient() {
+        return Client;
     }
 
-    public void setUserId(String userId) {
-        UserId = userId;
+    public void setClient(OrderRole client) {
+        Client = client;
     }
 
     public Double getTotalAmount() {
