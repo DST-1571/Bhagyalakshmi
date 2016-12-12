@@ -82,7 +82,7 @@
                     android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginRight="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_2dp"
-                    android:layout_height="@dimen/dimen_320dp"/>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 

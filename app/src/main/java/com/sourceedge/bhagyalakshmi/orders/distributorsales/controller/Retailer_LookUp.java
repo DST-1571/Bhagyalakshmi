@@ -39,6 +39,7 @@ public class Retailer_Lookup extends AppCompatActivity {
     public static EditText retailerSearch;
     public static RecyclerView orderProductRecyclerview,retailerList;
     Button submitButton;
+    int viewHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,9 @@ public class Retailer_Lookup extends AppCompatActivity {
                     retailerList.setVisibility(View.VISIBLE);
                     orderProductRecyclerview.setVisibility(View.GONE);
                     Class_Static.tempRoleList = new ArrayList<Role>();
+                    viewHeight = Class_Genric.convertDpToPixels(145, context);
+                    viewHeight = viewHeight * ((Class_Static.tempRoleList.size()));
+                    retailerList.getLayoutParams().height = viewHeight;
                     retailerList.setAdapter(new Retailer_List_Adapter(context,Class_Static.tempRoleList));
                 } else {
                     retailerList.setVisibility(View.VISIBLE);
@@ -97,6 +101,9 @@ public class Retailer_Lookup extends AppCompatActivity {
                                 Class_Static.tempRoleList.add(role);
                             }
                         }
+                    viewHeight = Class_Genric.convertDpToPixels(145, context);
+                    viewHeight = viewHeight * ((Class_Static.tempRoleList.size()));
+                    retailerList.getLayoutParams().height = viewHeight;
                     retailerList.setAdapter(new Retailer_List_Adapter(context,Class_Static.tempRoleList));
                 }
             }
