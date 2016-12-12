@@ -256,7 +256,6 @@ public class Class_Genric {
                 activeOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, Admin_Orders.class));
                         drawer.closeDrawer(Gravity.LEFT);
 
                     }
@@ -317,7 +316,6 @@ public class Class_Genric {
                 distributorMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, Distributor_Orders.class));
                         drawer.closeDrawer(Gravity.LEFT);
 
                     }
