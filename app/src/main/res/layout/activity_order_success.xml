@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.orders.controller.Order_Success">
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Success">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,7 +23,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-        <android.support.v4.widget.DrawerLayout
+        <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -35,13 +35,8 @@
             <include
                 android:id="@+id/content_order_success"
                 layout="@layout/content_order_success" />
-            <include
-                layout="@layout/navigation_drawer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="start" />
 
-        </android.support.v4.widget.DrawerLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 

@@ -29,7 +29,8 @@
     <string name="distributorsales_qty_units">Qty/Units</string>
     <string name="distributorsales_price">Price</string>
     <string name="retaillookup_title">Select Retailer</string>
-    <string name="retail_name">Name</string>
+    <string name="product_title">Select Product</string>
+    <string name="retail_name">Retailer Name</string>
     <string name="brand">Brand</string>
     <string name="category">Category</string>
     <string name="description">Description</string>

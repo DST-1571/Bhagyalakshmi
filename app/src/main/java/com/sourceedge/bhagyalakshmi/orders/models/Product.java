@@ -10,8 +10,10 @@ public class Product {
     private String Name;
     private String Category;
     private String Brand;
-    private String Unit;
-    private String Price;
+    private String Units;
+    private Double Price;
+    private int Quantity;
+    private Double Amount;
     private String Description;
 
     public Product(){
@@ -19,8 +21,10 @@ public class Product {
         Name="";
         Category="";
         Brand="";
-        Unit="";
-        Price="";
+        Units="";
+        Price=0.0;
+        Quantity=0;
+        Amount=0.0;
         Description="";
     }
 
@@ -56,20 +60,36 @@ public class Product {
         Brand = brand;
     }
 
-    public String getUnit() {
-        return Unit;
+    public String getUnits() {
+        return Units;
     }
 
-    public void setUnit(String unit) {
-        Unit = unit;
+    public void setUnits(String units) {
+        Units = units;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return Price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         Price = price;
+    }
+
+    public int getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        Quantity = quantity;
+    }
+
+    public Double getAmount() {
+        return Amount;
+    }
+
+    public void setAmount(Double amount) {
+        Amount = amount;
     }
 
     public String getDescription() {

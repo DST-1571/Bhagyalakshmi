@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -31,11 +32,6 @@ import com.sourceedge.bhagyalakshmi.orders.location.controller.Location;
 import com.sourceedge.bhagyalakshmi.orders.login.Login;
 import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.Admin_Orders;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.Distributor_Orders;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.Distributor_Sales_Orders;
-import com.sourceedge.bhagyalakshmi.orders.orders.controller.Sales_Person_Orders;
-import com.sourceedge.bhagyalakshmi.orders.salesperson.controller.Sales_Person_Lookup;
 
 import org.json.JSONObject;
 
@@ -58,6 +54,8 @@ public class Class_Genric {
     public static final String Sp_OrderNumber = "OrderNumber";
     public static boolean progressAlive = false;
     static ProgressDialog pDialog;
+    public static final String rupee = "\u20B9  ";
+    static DrawerLayout drawer;
 
     static Button button;
     static Button button1;
@@ -222,6 +220,7 @@ public class Class_Genric {
     public static void drawerOnClicks(final Context context) {
         a = (Activity) context;
         sharedPreferences = a.getSharedPreferences(MyPref, a.MODE_PRIVATE);
+        drawer = (DrawerLayout) a.findViewById(R.id.navigation_drawer);
         myProfile = (LinearLayout) a.findViewById(R.id.my_profile);
         changePassword = (LinearLayout) a.findViewById(R.id.change_password);
         location = (LinearLayout) a.findViewById(R.id.location);
@@ -250,6 +249,7 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Location.class));
+                        drawer.closeDrawer(Gravity.LEFT);
                     }
                 });
 
@@ -257,6 +257,8 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Admin_Orders.class));
+                        drawer.closeDrawer(Gravity.LEFT);
+
                     }
                 });
                 salesDistributorRetailers.setOnClickListener(new View.OnClickListener() {
@@ -280,6 +282,8 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Order_Page.class));
+                        drawer.closeDrawer(Gravity.LEFT);
+
                     }
                 });
 
@@ -287,6 +291,8 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Retailer_Lookup.class));
+                        drawer.closeDrawer(Gravity.LEFT);
+
                     }
                 });
 
@@ -312,6 +318,8 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Distributor_Orders.class));
+                        drawer.closeDrawer(Gravity.LEFT);
+
                     }
                 });
 
@@ -337,6 +345,8 @@ public class Class_Genric {
                     @Override
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Order_Page.class));
+                        drawer.closeDrawer(Gravity.LEFT);
+
                     }
                 });
 
@@ -359,6 +369,8 @@ public class Class_Genric {
             @Override
             public void onClick(View view) {
                 a.startActivity(new Intent(a, Change_Password.class));
+                drawer.closeDrawer(Gravity.LEFT);
+
             }
         });
 

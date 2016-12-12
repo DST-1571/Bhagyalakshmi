@@ -11,21 +11,32 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.distributor.controller.Distributor;
 import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
+import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.view.Order_Page_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.salesperson.controller.Sales_Person_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
+
+import java.util.ArrayList;
 
 public class Order_Page extends AppCompatActivity {
     Toolbar toolbar;
     DrawerLayout drawer;
     ActionBarDrawerToggle mDrawerToggle;
     FloatingActionButton fab;
-    RecyclerView orderPageRecyclerView;
+    static RecyclerView orderPageRecyclerView;
+    static LinearLayout orderedLayout,emptyOrders;
+    Button orderNow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +48,9 @@ public class Order_Page extends AppCompatActivity {
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         orderPageRecyclerView= (RecyclerView) findViewById(R.id.order_page_recyclerView);
+        orderedLayout=(LinearLayout)findViewById(R.id.ordered_layout);
+        emptyOrders=(LinearLayout)findViewById(R.id.empty_orders);
+        orderNow=(Button)findViewById(R.id.order_now);
         orderPageRecyclerView.setLayoutManager(new LinearLayoutManager(Order_Page.this));
         Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,Order_Page.this);
         Class_Genric.drawerOnClicks(Order_Page.this);
@@ -54,6 +68,7 @@ public class Order_Page extends AppCompatActivity {
                     case Class_Genric.ADMIN:
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
+                        Class_Static.tempOrderingProduct=new ArrayList<Product>();
                         startActivity(new Intent(Order_Page.this, Retailer_Lookup.class));
                         break;
                     case Class_Genric.DISTRIBUTOR:
@@ -64,10 +79,30 @@ public class Order_Page extends AppCompatActivity {
                 }
             }
         });
+
+        orderNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Class_Static.tempOrderingProduct=new ArrayList<Product>();
+                startActivity(new Intent(Order_Page.this, Retailer_Lookup.class));
+            }
+        });
+
     }
 
-    private void InitializeAdapter(Context context) {
-        orderPageRecyclerView.setAdapter(new Order_Page_Adapter(context, Class_ModelDB.getOrderList()));
+    public static void InitializeAdapter(Context context) {
+        if (Class_ModelDB.getOrderList().size()!=0){
+            orderedLayout.setVisibility(View.VISIBLE);
+            orderPageRecyclerView.setAdapter(new Order_Page_Adapter(context, Class_ModelDB.getOrderList()));
+        } else {
+            orderedLayout.setVisibility(View.GONE);
+            emptyOrders.setVisibility(View.VISIBLE);
+        }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        InitializeAdapter(Order_Page.this);
+    }
 }

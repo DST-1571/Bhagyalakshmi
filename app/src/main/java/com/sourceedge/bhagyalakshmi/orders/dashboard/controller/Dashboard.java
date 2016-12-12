@@ -30,7 +30,7 @@ public class Dashboard extends AppCompatActivity {
     ActionBarDrawerToggle mDrawerToggle;
     SharedPreferences sharedPreferences;
     ScrollView dashboard_scrollview;
-    TextView total_order_count;
+    public static TextView total_order_count;
     CardView totalOrder,adminRetailersDistributors,statistics;
 
     @Override
@@ -52,17 +52,15 @@ public class Dashboard extends AppCompatActivity {
                 break;
             case Class_Genric.DISTRIBUTORSALES:
                 Class_SyncApi.RetailerApi(Dashboard.this);
-                Class_SyncApi.OrderApi(Dashboard.this);
                 break;
             case Class_Genric.DISTRIBUTOR:
-                Class_SyncApi.OrderApi(Dashboard.this);
                 break;
             case Class_Genric.SALESPERSON:
-                Class_SyncApi.OrderApi(Dashboard.this);
                 Class_SyncApi.DistributorApi(Dashboard.this);
                 break;
 
         }
+        Class_SyncApi.OrderApi(Dashboard.this);
         Class_SyncApi.ProductApi(Dashboard.this);
 
 
@@ -74,7 +72,7 @@ public class Dashboard extends AppCompatActivity {
         Class_SyncApi.OrderApi(Dashboard.this);
         Class_SyncApi.OrderIdApi(Dashboard.this);*/
 
-        animateTextView(0,Class_ModelDB.getOrderList().size(),total_order_count);
+
 
         dashboard_scrollview=(ScrollView)findViewById(R.id.dashboard_scrollview);
 
@@ -123,7 +121,7 @@ public class Dashboard extends AppCompatActivity {
         finish();
     }
 
-    public void animateTextView(int initialValue, int finalValue, final TextView textview) {
+    public static void animateTextView(int initialValue, int finalValue, final TextView textview) {
         DecelerateInterpolator decelerateInterpolator = new DecelerateInterpolator(0.5f);
         int start = Math.min(initialValue, finalValue);
         int end = Math.max(initialValue, finalValue);

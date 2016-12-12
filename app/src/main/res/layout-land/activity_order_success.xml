@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.orders.controller.Order_Success">
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Success">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

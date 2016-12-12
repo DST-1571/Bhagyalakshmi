@@ -37,7 +37,7 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
     public void onBindViewHolder(Order_Page_Adapter.ViewHolder holder, int position) {
         holder.orderId.setText(data.get(position).getOrderNumber());
         holder.clientName.setText(data.get(position).getClient().getName());
-        holder.totalAmount.setText(data.get(position).getTotalAmount()+"");
+        holder.totalAmount.setText(data.get(position).getUser().getName());
     }
 
     @Override

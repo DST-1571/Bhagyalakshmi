@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.orders.controller.Order_Success"
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Success"
     tools:showIn="@layout/activity_order_success"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
@@ -34,6 +34,7 @@
                     android:textColor="@color/colorPrimary"
                     android:padding="@dimen/dimen_10dp"/>
                 <TextView
+                    android:id="@+id/order_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Your Order Id is JA51423"
@@ -42,6 +43,7 @@
                     android:textColor="@color/colorPrimary"
                     android:padding="@dimen/dimen_10dp"/>
                 <TextView
+                    android:id="@+id/order_placedby"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Order Placed By Ganesh Stores(Distributor)"

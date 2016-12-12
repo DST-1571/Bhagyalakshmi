@@ -6,45 +6,82 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_60dp"
+        android:layout_height="@dimen/dimen_80dp"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="4"
+        android:padding="@dimen/dimen_10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Rice Atta"
+                android:textStyle="bold"
+                android:textSize="@dimen/textsize_16sp" />
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|left"
+                android:text="Rice Atta" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="10"
+                android:textStyle="bold"
+                android:textSize="@dimen/textsize_16sp" />
+
+            <TextView
+                android:id="@+id/unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="Bags" />
+        </LinearLayout>
+
+
+
 
         <TextView
+            android:id="@+id/price"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="JA50501"
-            android:textSize="@dimen/textsize_18sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Ganesh Traders"
-            android:textSize="@dimen/textsize_18sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Vikram"
-            android:textSize="@dimen/textsize_18sp" />
+            android:text="15000"
+            android:textStyle="bold"
+            android:textSize="@dimen/textsize_16sp" />
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:weightSum="2">
             <ImageView
+                android:id="@+id/product_edit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_lead_pencil_grey600_24dp"/>
             <ImageView
+                android:id="@+id/product_delete"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
