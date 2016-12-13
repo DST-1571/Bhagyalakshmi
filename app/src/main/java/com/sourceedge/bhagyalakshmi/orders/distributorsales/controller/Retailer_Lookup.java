@@ -30,6 +30,10 @@ import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Centura User1 on 13-12-2016.
+ */
+
 public class Retailer_Lookup extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton fab;
@@ -230,3 +234,4 @@ public class Retailer_Lookup extends AppCompatActivity {
         InitializeAdapter(Retailer_Lookup.this);
     }
 }
+

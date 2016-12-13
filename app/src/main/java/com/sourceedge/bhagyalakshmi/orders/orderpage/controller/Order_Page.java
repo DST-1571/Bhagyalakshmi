@@ -13,18 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.distributor.controller.Distributor;
 import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.view.Order_Page_Adapter;
-import com.sourceedge.bhagyalakshmi.orders.salesperson.controller.Sales_Person_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
-import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
 import java.util.ArrayList;
 
