@@ -65,8 +65,6 @@ public class Retailer_Lookup extends AppCompatActivity {
         onClicks();
         Functionalities(Retailer_Lookup.this);
         InitializeAdapter(Retailer_Lookup.this);
-
-
     }
 
     public static void InitializeAdapter(Context context) {
@@ -85,7 +83,6 @@ public class Retailer_Lookup extends AppCompatActivity {
         retailerSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
