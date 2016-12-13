@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class Retailer_List_Adapter extends RecyclerView.Adapter<Retailer_List_Ad
                 Retailer_Lookup.retailerSearch.setText(Class_Static.tempRole.getName());
                 Retailer_Lookup.retailerList.setVisibility(View.GONE);
                 Retailer_Lookup.orderProductRecyclerview.setVisibility(View.GONE);
-
+                Retailer_Lookup.fab.performClick();
             }
         });
     }

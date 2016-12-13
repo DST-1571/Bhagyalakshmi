@@ -12,15 +12,6 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
-    <TextView
-        android:id="@+id/user_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary_400"
-        android:padding="@dimen/dimen_15dp"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_18sp" />
 
     <ScrollView
         android:id="@+id/scrollview"

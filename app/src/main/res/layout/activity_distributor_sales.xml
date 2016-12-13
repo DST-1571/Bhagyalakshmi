@@ -22,7 +22,13 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
-
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_marginLeft="@dimen/dimen_15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_6dp"
+            android:textColor="@color/white" />
     </android.support.design.widget.AppBarLayout>
     <RelativeLayout
         android:layout_width="match_parent"

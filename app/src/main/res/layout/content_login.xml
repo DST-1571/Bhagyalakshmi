@@ -48,6 +48,7 @@
                     android:hint="@string/username_hint"
                     android:textColorHint="@color/black"
                     android:inputType="text"
+                    android:text="tarun"
                     android:gravity="center_vertical"
                     android:id="@+id/username" />
             </android.support.design.widget.TextInputLayout>
@@ -64,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/password_hint"
                     android:padding="@dimen/dimen_10dp"
+                    android:text="tarun123"
                     android:inputType="textPassword"
                     android:gravity="center_vertical"
                     android:textColorHint="@color/black"/>
