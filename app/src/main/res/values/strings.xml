@@ -48,7 +48,7 @@
     <string name="title_activity_distributor_sales">DistributorSales</string>
     <string name="title_activity_location">Location</string>
     <string name="title_activity_distributor">Distributor</string>
-    <string name="title_activity_retailer_look_up">RetailerLookUp</string>
+    <string name="title_activity_retailer_look_up">RetailerLookup</string>
     <string name="title_activity_admin_orders">AdminOrders</string>
     <string name="title_activity_distributor_sales_orders">DistributorSalesOrders</string>
     <string name="title_activity_distributor_orders">DistributorOrders</string>

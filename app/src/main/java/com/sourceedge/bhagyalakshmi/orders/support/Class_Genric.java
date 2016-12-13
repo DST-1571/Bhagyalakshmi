@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.changepassword.Change_Password;
 import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
+import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.location.controller.Location;
 import com.sourceedge.bhagyalakshmi.orders.login.Login;
 import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
@@ -292,7 +293,7 @@ public class Class_Genric {
                 retailers.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, Retailer_Lookup.class));
+                        a.startActivity(new Intent(a,  Retailer_Lookup.class));
                         drawer.closeDrawer(Gravity.LEFT);
 
                     }

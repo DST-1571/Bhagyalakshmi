@@ -68,6 +68,10 @@
             android:label="@string/title_activity_change_password"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".distributorsales.controller.Retailer_Lookup"
+            android:label="@string/title_activity_retailer_look_up"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".orderpage.controller.Order_Page"
             android:label="@string/title_activity_order__page"
             android:theme="@style/AppTheme"></activity>
