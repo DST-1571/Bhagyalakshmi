@@ -1,4 +1,4 @@
-package com.sourceedge.bhagyalakshmi.orders.distributorsales.view;
+package com.sourceedge.bhagyalakshmi.orders.orderproduct.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 
@@ -19,11 +19,11 @@ import java.util.ArrayList;
  * Created by Centura User1 on 10-12-2016.
  */
 
-public class Retailer_List_Adapter extends RecyclerView.Adapter<Retailer_List_Adapter.ViewHolder>{
+public class Role_List_Adapter extends RecyclerView.Adapter<Role_List_Adapter.ViewHolder>{
 
     Context mContext;
     ArrayList<Role> data;
-    public Retailer_List_Adapter(Context context,ArrayList<Role> model){
+    public Role_List_Adapter(Context context,ArrayList<Role> model){
         this.mContext=context;
         this.data=model;
     }
@@ -43,10 +43,10 @@ public class Retailer_List_Adapter extends RecyclerView.Adapter<Retailer_List_Ad
             public void onClick(View v) {
                 Class_Static.tempRole=new Role();
                 Class_Static.tempRole = data.get(position);
-                Retailer_Lookup.retailerSearch.setText(Class_Static.tempRole.getName());
-                Retailer_Lookup.retailerList.setVisibility(View.GONE);
-                Retailer_Lookup.orderProductRecyclerview.setVisibility(View.GONE);
-                Retailer_Lookup.fab.performClick();
+                Product_Order_Lookup.retailerSearch.setText(Class_Static.tempRole.getName());
+                Product_Order_Lookup.retailerList.setVisibility(View.GONE);
+                Product_Order_Lookup.orderProductRecyclerview.setVisibility(View.GONE);
+                Product_Order_Lookup.fab.performClick();
             }
         });
     }

@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.view.Order_Page_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
@@ -67,7 +67,7 @@ public class Order_Page extends AppCompatActivity {
                     case Class_Genric.DISTRIBUTOR:
                     case Class_Genric.SALESPERSON:
                         Class_Static.tempOrderingProduct = new ArrayList<Product>();
-                        startActivity(new Intent(Order_Page.this, Retailer_Lookup.class));
+                        startActivity(new Intent(Order_Page.this, Product_Order_Lookup.class));
                         break;
                 }
             }
@@ -77,7 +77,7 @@ public class Order_Page extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Class_Static.tempOrderingProduct = new ArrayList<Product>();
-                startActivity(new Intent(Order_Page.this, Retailer_Lookup.class));
+                startActivity(new Intent(Order_Page.this, Product_Order_Lookup.class));
             }
         });
 

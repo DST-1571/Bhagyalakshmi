@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup"
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup"
     tools:showIn="@layout/activity_retailer_look_up">
     <LinearLayout
         android:id="@+id/empty_products"
@@ -146,31 +146,35 @@
                         android:textColor="@color/colorPrimary" />
 
                 </LinearLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.RecyclerView
+        android:layout_above="@+id/grand_total_pane"
+        android:id="@+id/order_product_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/dimen_5dp"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/order_product_recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/search_pane"
-                    android:padding="@dimen/dimen_5dp"></android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/grand_total_pane"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/grand_total_pane"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/order_product_recyclerview">
+        <TextView
+            android:id="@+id/total_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:padding="@dimen/dimen_10dp"
+            android:text="Total"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textsize_18sp" />
 
-                    <TextView
-                        android:id="@+id/total_amount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:padding="@dimen/dimen_10dp"
-                        android:text="Total"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/textsize_18sp" />
+    </LinearLayout>
+</RelativeLayout>
 
-                </LinearLayout>
             </LinearLayout>
 
             <Button

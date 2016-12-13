@@ -1,4 +1,4 @@
-package com.sourceedge.bhagyalakshmi.orders.distributorsales.controller;
+package com.sourceedge.bhagyalakshmi.orders.orderproduct.controller;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,10 +18,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.view.Order_Product_List_Adapter;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.view.Retailer_List_Adapter;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Order_Product_List_Adapter;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Role_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
  * Created by Centura User1 on 13-12-2016.
  */
 
-public class Retailer_Lookup extends AppCompatActivity {
+public class Product_Order_Lookup extends AppCompatActivity {
     Toolbar toolbar;
     public static FloatingActionButton fab;
     public static TextView distributorSalesManName, grandTotal;
@@ -53,7 +54,7 @@ public class Retailer_Lookup extends AppCompatActivity {
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Class_Genric.setOrientation(Retailer_Lookup.this);
+        Class_Genric.setOrientation(Product_Order_Lookup.this);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         distributorSalesManName = (TextView) findViewById(R.id.user_name);
@@ -62,8 +63,8 @@ public class Retailer_Lookup extends AppCompatActivity {
         orderProductListLayout = (LinearLayout) findViewById(R.id.order_product_list_layout);
         orderProductRecyclerview = (RecyclerView) findViewById(R.id.order_product_recyclerview);
         retailerList = (RecyclerView) findViewById(R.id.retailer_list);
-        orderProductRecyclerview.setLayoutManager(new LinearLayoutManager(Retailer_Lookup.this));
-        retailerList.setLayoutManager(new LinearLayoutManager(Retailer_Lookup.this));
+        orderProductRecyclerview.setLayoutManager(new LinearLayoutManager(Product_Order_Lookup.this));
+        retailerList.setLayoutManager(new LinearLayoutManager(Product_Order_Lookup.this));
         submitButton = (Button) findViewById(R.id.submit_button);
         searchPane = (LinearLayout) findViewById(R.id.search_pane);
         emptyProducts = (LinearLayout) findViewById(R.id.empty_products);
@@ -86,8 +87,8 @@ public class Retailer_Lookup extends AppCompatActivity {
         }
 
         onClicks();
-        Functionalities(Retailer_Lookup.this);
-        InitializeAdapter(Retailer_Lookup.this);
+        Functionalities(Product_Order_Lookup.this);
+        InitializeAdapter(Product_Order_Lookup.this);
     }
 
     public static void InitializeAdapter(Context context) {
@@ -137,7 +138,7 @@ public class Retailer_Lookup extends AppCompatActivity {
                     viewHeight = Class_Genric.convertDpToPixels(55, context);
                     viewHeight = viewHeight * ((Class_Static.tempRoleList.size()));
                     retailerList.getLayoutParams().height = viewHeight;
-                    retailerList.setAdapter(new Retailer_List_Adapter(context, Class_Static.tempRoleList));
+                    retailerList.setAdapter(new Role_List_Adapter(context, Class_Static.tempRoleList));
                 } else {
                     retailerList.setVisibility(View.VISIBLE);
                     orderProductRecyclerview.setVisibility(View.GONE);
@@ -151,7 +152,7 @@ public class Retailer_Lookup extends AppCompatActivity {
                     viewHeight = Class_Genric.convertDpToPixels(55, context);
                     viewHeight = viewHeight * ((Class_Static.tempRoleList.size()));
                     retailerList.getLayoutParams().height = viewHeight;
-                    retailerList.setAdapter(new Retailer_List_Adapter(context, Class_Static.tempRoleList));
+                    retailerList.setAdapter(new Role_List_Adapter(context, Class_Static.tempRoleList));
                 }
             }
 
@@ -172,10 +173,10 @@ public class Retailer_Lookup extends AppCompatActivity {
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
                     case Class_Genric.SALESPERSON:
-                        Class_SyncApi.PlaceOrderApi(Retailer_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempRole.getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                        Class_SyncApi.PlaceOrderApi(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempRole.getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
                         break;
                     case Class_Genric.DISTRIBUTOR:
-                        Class_SyncApi.PlaceOrderApi(Retailer_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                        Class_SyncApi.PlaceOrderApi(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
                         break;
                 }
 
@@ -190,18 +191,26 @@ public class Retailer_Lookup extends AppCompatActivity {
                     case Class_Genric.ADMIN:
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
-                        retailerSearch.setEnabled(false);
-                        Class_Static.editProductOrder=false;
-                        startActivity(new Intent(Retailer_Lookup.this, Distributor_Sales.class));
+                        if(retailerSearch.getText().toString().isEmpty() || retailerSearch.getText().toString().length() == 0 || retailerSearch.getText().toString().equals("") || retailerSearch.getText().toString() == null){
+                            Toast.makeText(Product_Order_Lookup.this,"Please Select Retailer",Toast.LENGTH_SHORT).show();
+                        }else {
+                            retailerSearch.setEnabled(false);
+                            Class_Static.editProductOrder=false;
+                            startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
+                        }
                         break;
                     case Class_Genric.DISTRIBUTOR:
                         Class_Static.editProductOrder=false;
-                        startActivity(new Intent(Retailer_Lookup.this, Distributor_Sales.class));
+                        startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
                         break;
                     case Class_Genric.SALESPERSON:
-                        retailerSearch.setEnabled(false);
-                        Class_Static.editProductOrder=false;
-                        startActivity(new Intent(Retailer_Lookup.this, Distributor_Sales.class));
+                        if(retailerSearch.getText().toString().isEmpty() || retailerSearch.getText().toString().length() == 0 || retailerSearch.getText().toString().equals("") || retailerSearch.getText().toString() == null){
+                            Toast.makeText(Product_Order_Lookup.this,"Please Select Distributor",Toast.LENGTH_SHORT).show();
+                        }else {
+                            retailerSearch.setEnabled(false);
+                            Class_Static.editProductOrder=false;
+                            startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
+                        }
                         break;
                 }
             }
@@ -231,7 +240,7 @@ public class Retailer_Lookup extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        InitializeAdapter(Retailer_Lookup.this);
+        InitializeAdapter(Product_Order_Lookup.this);
     }
 }
 

@@ -1,4 +1,4 @@
-package com.sourceedge.bhagyalakshmi.orders.distributorsales.controller;
+package com.sourceedge.bhagyalakshmi.orders.orderproduct.controller;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.view.Product_List_Adapter;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Product_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
@@ -26,7 +26,7 @@ import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Distributor_Sales extends AppCompatActivity {
+public class Add_Product extends AppCompatActivity {
     Toolbar toolbar;
     public static TextView distributorSalesManName,retailerName,productBrand,productCategory,productDescription;
     public static EditText productSearch,productUnit,productQuantity,productPrice;
@@ -41,7 +41,7 @@ public class Distributor_Sales extends AppCompatActivity {
         setContentView(R.layout.activity_distributor_sales);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Class_Genric.setOrientation(Distributor_Sales.this);
+        Class_Genric.setOrientation(Add_Product.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
@@ -59,7 +59,7 @@ public class Distributor_Sales extends AppCompatActivity {
         buttonReset=(Button)findViewById(R.id.button_reset);
         productList=(RecyclerView)findViewById(R.id.product_list);
         retailerLayout=(LinearLayout)findViewById(R.id.retailer_layout);
-        productList.setLayoutManager(new LinearLayoutManager(Distributor_Sales.this));
+        productList.setLayoutManager(new LinearLayoutManager(Add_Product.this));
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
             case Class_Genric.ADMIN:
                 break;
@@ -87,7 +87,7 @@ public class Distributor_Sales extends AppCompatActivity {
             buttonAdd.setText("SAVE");
             buttonReset.setText("CANCEL");
         }
-        Functionalities(Distributor_Sales.this);
+        Functionalities(Add_Product.this);
         OnClicks();
     }
 
@@ -206,6 +206,7 @@ public class Distributor_Sales extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Product_Order_Lookup.retailerSearch.setEnabled(true);
         finish();
     }
 }

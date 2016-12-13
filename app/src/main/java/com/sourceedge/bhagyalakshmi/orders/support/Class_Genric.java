@@ -29,9 +29,10 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.changepassword.Change_Password;
-import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
-import com.sourceedge.bhagyalakshmi.orders.location.controller.Location;
+import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
+import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Admin_Orders;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
+import com.sourceedge.bhagyalakshmi.orders.location.Location;
 import com.sourceedge.bhagyalakshmi.orders.login.Login;
 import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
@@ -264,6 +265,7 @@ public class Class_Genric {
                 activeOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        a.startActivity(new Intent(a, Admin_Orders.class));
                         drawer.closeDrawer(Gravity.LEFT);
 
                     }
@@ -297,7 +299,7 @@ public class Class_Genric {
                 retailers.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a,  Retailer_Lookup.class));
+                        a.startActivity(new Intent(a,  Product_Order_Lookup.class));
                         drawer.closeDrawer(Gravity.LEFT);
 
                     }

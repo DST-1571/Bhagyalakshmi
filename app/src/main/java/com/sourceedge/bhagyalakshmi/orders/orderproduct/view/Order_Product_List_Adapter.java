@@ -1,4 +1,4 @@
-package com.sourceedge.bhagyalakshmi.orders.distributorsales.view;
+package com.sourceedge.bhagyalakshmi.orders.orderproduct.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Distributor_Sales;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Add_Product;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
@@ -33,7 +33,7 @@ public class Order_Product_List_Adapter extends RecyclerView.Adapter<Order_Produ
         for (Product prod : data) {
             amount+=prod.getAmount();
         }
-        Retailer_Lookup.grandTotal.setText("Total : "+amount+"");
+        Product_Order_Lookup.grandTotal.setText("Total : "+amount+"");
 
     }
 
@@ -60,7 +60,7 @@ public class Order_Product_List_Adapter extends RecyclerView.Adapter<Order_Produ
             public void onClick(View v) {
                 Class_Static.editProductOrder=true;
                 Class_Static.tempProduct=data.get(pos);
-                ((Activity)mContext).startActivity(new Intent(mContext,Distributor_Sales.class));
+                ((Activity)mContext).startActivity(new Intent(mContext,Add_Product.class));
             }
         });
 
@@ -68,7 +68,7 @@ public class Order_Product_List_Adapter extends RecyclerView.Adapter<Order_Produ
             @Override
             public void onClick(View v) {
                 data.remove(pos);
-                Retailer_Lookup.InitializeAdapter(mContext);
+                Product_Order_Lookup.InitializeAdapter(mContext);
             }
         });
     }

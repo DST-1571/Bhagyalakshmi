@@ -20,7 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
+import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
 import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
 import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
@@ -36,11 +36,10 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard.total_order_count;
+import static com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard.total_order_count;
 import static com.sourceedge.bhagyalakshmi.orders.support.Class_Genric.MyPref;
 
 /**
@@ -556,7 +555,6 @@ public class Class_SyncApi {
             @Override
             public void onResponse(String response) {
                 Class_Genric.ShowDialog(context,"Loading...",false);
-
                 switch (mStatusCode) {
                     case 200:
                         try {

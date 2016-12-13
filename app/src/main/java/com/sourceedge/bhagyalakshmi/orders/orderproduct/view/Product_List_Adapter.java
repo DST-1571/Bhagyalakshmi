@@ -1,4 +1,4 @@
-package com.sourceedge.bhagyalakshmi.orders.distributorsales.view;
+package com.sourceedge.bhagyalakshmi.orders.orderproduct.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
-import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Distributor_Sales;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Add_Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 
@@ -43,14 +43,14 @@ public class Product_List_Adapter extends RecyclerView.Adapter<Product_List_Adap
                 Class_Static.tempProduct=new Product();
                 Class_Static.tempProduct = data.get(position);
                 Class_Static.tempProduct.setQuantity(1);
-                Distributor_Sales.productSearch.setText(Class_Static.tempProduct.getName());
-                Distributor_Sales.productBrand.setText(Class_Static.tempProduct.getBrand());
-                Distributor_Sales.productCategory.setText(Class_Static.tempProduct.getCategory());
-                Distributor_Sales.productDescription.setText(Class_Static.tempProduct.getDescription());
-                Distributor_Sales.productUnit.setText(Class_Static.tempProduct.getUnits());
-                Distributor_Sales.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
-                Distributor_Sales.productPrice.setText(Class_Static.tempProduct.getPrice() + "");
-                Distributor_Sales.productList.setVisibility(View.GONE);
+                Add_Product.productSearch.setText(Class_Static.tempProduct.getName());
+                Add_Product.productBrand.setText(Class_Static.tempProduct.getBrand());
+                Add_Product.productCategory.setText(Class_Static.tempProduct.getCategory());
+                Add_Product.productDescription.setText(Class_Static.tempProduct.getDescription());
+                Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
+                Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
+                Add_Product.productPrice.setText(Class_Static.tempProduct.getPrice() + "");
+                Add_Product.productList.setVisibility(View.GONE);
 
             }
         });

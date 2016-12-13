@@ -3,10 +3,18 @@ package com.sourceedge.bhagyalakshmi.orders.support;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
+import com.sourceedge.bhagyalakshmi.orders.models.Product;
+import com.sourceedge.bhagyalakshmi.orders.models.Role;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * Created by Centura User1 on 08-12-2016.
@@ -44,31 +52,90 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-   /* private void saveSections() {
+    private void saveCurrentUser() {
         SQLiteDatabase db = this.getWritableDatabase();
         contentValues = new ContentValues();
-        contentValues.put(this.TableName, "Sections");
-       // contentValues.put(this.Data, gson.toJsonTree(DB.getInitialModel().getSections()).getAsJsonArray().toString());
-        db.delete(this.InitialData, "TableName=?", new String[]{"Sections"});
+        contentValues.put(this.TableName, "CurrentUser");
+        contentValues.put(this.Data, gson.toJsonTree(Class_ModelDB.getCurrentuserModel()).getAsJsonObject().toString());
+        db.delete(this.InitialData, "TableName=?", new String[]{"CurrentUser"});
         db.insert(this.InitialData, null, contentValues);
         db.close();
-    }*/
+    }
 
-    /*private void loadSections(InitialModel initialModel) {
-        SQLiteDatabase db = DbHelper.this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{"Sections"});
+    private void saveRole() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        contentValues = new ContentValues();
+        contentValues.put(this.TableName, "Role");
+        contentValues.put(this.Data, gson.toJsonTree(Class_ModelDB.getRoleList()).getAsJsonArray().toString());
+        db.delete(this.InitialData, "TableName=?", new String[]{"Role"});
+        db.insert(this.InitialData, null, contentValues);
+        db.close();
+    }
+
+    private void saveProduct() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        contentValues = new ContentValues();
+        contentValues.put(this.TableName, "Product");
+        contentValues.put(this.Data, gson.toJsonTree(Class_ModelDB.getProductList()).getAsJsonArray().toString());
+        db.delete(this.InitialData, "TableName=?", new String[]{"Product"});
+        db.insert(this.InitialData, null, contentValues);
+        db.close();
+    }
+
+    private void saveOrders() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        contentValues = new ContentValues();
+        contentValues.put(this.TableName, "Orders");
+        contentValues.put(this.Data, gson.toJsonTree(Class_ModelDB.getOrderList()).getAsJsonArray().toString());
+        db.delete(this.InitialData, "TableName=?", new String[]{"Orders"});
+        db.insert(this.InitialData, null, contentValues);
+        db.close();
+    }
+
+    private void loadCurrentUser() {
+        SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{"CurrentUser"});
         res.moveToFirst();
         while (res.isAfterLast() == false) {
             //initialModel.setSections(gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), ArrayList.class));
-            Type listType = new TypeToken<ArrayList<Sections>>() {
-            }.getType();
-            ArrayList<Sections> sec = new ArrayList<Sections>();
-            sec = gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), listType);
-            initialModel.setSections(sec);
+            //Type listType = new TypeToken<ArrayList<CurrentUser>>() {}.getType();
+            CurrentUser currentUser = new CurrentUser();
+            currentUser = gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), CurrentUser.class);
+            Class_ModelDB.setCurrentuserModel(currentUser);
             res.moveToNext();
         }
         db.close();
-    }*/
+    }
+
+    private void loadRole() {
+        SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{"Role"});
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            //initialModel.setSections(gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), ArrayList.class));
+            Type listType = new TypeToken<ArrayList<Role>>() {}.getType();
+            ArrayList<Role> rolelist = new ArrayList<Role>();
+            rolelist = gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), listType);
+            Class_ModelDB.setRoleList(rolelist);
+            res.moveToNext();
+        }
+        db.close();
+    }
+
+    private void loadProduct() {
+        SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{"Product"});
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            //initialModel.setSections(gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), ArrayList.class));
+            Type listType = new TypeToken<ArrayList<Product>>() {}.getType();
+            ArrayList<Product> productlist = new ArrayList<Product>();
+            productlist = gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), listType);
+            Class_ModelDB.setProductList(productlist);
+            res.moveToNext();
+        }
+        db.close();
+    }
 }
 
 

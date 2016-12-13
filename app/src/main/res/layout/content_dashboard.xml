@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard"
+    tools:context="com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard"
     tools:showIn="@layout/activity_dashboard"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
@@ -45,7 +45,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="157"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="@dimen/dimen_60dp"
                         android:textStyle="bold" />
@@ -54,7 +54,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="   Orders"
+                        android:text="Orders"
+                        android:textColor="@color/white"
+                        android:padding="@dimen/dimen_10dp"
                         android:textSize="@dimen/dimen_16dp"
                         android:textStyle="bold" />
                 </LinearLayout>
