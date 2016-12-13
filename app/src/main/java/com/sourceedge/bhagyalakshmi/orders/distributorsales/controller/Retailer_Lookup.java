@@ -36,12 +36,12 @@ import java.util.ArrayList;
 
 public class Retailer_Lookup extends AppCompatActivity {
     Toolbar toolbar;
-    FloatingActionButton fab;
+    public static FloatingActionButton fab;
     public static TextView distributorSalesManName, grandTotal;
     public static EditText retailerSearch;
     public static RecyclerView orderProductRecyclerview, retailerList;
     static LinearLayout orderProductListLayout, searchPane, emptyProducts;
-    static ScrollView scrollView;
+    static LinearLayout scrollView;
     static Button submitButton;
     int viewHeight;
 
@@ -67,7 +67,7 @@ public class Retailer_Lookup extends AppCompatActivity {
         submitButton = (Button) findViewById(R.id.submit_button);
         searchPane = (LinearLayout) findViewById(R.id.search_pane);
         emptyProducts = (LinearLayout) findViewById(R.id.empty_products);
-        scrollView = (ScrollView) findViewById(R.id.scroll_view);
+        scrollView = (LinearLayout) findViewById(R.id.orderitemlist);
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
             case Class_Genric.ADMIN:
                 break;

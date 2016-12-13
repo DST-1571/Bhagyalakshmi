@@ -18,6 +18,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,6 +40,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.sourceedge.bhagyalakshmi.orders.R.color.view;
+
 
 /**
  * Created by Centura on 01-12-2016.
@@ -55,7 +59,7 @@ public class Class_Genric {
     public static final String Sp_OrderNumber = "OrderNumber";
     public static boolean progressAlive = false;
     static ProgressDialog pDialog;
-    public static final String rupee = "\u20B9  ";
+    public static final String rupee = "\u20B9.";
     static DrawerLayout drawer;
 
     static Button button;
@@ -453,5 +457,12 @@ public class Class_Genric {
             Url = Url.substring(0, Url.length() - 2);
         }
         return Url;
+    }
+
+    public static void closeKeyboard(Context mContext){
+        InputMethodManager inputManager = (InputMethodManager)
+                ((Activity)mContext).getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(((Activity)mContext).getCurrentFocus().getWindowToken(),
+                InputMethodManager.RESULT_HIDDEN);
     }
 }
