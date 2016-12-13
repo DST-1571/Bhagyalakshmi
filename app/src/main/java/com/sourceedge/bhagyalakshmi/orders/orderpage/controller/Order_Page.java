@@ -34,7 +34,7 @@ public class Order_Page extends AppCompatActivity {
     ActionBarDrawerToggle mDrawerToggle;
     FloatingActionButton fab;
     static RecyclerView orderPageRecyclerView;
-    static LinearLayout orderedLayout,emptyOrders;
+    static LinearLayout orderedLayout, emptyOrders;
     Button orderNow;
 
     @Override
@@ -47,12 +47,12 @@ public class Order_Page extends AppCompatActivity {
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        orderPageRecyclerView= (RecyclerView) findViewById(R.id.order_page_recyclerView);
-        orderedLayout=(LinearLayout)findViewById(R.id.ordered_layout);
-        emptyOrders=(LinearLayout)findViewById(R.id.empty_orders);
-        orderNow=(Button)findViewById(R.id.order_now);
+        orderPageRecyclerView = (RecyclerView) findViewById(R.id.order_page_recyclerView);
+        orderedLayout = (LinearLayout) findViewById(R.id.ordered_layout);
+        emptyOrders = (LinearLayout) findViewById(R.id.empty_orders);
+        orderNow = (Button) findViewById(R.id.order_now);
         orderPageRecyclerView.setLayoutManager(new LinearLayoutManager(Order_Page.this));
-        Class_Genric.setupDrawer(toolbar,drawer,mDrawerToggle,Order_Page.this);
+        Class_Genric.setupDrawer(toolbar, drawer, mDrawerToggle, Order_Page.this);
         Class_Genric.drawerOnClicks(Order_Page.this);
         onClicks();
         InitializeAdapter(Order_Page.this);
@@ -64,17 +64,14 @@ public class Order_Page extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())){
+                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
                     case Class_Genric.ADMIN:
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
-                        Class_Static.tempOrderingProduct=new ArrayList<Product>();
-                        startActivity(new Intent(Order_Page.this, Retailer_Lookup.class));
-                        break;
                     case Class_Genric.DISTRIBUTOR:
-                        break;
                     case Class_Genric.SALESPERSON:
-                        startActivity(new Intent(Order_Page.this, Sales_Person_Lookup.class));
+                        Class_Static.tempOrderingProduct = new ArrayList<Product>();
+                        startActivity(new Intent(Order_Page.this, Retailer_Lookup.class));
                         break;
                 }
             }
@@ -83,7 +80,7 @@ public class Order_Page extends AppCompatActivity {
         orderNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Class_Static.tempOrderingProduct=new ArrayList<Product>();
+                Class_Static.tempOrderingProduct = new ArrayList<Product>();
                 startActivity(new Intent(Order_Page.this, Retailer_Lookup.class));
             }
         });
@@ -91,8 +88,9 @@ public class Order_Page extends AppCompatActivity {
     }
 
     public static void InitializeAdapter(Context context) {
-        if (Class_ModelDB.getOrderList().size()!=0){
+        if (Class_ModelDB.getOrderList().size() != 0) {
             orderedLayout.setVisibility(View.VISIBLE);
+            emptyOrders.setVisibility(View.GONE);
             orderPageRecyclerView.setAdapter(new Order_Page_Adapter(context, Class_ModelDB.getOrderList()));
         } else {
             orderedLayout.setVisibility(View.GONE);
@@ -104,5 +102,12 @@ public class Order_Page extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         InitializeAdapter(Order_Page.this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Class_Static.home=true;
+        finish();
     }
 }

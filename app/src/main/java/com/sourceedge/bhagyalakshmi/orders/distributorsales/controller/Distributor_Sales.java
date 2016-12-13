@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
@@ -23,12 +24,14 @@ import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Distributor_Sales extends AppCompatActivity {
     Toolbar toolbar;
     public static TextView distributorSalesManName,retailerName,productBrand,productCategory,productDescription;
     public static EditText productSearch,productUnit,productQuantity,productPrice;
     Button buttonAdd,buttonReset;
+    LinearLayout retailerLayout,searchPane;
     public static RecyclerView productList;
     int viewHeight;
 
@@ -55,9 +58,22 @@ public class Distributor_Sales extends AppCompatActivity {
         buttonAdd=(Button)findViewById(R.id.button_add);
         buttonReset=(Button)findViewById(R.id.button_reset);
         productList=(RecyclerView)findViewById(R.id.product_list);
+        retailerLayout=(LinearLayout)findViewById(R.id.retailer_layout);
         productList.setLayoutManager(new LinearLayoutManager(Distributor_Sales.this));
-
-        distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString()+" - Distributor(DSP)");
+        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+            case Class_Genric.ADMIN:
+                break;
+            case Class_Genric.DISTRIBUTORSALES:
+                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor(DSP)");
+                break;
+            case Class_Genric.DISTRIBUTOR:
+                retailerLayout.setVisibility(View.GONE);
+                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor");
+                break;
+            case Class_Genric.SALESPERSON:
+                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
+                break;
+        }
         retailerName.setText(Class_Static.tempRole.getName().toString());
         if(Class_Static.editProductOrder){
             productSearch.setText(Class_Static.tempProduct.getName());
@@ -68,6 +84,8 @@ public class Distributor_Sales extends AppCompatActivity {
             productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
             productPrice.setText(Class_Static.tempProduct.getPrice() + "");
             productSearch.setEnabled(false);
+            buttonAdd.setText("SAVE");
+            buttonReset.setText("CANCEL");
         }
         Functionalities(Distributor_Sales.this);
         OnClicks();
@@ -87,10 +105,13 @@ public class Distributor_Sales extends AppCompatActivity {
                     Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                     Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
                     Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity()*Class_Static.tempProduct.getPrice());
-                    for (Product prod:Class_Static.tempOrderingProduct) {
-                        if(prod.getId().matches(Class_Static.tempProduct.getId())){
-                            Class_Static.tempOrderingProduct.remove(Class_Static.tempProduct);
-                        }
+                    Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+
+                    while (iter.hasNext()) {
+                        Product prod = iter.next();
+
+                        if (prod.getId().matches(Class_Static.tempProduct.getId()))
+                            iter.remove();
                     }
                     Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
                     Class_Static.editProductOrder=false;
@@ -114,7 +135,17 @@ public class Distributor_Sales extends AppCompatActivity {
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(Class_Static.editProductOrder){
+                    finish();
+                }else {
+                    productSearch.setText("");
+                    productBrand.setText("");
+                    productCategory.setText("");
+                    productDescription.setText("");
+                    productUnit.setText("");
+                    productPrice.setText("");
+                    productQuantity.setText("");
+                }
             }
         });
     }

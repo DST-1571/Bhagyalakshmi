@@ -33,24 +33,31 @@
             android:background="@color/white"
             android:layout_marginBottom="@dimen/dimen_10dp"
             android:orientation="vertical">
-            <TextView
+            <LinearLayout
+                android:id="@+id/retailer_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_15dp"
-                android:text="@string/retail_name"
-                android:textSize="@dimen/textsize_16sp"
-                android:textColor="@color/black" />
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_15dp"
+                    android:text="@string/retail_name"
+                    android:textSize="@dimen/textsize_16sp"
+                    android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/retailer_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:background="@drawable/primary_outline"
-                android:text=""
-                android:maxLines="1"
-                android:padding="@dimen/dimen_15dp" />
+                <TextView
+                    android:id="@+id/retailer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:background="@drawable/primary_outline"
+                    android:text=""
+                    android:maxLines="1"
+                    android:padding="@dimen/dimen_15dp" />
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/search_pane"
                 android:layout_width="match_parent"
@@ -255,7 +262,7 @@
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginRight="@dimen/dimen_10dp"
                 android:background="@drawable/primary_outline"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:maxLines="1"
                 android:padding="@dimen/dimen_15dp" />
             <TextView

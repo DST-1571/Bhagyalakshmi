@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
@@ -36,7 +37,8 @@ public class Retailer_Lookup extends AppCompatActivity {
     public static TextView distributorSalesManName, grandTotal;
     public static EditText retailerSearch;
     public static RecyclerView orderProductRecyclerview, retailerList;
-    static LinearLayout orderProductListLayout;
+    static LinearLayout orderProductListLayout, searchPane, emptyProducts;
+    static ScrollView scrollView;
     static Button submitButton;
     int viewHeight;
 
@@ -60,7 +62,25 @@ public class Retailer_Lookup extends AppCompatActivity {
         orderProductRecyclerview.setLayoutManager(new LinearLayoutManager(Retailer_Lookup.this));
         retailerList.setLayoutManager(new LinearLayoutManager(Retailer_Lookup.this));
         submitButton = (Button) findViewById(R.id.submit_button);
-        distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor(DSP)");
+        searchPane = (LinearLayout) findViewById(R.id.search_pane);
+        emptyProducts = (LinearLayout) findViewById(R.id.empty_products);
+        scrollView = (ScrollView) findViewById(R.id.scroll_view);
+        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+            case Class_Genric.ADMIN:
+                break;
+            case Class_Genric.DISTRIBUTORSALES:
+                searchPane.setVisibility(View.VISIBLE);
+                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor(DSP)");
+                break;
+            case Class_Genric.DISTRIBUTOR:
+                searchPane.setVisibility(View.GONE);
+                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor");
+                break;
+            case Class_Genric.SALESPERSON:
+                searchPane.setVisibility(View.VISIBLE);
+                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
+                break;
+        }
 
         onClicks();
         Functionalities(Retailer_Lookup.this);
@@ -68,15 +88,35 @@ public class Retailer_Lookup extends AppCompatActivity {
     }
 
     public static void InitializeAdapter(Context context) {
-        if (Class_Static.tempOrderingProduct.size() != 0) {
-            orderProductListLayout.setVisibility(View.VISIBLE);
-            orderProductRecyclerview.setVisibility(View.VISIBLE);
-            submitButton.setVisibility(View.VISIBLE);
-            orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
-        } else {
-            orderProductListLayout.setVisibility(View.GONE);
-            submitButton.setVisibility(View.GONE);
+        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+            case Class_Genric.ADMIN:
+                break;
+            case Class_Genric.DISTRIBUTORSALES:
+            case Class_Genric.SALESPERSON:
+                if (Class_Static.tempOrderingProduct.size() != 0) {
+                    orderProductListLayout.setVisibility(View.VISIBLE);
+                    orderProductRecyclerview.setVisibility(View.VISIBLE);
+                    submitButton.setVisibility(View.VISIBLE);
+                    orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                } else {
+                    orderProductListLayout.setVisibility(View.GONE);
+                    submitButton.setVisibility(View.GONE);
+                }
+                break;
+            case Class_Genric.DISTRIBUTOR:
+                if (Class_Static.tempOrderingProduct.size() != 0) {
+                    scrollView.setVisibility(View.VISIBLE);
+                    orderProductListLayout.setVisibility(View.VISIBLE);
+                    orderProductRecyclerview.setVisibility(View.VISIBLE);
+                    submitButton.setVisibility(View.VISIBLE);
+                    orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                } else {
+                    scrollView.setVisibility(View.GONE);
+                    emptyProducts.setVisibility(View.VISIBLE);
+                }
+                break;
         }
+
     }
 
     private void Functionalities(final Context context) {
@@ -124,7 +164,17 @@ public class Retailer_Lookup extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Class_SyncApi.PlaceOrderApi(Retailer_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempRole.getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                    case Class_Genric.ADMIN:
+                        break;
+                    case Class_Genric.DISTRIBUTORSALES:
+                    case Class_Genric.SALESPERSON:
+                        Class_SyncApi.PlaceOrderApi(Retailer_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempRole.getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                        break;
+                    case Class_Genric.DISTRIBUTOR:
+                        Class_SyncApi.PlaceOrderApi(Retailer_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                        break;
+                }
 
 
             }
@@ -138,12 +188,17 @@ public class Retailer_Lookup extends AppCompatActivity {
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
                         retailerSearch.setEnabled(false);
+                        Class_Static.editProductOrder=false;
                         startActivity(new Intent(Retailer_Lookup.this, Distributor_Sales.class));
                         break;
                     case Class_Genric.DISTRIBUTOR:
+                        Class_Static.editProductOrder=false;
+                        startActivity(new Intent(Retailer_Lookup.this, Distributor_Sales.class));
                         break;
                     case Class_Genric.SALESPERSON:
-                        startActivity(new Intent(Retailer_Lookup.this, Sales_Person.class));
+                        retailerSearch.setEnabled(false);
+                        Class_Static.editProductOrder=false;
+                        startActivity(new Intent(Retailer_Lookup.this, Distributor_Sales.class));
                         break;
                 }
             }
@@ -173,14 +228,6 @@ public class Retailer_Lookup extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (Class_Static.tempOrderingProduct.size() != 0) {
-            orderProductListLayout.setVisibility(View.VISIBLE);
-            orderProductRecyclerview.setVisibility(View.VISIBLE);
-            submitButton.setVisibility(View.VISIBLE);
-            InitializeAdapter(Retailer_Lookup.this);
-        } else {
-            orderProductListLayout.setVisibility(View.GONE);
-            submitButton.setVisibility(View.GONE);
-        }
+        InitializeAdapter(Retailer_Lookup.this);
     }
 }

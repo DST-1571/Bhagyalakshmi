@@ -9,9 +9,11 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -49,16 +51,17 @@ public class Class_SyncApi {
     static SharedPreferences sharedPreferences;
     static int mStatusCode = 0;
     static Gson gson;
-    static Date date;
 
     public static void LoginApi(final Context context, final EditText username, final EditText password) {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("UserName", username.getText().toString()));
         params.add(new KeyValuePair("Password", password.getText().toString()));
+        Class_Genric.ShowDialog(context,"Loading...",true);
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Login, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -66,6 +69,7 @@ public class Class_SyncApi {
                             JSONObject jsonObject = new JSONObject(response);
                             Class_ModelDB.setCurrentuserModel(gson.fromJson(jsonObject.toString(), CurrentUser.class));
                             Toast.makeText(context, "Successfully Logged In", Toast.LENGTH_SHORT).show();
+                            Class_Static.home=true;
                             ((Activity) context).startActivity(new Intent(context, Dashboard.class));
                             ((Activity) context).finish();
                             break;
@@ -77,15 +81,21 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode = error.networkResponse.statusCode;
-                switch (mStatusCode) {
-                    case 400:
-                        username.setError("Username or Password Invalid");
-                        break;
-                    case 401:
-                        password.setError("Password Invalid");
-                        break;
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            username.setError("Username or Password Invalid");
+                            break;
+                        case 401:
+                            password.setError("Password Invalid");
+                            break;
+                    }
                 }
+
             }
         }) {
             @Override
@@ -99,9 +109,13 @@ public class Class_SyncApi {
 
     public static void DistributorApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
+        Class_Genric.ShowDialog(context,"Loading...",true);
+
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Distributor, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
+
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -121,11 +135,16 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode = error.networkResponse.statusCode;
-                switch (mStatusCode) {
-                    case 400:
-                        Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                        break;
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
         }) {
@@ -149,9 +168,12 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("Id", "0d87550e-71ee-460a-a02a-d2ddc1cfcaa0"));
+        Class_Genric.ShowDialog(context,"Loading...",true);
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.DistributorId, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
+
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -169,14 +191,19 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode = error.networkResponse.statusCode;
-                switch (mStatusCode) {
-                    case 400:
-                        Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 404:
-                        Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
-                        break;
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
         }) {
@@ -204,9 +231,11 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("TimeStamp", s));
+        Class_Genric.ShowDialog(context,"Loading...",true);
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Retailer, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -226,14 +255,19 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode = error.networkResponse.statusCode;
-                switch (mStatusCode) {
-                    case 400:
-                        Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 404:
-                        Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
-                        break;
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
         }) {
@@ -257,9 +291,11 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("Id", "461dbfb3-8ba4-4bf2-ab16-cb8b2b019e8b"));
+        Class_Genric.ShowDialog(context,"Loading...",true);
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.RetailerId, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -277,14 +313,19 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode = error.networkResponse.statusCode;
-                switch (mStatusCode) {
-                    case 400:
-                        Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 404:
-                        Toast.makeText(context, "Retailer not Found", Toast.LENGTH_SHORT).show();
-                        break;
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(context, "Retailer not Found", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
         }) {
@@ -312,9 +353,13 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("TimeStamp", s));
+        Class_Genric.ShowDialog(context,"Loading...",true);
+
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Product, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
+
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -334,11 +379,16 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode = error.networkResponse.statusCode;
-                switch (mStatusCode) {
-                    case 400:
-                        Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                        break;
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
         }) {
@@ -362,9 +412,13 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("Id", "effd9b76-4116-4272-93bd-1484361727a8"));
+        Class_Genric.ShowDialog(context,"Loading...",true);
+
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.ProductId, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
+
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -382,11 +436,16 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode = error.networkResponse.statusCode;
-                switch (mStatusCode) {
-                    case 400:
-                        Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                        break;
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
         }) {
@@ -436,10 +495,11 @@ public class Class_SyncApi {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        Class_Genric.ShowDialog(context,"Loading...",true);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Class_Genric.generateUrl(Class_Urls.PlaceOrder, params1), jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
                 switch (mStatusCode) {
                     case 200:
                         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -454,11 +514,16 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode = error.networkResponse.statusCode;
-                switch (mStatusCode) {
-                    case 400:
-                        Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                        break;
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
         }) {
@@ -486,9 +551,12 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("TimeStamp", s));
+        Class_Genric.ShowDialog(context,"Loading...",true);
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Order, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
+
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -509,11 +577,16 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode = error.networkResponse.statusCode;
-                switch (mStatusCode) {
-                    case 400:
-                        Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                        break;
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
         }) {
@@ -537,9 +610,13 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("Id", "6724af08-b00b-4294-bc5d-e0417334bb33"));
+        Class_Genric.ShowDialog(context,"Loading...",true);
+
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.OrderId, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
+
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -557,14 +634,19 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mStatusCode = error.networkResponse.statusCode;
-                switch (mStatusCode) {
-                    case 400:
-                        Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 404:
-                        Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
-                        break;
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             }
         }) {

@@ -13,6 +13,7 @@
     tools:showIn="@layout/activity_order_page">
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/empty_orders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +40,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/ordered_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

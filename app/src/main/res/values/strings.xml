@@ -9,6 +9,7 @@
     <string name="login_button_title">Sign In</string>
     <string name="save_button_title">Save</string>
     <string name="cancel_button_title">Cancel</string>
+    <string name="drawer_home">Home</string>
     <string name="drawer_my_profile">My Profile</string>
     <string name="drawer_change_password">Change Password</string>
     <string name="drawer_location">Location</string>

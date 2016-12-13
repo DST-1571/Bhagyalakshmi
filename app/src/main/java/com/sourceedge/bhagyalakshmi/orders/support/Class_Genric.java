@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -14,6 +15,7 @@ import android.net.NetworkInfo;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.changepassword.Change_Password;
+import com.sourceedge.bhagyalakshmi.orders.dashboard.controller.Dashboard;
 import com.sourceedge.bhagyalakshmi.orders.distributorsales.controller.Retailer_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.location.controller.Location;
 import com.sourceedge.bhagyalakshmi.orders.login.Login;
@@ -46,10 +49,10 @@ public class Class_Genric {
 
     public static final String MyPref = "MyPref";
     public static final String LoginType = Class_ModelDB.getCurrentuserModel().getUserType().toString();
-    public static final int ADMIN=1;
-    public static final int DISTRIBUTORSALES=2;
-    public static final int DISTRIBUTOR=3;
-    public static final int SALESPERSON=4;
+    public static final int ADMIN = 1;
+    public static final int DISTRIBUTORSALES = 2;
+    public static final int DISTRIBUTOR = 3;
+    public static final int SALESPERSON = 4;
     public static final String Sp_Status = "Status";
     public static final String Sp_OrderNumber = "OrderNumber";
     public static boolean progressAlive = false;
@@ -59,8 +62,9 @@ public class Class_Genric {
 
     static Button button;
     static Button button1;
+    static TextView homeText;
 
-    public static LinearLayout myProfile, changePassword, location, distributorSalesMyOrders, activeOrders, distributorMyOrders,salesmanMyOrders,salesDistributorRetailers,retailers, distributorSalesPayments,distributorPayments,salesmanPayments, messages, logout;
+    public static LinearLayout home, myProfile, changePassword, location, distributorSalesMyOrders, activeOrders, distributorMyOrders, salesmanMyOrders, salesDistributorRetailers, retailers, distributorSalesPayments, distributorPayments, salesmanPayments, messages, logout;
     public static Activity a;
     static SharedPreferences sharedPreferences;
 
@@ -99,14 +103,14 @@ public class Class_Genric {
             ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
-    public static void applyFontForToolbarTitle(Toolbar toolbar,Activity context){
-        for(int i = 0; i < toolbar.getChildCount(); i++){
+    public static void applyFontForToolbarTitle(Toolbar toolbar, Activity context) {
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
             View view = toolbar.getChildAt(i);
-            if(view instanceof TextView){
+            if (view instanceof TextView) {
                 TextView tv = (TextView) view;
                 Typeface titleFont = Typeface.
                         createFromAsset(context.getAssets(), "fonts/RobotoCondensed-Regular.ttf");
-                tv.setTypeface(Typeface.SANS_SERIF,Typeface.NORMAL);
+                tv.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
             }
         }
     }
@@ -220,13 +224,14 @@ public class Class_Genric {
     public static void drawerOnClicks(final Context context) {
         a = (Activity) context;
         sharedPreferences = a.getSharedPreferences(MyPref, a.MODE_PRIVATE);
+        home = (LinearLayout) a.findViewById(R.id.home);
         drawer = (DrawerLayout) a.findViewById(R.id.navigation_drawer);
         myProfile = (LinearLayout) a.findViewById(R.id.my_profile);
         changePassword = (LinearLayout) a.findViewById(R.id.change_password);
         location = (LinearLayout) a.findViewById(R.id.location);
         distributorSalesMyOrders = (LinearLayout) a.findViewById(R.id.distributor_sales_my_orders);
-        distributorMyOrders=(LinearLayout)a.findViewById(R.id.distributor_my_orders);
-        salesmanMyOrders=(LinearLayout)a.findViewById(R.id.salesman_my_orders);
+        distributorMyOrders = (LinearLayout) a.findViewById(R.id.distributor_my_orders);
+        salesmanMyOrders = (LinearLayout) a.findViewById(R.id.salesman_my_orders);
         activeOrders = (LinearLayout) a.findViewById(R.id.active_orders);
         salesDistributorRetailers = (LinearLayout) a.findViewById(R.id.sales_distributors_retailers);
         retailers = (LinearLayout) a.findViewById(R.id.retailers);
@@ -235,6 +240,7 @@ public class Class_Genric {
         salesmanPayments = (LinearLayout) a.findViewById(R.id.salesman_payments);
         messages = (LinearLayout) a.findViewById(R.id.messages);
         logout = (LinearLayout) a.findViewById(R.id.logout);
+        homeText = (TextView) a.findViewById(R.id.home_text);
 
         switch (getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
             case ADMIN:
@@ -316,6 +322,7 @@ public class Class_Genric {
                 distributorMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        a.startActivity(new Intent(a, Order_Page.class));
                         drawer.closeDrawer(Gravity.LEFT);
 
                     }
@@ -356,6 +363,29 @@ public class Class_Genric {
                 });
                 break;
         }
+
+
+
+        if (Class_Static.home) {
+            home.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    drawer.closeDrawer(Gravity.LEFT);
+                }
+            });
+            Class_Static.home = false;
+        } else {
+            home.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    a.startActivity(new Intent(a, Dashboard.class));
+                    a.finish();
+                    drawer.closeDrawer(Gravity.LEFT);
+                }
+            });
+        }
+
+
         myProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -387,7 +417,7 @@ public class Class_Genric {
         });
     }
 
-    public static void logout(Context context){
+    public static void logout(Context context) {
         a = ((Activity) context);
         //db = new DbHelper(context);
         sharedPreferences = a.getSharedPreferences(Class_Genric.MyPref, a.MODE_PRIVATE);
@@ -415,15 +445,14 @@ public class Class_Genric {
         dialog.show();
     }
 
-    public static String generateUrl(String Url, ArrayList<KeyValuePair> params){
-        if(params.size()>0)
-        {
-            Url+="?";
+    public static String generateUrl(String Url, ArrayList<KeyValuePair> params) {
+        if (params.size() > 0) {
+            Url += "?";
             for (KeyValuePair data : params) {
-                if(data.getKey().trim().length()>0)
-                    Url+=data.getKey()+"="+data.getValue()+"&&";
+                if (data.getKey().trim().length() > 0)
+                    Url += data.getKey() + "=" + data.getValue() + "&&";
             }
-            Url=Url.substring(0,Url.length()-2);
+            Url = Url.substring(0, Url.length() - 2);
         }
         return Url;
     }
