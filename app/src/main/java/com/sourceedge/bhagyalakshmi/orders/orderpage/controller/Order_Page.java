@@ -81,7 +81,6 @@ public class Order_Page extends AppCompatActivity {
             }
         });
 
-
     }
 
     public static void InitializeAdapter(Context context) {
