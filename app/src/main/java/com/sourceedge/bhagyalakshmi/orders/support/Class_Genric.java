@@ -415,7 +415,7 @@ public class Class_Genric {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logout(a);
+                logout(context);
             }
         });
     }

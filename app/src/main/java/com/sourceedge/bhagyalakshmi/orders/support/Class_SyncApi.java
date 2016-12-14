@@ -188,6 +188,7 @@ public class Class_SyncApi {
                             Class_ModelDB.setRoleList(rolelist);
                             dbHelper.saveRole();
                             dbHelper.loadRole();
+
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
