@@ -102,7 +102,7 @@ public class Class_Genric {
         if (mContext.getResources().getBoolean(R.bool.isPhone))
             ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         else
-            ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public static void applyFontForToolbarTitle(Toolbar toolbar, Activity context) {

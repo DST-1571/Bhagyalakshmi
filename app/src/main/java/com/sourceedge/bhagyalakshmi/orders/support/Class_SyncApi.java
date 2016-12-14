@@ -74,6 +74,8 @@ public class Class_SyncApi {
                             editor.putString(Class_Genric.Sp_Status, "LoggedIn");
                             editor.commit();
                             dbHelper.saveCurrentUser();
+                            dbHelper.loadCurrentUser();
+                            String s=Class_ModelDB.getCurrentuserModel().getUserType();
                             Toast.makeText(context, "Successfully Logged In", Toast.LENGTH_SHORT).show();
                             Class_Static.home = true;
                             ((Activity) context).startActivity(new Intent(context, Dashboard.class));
@@ -165,6 +167,7 @@ public class Class_SyncApi {
     }
 
     public static void DistributorApi(final Context context) {
+        dbHelper=new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
         Class_Genric.ShowDialog(context, "Loading...", true);
 
@@ -183,6 +186,8 @@ public class Class_SyncApi {
                             JSONArray jsonArray = new JSONArray(response);
                             rolelist = gson.fromJson(jsonArray.toString(), listType);
                             Class_ModelDB.setRoleList(rolelist);
+                            dbHelper.saveRole();
+                            dbHelper.loadRole();
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -193,8 +198,12 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Class_Genric.NetCheck(context);
+                if (error instanceof NoConnectionError) {
+                    if(dbHelper.CheckDataExists(Class_DBHelper.DataTableRole)){
+                        dbHelper.loadRole();
+                    }else {
+                        Class_Genric.NetCheck(context);
+                    }
                 } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
@@ -281,6 +290,7 @@ public class Class_SyncApi {
     }
 
     public static void RetailerApi(final Context context) {
+        dbHelper=new Class_DBHelper(context);
         String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
             s = s.replace("T", "");
@@ -303,6 +313,8 @@ public class Class_SyncApi {
                             JSONArray jsonArray = new JSONArray(response);
                             model = gson.fromJson(jsonArray.toString(), listType);
                             Class_ModelDB.setRoleList(model);
+                            dbHelper.saveRole();
+                            dbHelper.loadRole();
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -313,8 +325,13 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Class_Genric.NetCheck(context);
+                if (error instanceof TimeoutError)
+                    if (error instanceof NoConnectionError) {
+                        if(dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)){
+                            dbHelper.loadProduct();
+                        }else {
+                            Class_Genric.NetCheck(context);
+                        }
                 } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
@@ -403,6 +420,7 @@ public class Class_SyncApi {
     }
 
     public static void ProductApi(final Context context) {
+        dbHelper=new Class_DBHelper(context);
         String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
             s = s.replace("T", "");
@@ -427,6 +445,9 @@ public class Class_SyncApi {
                             JSONArray jsonArray = new JSONArray(response);
                             model = gson.fromJson(jsonArray.toString(), listType);
                             Class_ModelDB.setProductList(model);
+                            dbHelper.saveProduct();
+                            dbHelper.loadProduct();
+
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -437,8 +458,13 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Class_Genric.NetCheck(context);
+                if (error instanceof TimeoutError)
+                    if (error instanceof NoConnectionError) {
+                        if(dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)){
+                            dbHelper.loadProduct();
+                        }else {
+                            Class_Genric.NetCheck(context);
+                        }
                 } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
@@ -601,6 +627,7 @@ public class Class_SyncApi {
     }
 
     public static void OrderApi(final Context context) {
+        dbHelper = new Class_DBHelper(context);
         String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
             s = s.replace("T", "");
@@ -623,6 +650,8 @@ public class Class_SyncApi {
                             JSONArray jsonObject = new JSONArray(response);
                             orders = gson.fromJson(jsonObject.toString(), listType);
                             Class_ModelDB.setOrderList(orders);
+                            dbHelper.saveOrders();
+                            dbHelper.loadOrders();
                             Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
                             break;
                         } catch (JSONException e) {
@@ -634,9 +663,16 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError)
-                    if (error instanceof NoConnectionError) {
-                        Class_Genric.NetCheck(context);
+                if (error instanceof TimeoutError){
+
+                }
+                   else if (error instanceof NoConnectionError) {
+                        if(dbHelper.CheckDataExists(Class_DBHelper.DataTableOrders)){
+                            dbHelper.loadOrders();
+                            Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
+                        }else {
+                            Class_Genric.NetCheck(context);
+                        }
                     } else {
                         mStatusCode = error.networkResponse.statusCode;
                         switch (mStatusCode) {

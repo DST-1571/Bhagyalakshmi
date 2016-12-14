@@ -43,7 +43,6 @@ public class Role_List_Adapter extends RecyclerView.Adapter<Role_List_Adapter.Vi
             public void onClick(View v) {
                 Class_Static.tempRole=new Role();
                 Class_Static.tempRole = data.get(position);
-                Class_Genric.closeKeyboard(mContext);
                 Product_Order_Lookup.retailerSearch.setText(Class_Static.tempRole.getName());
                 Product_Order_Lookup.retailerList.setVisibility(View.GONE);
                 Product_Order_Lookup.orderProductRecyclerview.setVisibility(View.GONE);

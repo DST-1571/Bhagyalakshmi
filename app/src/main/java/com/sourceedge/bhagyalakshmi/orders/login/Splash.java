@@ -36,8 +36,9 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
                 if (sharedPreferences.getString(Class_Genric.Sp_Status, "").matches("LoggedIn")) {
-                    if(dbHelper.CheckIsDataAlreadyInDBorNot()){
+                    if(dbHelper.CheckDataExists(Class_DBHelper.DataTableCurrentUser)){
                         dbHelper.loadCurrentUser();
+                        String s=Class_ModelDB.getCurrentuserModel().getUserType();
                         startActivity(new Intent(Splash.this, Dashboard.class));
                     }
                 } else {
