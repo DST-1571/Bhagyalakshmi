@@ -58,17 +58,6 @@ public class Dashboard extends AppCompatActivity {
         Class_SyncApi.OrderApi(Dashboard.this);
         Class_SyncApi.ProductApi(Dashboard.this);
 
-
-       /* Class_SyncApi.DistributorIdApi(Dashboard.this);
-        Class_SyncApi.RetailerIdApi(Dashboard.this);
-
-        Class_SyncApi.ProductIdApi(Dashboard.this);
-        Class_SyncApi.PlaceOrderApi(Dashboard.this);
-        Class_SyncApi.OrderApi(Dashboard.this);
-        Class_SyncApi.OrderIdApi(Dashboard.this);*/
-
-
-
         dashboard_scrollview=(ScrollView)findViewById(R.id.dashboard_scrollview);
 
         totalOrder=(CardView)findViewById(R.id.total_order);   //
