@@ -113,6 +113,57 @@ public class Class_SyncApi {
         queue.add(postRequest);
     }
 
+    public static void ChangePasswordApi(final Context context, EditText oldPassword, EditText newPassword) {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("OldPassword", oldPassword.getText().toString()));
+        params.add(new KeyValuePair("NewPassword", newPassword.getText().toString()));
+        Class_Genric.ShowDialog(context, "Loading...", true);
+
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.ChangePassword, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+
+                switch (mStatusCode) {
+                    case 200:
+                        ((Activity) context).finish();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                } else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(postRequest);
+    }
+
     public static void DistributorApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         Class_Genric.ShowDialog(context, "Loading...", true);

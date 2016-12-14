@@ -40,6 +40,7 @@
     <string name="quantity">Quantity</string>
     <string name="price">Price</string>
     <string name="add">ADD</string>
+    <string name="addandnew">ADD AND NEW</string>
     <string name="reset">RESET</string>
     <string name="select">SELECT</string>
     <string name="submit">SUBMIT</string>

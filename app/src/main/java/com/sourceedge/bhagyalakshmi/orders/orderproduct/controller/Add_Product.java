@@ -29,10 +29,10 @@ import java.util.Iterator;
 
 public class Add_Product extends AppCompatActivity {
     Toolbar toolbar;
-    public static TextView distributorSalesManName,retailerName,productBrand,productCategory,productDescription;
-    public static EditText productSearch,productUnit,productQuantity,productPrice;
-    Button buttonAdd,buttonReset;
-    LinearLayout retailerLayout,searchPane;
+    public static TextView distributorSalesManName, retailerName, productBrand, productCategory, productDescription;
+    public static EditText productSearch, productUnit, productQuantity, productPrice;
+    Button buttonAdd, buttonReset, buttonAddNew;
+    LinearLayout retailerLayout, searchPane;
     public static RecyclerView productList;
     int viewHeight;
 
@@ -47,19 +47,20 @@ public class Add_Product extends AppCompatActivity {
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        distributorSalesManName=(TextView)findViewById(R.id.user_name);
-        retailerName=(TextView)findViewById(R.id.retailer_name);
-        productSearch=(EditText)findViewById(R.id.product_search);
-        productBrand=(TextView)findViewById(R.id.product_brand);
-        productCategory=(TextView)findViewById(R.id.product_category);
-        productDescription=(TextView)findViewById(R.id.product_description);
-        productUnit=(EditText)findViewById(R.id.product_unit);
-        productQuantity=(EditText)findViewById(R.id.product_quantity);
-        productPrice=(EditText)findViewById(R.id.product_price);
-        buttonAdd=(Button)findViewById(R.id.button_add);
-        buttonReset=(Button)findViewById(R.id.button_reset);
-        productList=(RecyclerView)findViewById(R.id.product_list);
-        retailerLayout=(LinearLayout)findViewById(R.id.retailer_layout);
+        distributorSalesManName = (TextView) findViewById(R.id.user_name);
+        retailerName = (TextView) findViewById(R.id.retailer_name);
+        productSearch = (EditText) findViewById(R.id.product_search);
+        productBrand = (TextView) findViewById(R.id.product_brand);
+        productCategory = (TextView) findViewById(R.id.product_category);
+        productDescription = (TextView) findViewById(R.id.product_description);
+        productUnit = (EditText) findViewById(R.id.product_unit);
+        productQuantity = (EditText) findViewById(R.id.product_quantity);
+        productPrice = (EditText) findViewById(R.id.product_price);
+        buttonAdd = (Button) findViewById(R.id.button_add);
+        buttonReset = (Button) findViewById(R.id.button_reset);
+        buttonAddNew = (Button) findViewById(R.id.button_add_new);
+        productList = (RecyclerView) findViewById(R.id.product_list);
+        retailerLayout = (LinearLayout) findViewById(R.id.retailer_layout);
         productList.setLayoutManager(new LinearLayoutManager(Add_Product.this));
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
             case Class_Genric.ADMIN:
@@ -76,7 +77,7 @@ public class Add_Product extends AppCompatActivity {
                 break;
         }
         retailerName.setText(Class_Static.tempRole.getName().toString());
-        if(Class_Static.editProductOrder){
+        if (Class_Static.editProductOrder) {
             productSearch.setText(Class_Static.tempProduct.getName());
             productBrand.setText(Class_Static.tempProduct.getBrand());
             productCategory.setText(Class_Static.tempProduct.getCategory());
@@ -96,7 +97,7 @@ public class Add_Product extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Class_Static.editProductOrder){
+                if (Class_Static.editProductOrder) {
                     Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
                     Class_Static.tempProduct.setName(productSearch.getText().toString());
                     Class_Static.tempProduct.setBrand(productBrand.getText().toString());
@@ -105,7 +106,7 @@ public class Add_Product extends AppCompatActivity {
                     Class_Static.tempProduct.setUnits(productUnit.getText().toString());
                     Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                     Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                    Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity()*Class_Static.tempProduct.getPrice());
+                    Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
                     Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
                     while (iter.hasNext()) {
                         Product prod = iter.next();
@@ -114,11 +115,11 @@ public class Add_Product extends AppCompatActivity {
                             iter.remove();
                     }
                     Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
-                    Class_Static.editProductOrder=false;
-                }else {
-                    if(productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null){
-                        Toast.makeText(Add_Product.this,"Select Product",Toast.LENGTH_SHORT).show();
-                    }else {
+                    Class_Static.editProductOrder = false;
+                } else {
+                    if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
+                        Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
+                    } else {
                         Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
                         Class_Static.tempProduct.setName(productSearch.getText().toString());
                         Class_Static.tempProduct.setBrand(productBrand.getText().toString());
@@ -127,7 +128,7 @@ public class Add_Product extends AppCompatActivity {
                         Class_Static.tempProduct.setUnits(productUnit.getText().toString());
                         Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                         Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                        Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity()*Class_Static.tempProduct.getPrice());
+                        Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
                         Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
                         finish();
                     }
@@ -135,12 +136,39 @@ public class Add_Product extends AppCompatActivity {
             }
         });
 
+        buttonAddNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
+                    Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
+                } else {
+                    Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                    Class_Static.tempProduct.setName(productSearch.getText().toString());
+                    Class_Static.tempProduct.setBrand(productBrand.getText().toString());
+                    Class_Static.tempProduct.setCategory(productCategory.getText().toString());
+                    Class_Static.tempProduct.setDescription(productDescription.getText().toString());
+                    Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                    Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                    Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
+                    Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                    Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
+                    productSearch.setText("");
+                    productBrand.setText("");
+                    productCategory.setText("");
+                    productDescription.setText("");
+                    productUnit.setText("");
+                    productPrice.setText("");
+                    productQuantity.setText("");
+                }
+            }
+        });
+
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Class_Static.editProductOrder){
+                if (Class_Static.editProductOrder) {
                     finish();
-                }else {
+                } else {
                     productSearch.setText("");
                     productBrand.setText("");
                     productCategory.setText("");
@@ -168,7 +196,7 @@ public class Add_Product extends AppCompatActivity {
                     viewHeight = Class_Genric.convertDpToPixels(55, context);
                     viewHeight = viewHeight * ((Class_Static.tempProductList.size()));
                     productList.getLayoutParams().height = viewHeight;
-                    productList.setAdapter(new Product_List_Adapter(context,Class_Static.tempProductList));
+                    productList.setAdapter(new Product_List_Adapter(context, Class_Static.tempProductList));
                 } else {
                     productList.setVisibility(View.VISIBLE);
                     Class_Static.tempProductList = new ArrayList<Product>();
@@ -181,7 +209,7 @@ public class Add_Product extends AppCompatActivity {
                     viewHeight = Class_Genric.convertDpToPixels(55, context);
                     viewHeight = viewHeight * ((Class_Static.tempProductList.size()));
                     productList.getLayoutParams().height = viewHeight;
-                    productList.setAdapter(new Product_List_Adapter(context,Class_Static.tempProductList));
+                    productList.setAdapter(new Product_List_Adapter(context, Class_Static.tempProductList));
                 }
             }
 

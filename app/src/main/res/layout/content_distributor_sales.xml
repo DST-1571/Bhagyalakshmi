@@ -280,6 +280,7 @@
                 android:gravity="center"
                 android:layout_marginTop="@dimen/dimen_30dp"
                 android:layout_marginBottom="@dimen/dimen_10dp">
+
                 <Button
                     android:id="@+id/button_reset"
                     android:layout_width="@dimen/dimen_100dp"
@@ -287,14 +288,26 @@
                     android:text="@string/reset"
                     android:textColor="@color/white"
                     android:background="@drawable/rounded_button"
-                    android:layout_marginRight="@dimen/dimen_30dp"/>
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_20dp"/>
+
                 <Button
                     android:id="@+id/button_add"
                     android:layout_width="@dimen/dimen_100dp"
                     android:layout_height="wrap_content"
                     android:text="@string/add"
                     android:textColor="@color/white"
-                    android:background="@drawable/rounded_button" />
+                    android:background="@drawable/rounded_button"
+                    android:layout_marginRight="@dimen/dimen_20dp"/>
+
+                <Button
+                    android:id="@+id/button_add_new"
+                    android:layout_width="@dimen/dimen_100dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/addandnew"
+                    android:textColor="@color/white"
+                    android:background="@drawable/rounded_button"
+                    android:layout_marginRight="@dimen/dimen_10dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -49,7 +49,6 @@ import static com.sourceedge.bhagyalakshmi.orders.R.color.view;
  */
 
 public class Class_Genric {
-
     public static final String MyPref = "MyPref";
     public static final int ADMIN = 1;
     public static final int DISTRIBUTORSALES = 2;
