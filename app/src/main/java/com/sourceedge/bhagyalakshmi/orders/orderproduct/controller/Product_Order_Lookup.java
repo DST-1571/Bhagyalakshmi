@@ -82,6 +82,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                 break;
             case Class_Genric.SALESPERSON:
                 searchPane.setVisibility(View.VISIBLE);
+                retailerSearch.setHint("Select Distributor");
                 distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
                 break;
         }
@@ -113,6 +114,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     orderProductListLayout.setVisibility(View.VISIBLE);
                     orderProductRecyclerview.setVisibility(View.VISIBLE);
                     submitButton.setVisibility(View.VISIBLE);
+                    emptyProducts.setVisibility(View.GONE);
                     orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
                 } else {
                     scrollView.setVisibility(View.GONE);

@@ -18,4 +18,14 @@ public class Class_Static {
     public static ArrayList<Product> tempProductList=new ArrayList<Product>();
     public static Product tempProduct=new Product();
     public static ArrayList<Product> tempOrderingProduct=new ArrayList<Product>();
+
+    public static void ClearStaticData(){
+        editProductOrder=false;
+        home=false;
+        tempRoleList=new ArrayList<Role>();
+        tempRole=new Role();
+        tempProductList=new ArrayList<Product>();
+        tempProduct=new Product();
+        tempOrderingProduct=new ArrayList<Product>();
+    }
 }

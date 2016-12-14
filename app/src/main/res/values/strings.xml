@@ -65,4 +65,5 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="title_activity_order__page">Order_Page</string>
     <string name="title_activity_admin__orders">Admin_Orders</string>
+    <string name="title_activity_splash">Splash</string>
 </resources>

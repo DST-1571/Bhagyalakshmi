@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_DBHelper;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
@@ -26,6 +27,7 @@ public class Dashboard extends AppCompatActivity {
     ScrollView dashboard_scrollview;
     public static TextView total_order_count;
     CardView totalOrder,adminRetailersDistributors,statistics;
+    Class_DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +41,7 @@ public class Dashboard extends AppCompatActivity {
         Class_Genric.applyFontForToolbarTitle(toolbar,Dashboard.this);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         total_order_count=(TextView)findViewById(R.id.total_order_count);
-
-        String s=Class_ModelDB.getCurrentuserModel().getUserType();
+        dbHelper=new Class_DBHelper(Dashboard.this);
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())){
             case Class_Genric.ADMIN:
                 break;

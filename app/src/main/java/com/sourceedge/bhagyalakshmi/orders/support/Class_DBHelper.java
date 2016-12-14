@@ -6,13 +6,16 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
+import com.sourceedge.bhagyalakshmi.orders.models.Order;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -24,7 +27,7 @@ public class Class_DBHelper extends SQLiteOpenHelper {
     SharedPreferences sharedPreferences = Class_Application.sharedPreferences;
     public static final String DATABASE_NAME = "Bhagyalaksmi_Traders.db";
     Gson gson = new Gson();
-    ContentValues contentValues = new ContentValues();
+    static ContentValues contentValues = new ContentValues();
     public static String InitialData = "InitialData";
     public static String TableName = "TableName";
     public static String Data = "Data";
@@ -52,7 +55,7 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    private void saveCurrentUser() {
+    public void saveCurrentUser() {
         SQLiteDatabase db = this.getWritableDatabase();
         contentValues = new ContentValues();
         contentValues.put(this.TableName, "CurrentUser");
@@ -92,7 +95,7 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    private void loadCurrentUser() {
+    public void loadCurrentUser() {
         SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
         Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{"CurrentUser"});
         res.moveToFirst();
@@ -135,6 +138,52 @@ public class Class_DBHelper extends SQLiteOpenHelper {
             res.moveToNext();
         }
         db.close();
+    }
+
+    private void loadOrders() {
+        SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{"Orders"});
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            //initialModel.setSections(gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), ArrayList.class));
+            Type listType = new TypeToken<ArrayList<Order>>() {}.getType();
+            ArrayList<Order> orderlist = new ArrayList<Order>();
+            orderlist = gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), listType);
+            Class_ModelDB.setOrderList(orderlist);
+            res.moveToNext();
+        }
+        db.close();
+    }
+
+    public boolean CheckIsDataAlreadyInDBorNot() {
+        SQLiteDatabase sqldb = this.getReadableDatabase();
+        Cursor res = sqldb.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{"CurrentUser"});
+        if(res.getCount() <= 0){
+            res.close();
+            return false;
+        }
+        res.close();
+        return true;
+    }
+
+    public void ClearAllData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(this.InitialData, null, null);
+        db.close();
+    }
+
+    public void saveData(){
+        saveCurrentUser();
+        saveRole();
+        saveProduct();
+        saveOrders();
+    }
+
+    public void loadData(){
+        loadCurrentUser();
+        loadRole();
+        loadProduct();
+        loadOrders();
     }
 }
 

@@ -50,25 +50,32 @@ public class Class_SyncApi {
     static SharedPreferences sharedPreferences;
     static int mStatusCode = 0;
     static Gson gson;
+    static Class_DBHelper dbHelper;
 
     public static void LoginApi(final Context context, final EditText username, final EditText password) {
+        sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+        dbHelper = new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("UserName", username.getText().toString()));
         params.add(new KeyValuePair("Password", password.getText().toString()));
-        Class_Genric.ShowDialog(context,"Loading...",true);
+        Class_Genric.ShowDialog(context, "Loading...", true);
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Login, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 switch (mStatusCode) {
                     case 200:
                         try {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
                             gson = new Gson();
                             JSONObject jsonObject = new JSONObject(response);
                             Class_ModelDB.setCurrentuserModel(gson.fromJson(jsonObject.toString(), CurrentUser.class));
+                            editor.putString(Class_Genric.Sp_Status, "LoggedIn");
+                            editor.commit();
+                            dbHelper.saveCurrentUser();
                             Toast.makeText(context, "Successfully Logged In", Toast.LENGTH_SHORT).show();
-                            Class_Static.home=true;
+                            Class_Static.home = true;
                             ((Activity) context).startActivity(new Intent(context, Dashboard.class));
                             ((Activity) context).finish();
                             break;
@@ -80,10 +87,10 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
-                }else {
+                } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
                         case 400:
@@ -108,12 +115,12 @@ public class Class_SyncApi {
 
     public static void DistributorApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        Class_Genric.ShowDialog(context,"Loading...",true);
+        Class_Genric.ShowDialog(context, "Loading...", true);
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Distributor, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
 
                 switch (mStatusCode) {
                     case 200:
@@ -134,10 +141,10 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
-                }else {
+                } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
                         case 400:
@@ -167,11 +174,11 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("Id", "0d87550e-71ee-460a-a02a-d2ddc1cfcaa0"));
-        Class_Genric.ShowDialog(context,"Loading...",true);
+        Class_Genric.ShowDialog(context, "Loading...", true);
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.DistributorId, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
 
                 switch (mStatusCode) {
                     case 200:
@@ -190,10 +197,10 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
-                }else {
+                } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
                         case 400:
@@ -230,11 +237,11 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("TimeStamp", s));
-        Class_Genric.ShowDialog(context,"Loading...",true);
+        Class_Genric.ShowDialog(context, "Loading...", true);
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Retailer, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -254,10 +261,10 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
-                }else {
+                } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
                         case 400:
@@ -290,11 +297,11 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("Id", "461dbfb3-8ba4-4bf2-ab16-cb8b2b019e8b"));
-        Class_Genric.ShowDialog(context,"Loading...",true);
+        Class_Genric.ShowDialog(context, "Loading...", true);
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.RetailerId, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -312,10 +319,10 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
-                }else {
+                } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
                         case 400:
@@ -352,12 +359,12 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("TimeStamp", s));
-        Class_Genric.ShowDialog(context,"Loading...",true);
+        Class_Genric.ShowDialog(context, "Loading...", true);
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Product, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
 
                 switch (mStatusCode) {
                     case 200:
@@ -378,10 +385,10 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
-                }else {
+                } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
                         case 400:
@@ -411,12 +418,12 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("Id", "effd9b76-4116-4272-93bd-1484361727a8"));
-        Class_Genric.ShowDialog(context,"Loading...",true);
+        Class_Genric.ShowDialog(context, "Loading...", true);
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.ProductId, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
 
                 switch (mStatusCode) {
                     case 200:
@@ -435,10 +442,10 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
-                }else {
+                } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
                         case 400:
@@ -494,29 +501,29 @@ public class Class_SyncApi {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Class_Genric.ShowDialog(context,"Loading...",true);
+        Class_Genric.ShowDialog(context, "Loading...", true);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Class_Genric.generateUrl(Class_Urls.PlaceOrder, params1), jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 switch (mStatusCode) {
                     case 200:
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(Class_Genric.Sp_OrderNumber, response.optString("OrderNumber"));
                         editor.putString(Class_Genric.Sp_Status, response.optString("Status"));
                         editor.commit();
-                        ((Activity)context).startActivity(new Intent(context, Order_Success.class));
-                        ((Activity)context).finish();
+                        ((Activity) context).startActivity(new Intent(context, Order_Success.class));
+                        ((Activity) context).finish();
                         break;
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
-                }else {
+                } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
                         case 400:
@@ -550,11 +557,11 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("TimeStamp", s));
-        Class_Genric.ShowDialog(context,"Loading...",true);
+        Class_Genric.ShowDialog(context, "Loading...", true);
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Order, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 switch (mStatusCode) {
                     case 200:
                         try {
@@ -565,7 +572,7 @@ public class Class_SyncApi {
                             JSONArray jsonObject = new JSONArray(response);
                             orders = gson.fromJson(jsonObject.toString(), listType);
                             Class_ModelDB.setOrderList(orders);
-                            Dashboard.animateTextView(0,Class_ModelDB.getOrderList().size(),total_order_count);
+                            Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -575,17 +582,18 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Class_Genric.NetCheck(context);
-                }else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                            break;
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError)
+                    if (error instanceof NoConnectionError) {
+                        Class_Genric.NetCheck(context);
+                    } else {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
                     }
-                }
             }
         }) {
             @Override
@@ -608,12 +616,12 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("Id", "6724af08-b00b-4294-bc5d-e0417334bb33"));
-        Class_Genric.ShowDialog(context,"Loading...",true);
+        Class_Genric.ShowDialog(context, "Loading...", true);
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.OrderId, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
 
                 switch (mStatusCode) {
                     case 200:
@@ -632,10 +640,10 @@ public class Class_SyncApi {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
+                Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
-                }else {
+                } else {
                     mStatusCode = error.networkResponse.statusCode;
                     switch (mStatusCode) {
                         case 400:

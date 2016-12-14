@@ -51,7 +51,6 @@ import static com.sourceedge.bhagyalakshmi.orders.R.color.view;
 public class Class_Genric {
 
     public static final String MyPref = "MyPref";
-    public static final String LoginType = Class_ModelDB.getCurrentuserModel().getUserType().toString();
     public static final int ADMIN = 1;
     public static final int DISTRIBUTORSALES = 2;
     public static final int DISTRIBUTOR = 3;
@@ -60,12 +59,13 @@ public class Class_Genric {
     public static final String Sp_OrderNumber = "OrderNumber";
     public static boolean progressAlive = false;
     static ProgressDialog pDialog;
-    public static final String rupee = "\u20B9.";
+    public static final String rupee = "\u20B9 ";
     static DrawerLayout drawer;
 
     static Button button;
     static Button button1;
     static TextView homeText;
+    static Class_DBHelper dbHelper;
 
     public static LinearLayout home, myProfile, changePassword, location, distributorSalesMyOrders, activeOrders, distributorMyOrders, salesmanMyOrders, salesDistributorRetailers, retailers, distributorSalesPayments, distributorPayments, salesmanPayments, messages, logout;
     public static Activity a;
@@ -423,19 +423,22 @@ public class Class_Genric {
 
     public static void logout(Context context) {
         a = ((Activity) context);
-        //db = new DbHelper(context);
+         dbHelper= new Class_DBHelper(context);
         sharedPreferences = a.getSharedPreferences(Class_Genric.MyPref, a.MODE_PRIVATE);
         final Dialog dialog = new Dialog(a);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.logout_alert);
         button = (Button) dialog.findViewById(R.id.btn);
         button1 = (Button) dialog.findViewById(R.id.btn1);
+        dialog.show();
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear().commit();
+                dbHelper.ClearAllData();
                 Class_ModelDB.ClearDB();
+                Class_Static.ClearStaticData();
                 a.startActivity(new Intent(a, Login.class));
                 a.finish();
             }
@@ -446,7 +449,6 @@ public class Class_Genric {
                 dialog.cancel();
             }
         });
-        dialog.show();
     }
 
     public static String generateUrl(String Url, ArrayList<KeyValuePair> params) {

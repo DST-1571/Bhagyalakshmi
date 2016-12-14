@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Product_List_Adapter;
@@ -106,7 +107,6 @@ public class Add_Product extends AppCompatActivity {
                     Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
                     Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity()*Class_Static.tempProduct.getPrice());
                     Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
-
                     while (iter.hasNext()) {
                         Product prod = iter.next();
 
@@ -116,19 +116,22 @@ public class Add_Product extends AppCompatActivity {
                     Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
                     Class_Static.editProductOrder=false;
                 }else {
-                    Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
-                    Class_Static.tempProduct.setName(productSearch.getText().toString());
-                    Class_Static.tempProduct.setBrand(productBrand.getText().toString());
-                    Class_Static.tempProduct.setCategory(productCategory.getText().toString());
-                    Class_Static.tempProduct.setDescription(productDescription.getText().toString());
-                    Class_Static.tempProduct.setUnits(productUnit.getText().toString());
-                    Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
-                    Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                    Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity()*Class_Static.tempProduct.getPrice());
-                    Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
+                    if(productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null){
+                        Toast.makeText(Add_Product.this,"Select Product",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                        Class_Static.tempProduct.setName(productSearch.getText().toString());
+                        Class_Static.tempProduct.setBrand(productBrand.getText().toString());
+                        Class_Static.tempProduct.setCategory(productCategory.getText().toString());
+                        Class_Static.tempProduct.setDescription(productDescription.getText().toString());
+                        Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                        Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                        Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
+                        Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity()*Class_Static.tempProduct.getPrice());
+                        Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
+                        finish();
+                    }
                 }
-
-                finish();
             }
         });
 
