@@ -67,7 +67,7 @@ public class Class_Genric {
     static TextView homeText;
     static Class_DBHelper dbHelper;
 
-    public static LinearLayout home, myProfile, changePassword, location, distributorSalesMyOrders, activeOrders, distributorMyOrders, salesmanMyOrders, salesDistributorRetailers, retailers, distributorSalesPayments, distributorPayments, salesmanPayments, messages, logout;
+    public static LinearLayout home, myProfile, changePassword, location,distributorSalesMyOrders, activeOrders, distributorMyOrders, salesmanMyOrders, salesDistributorRetailers, retailers, distributorSalesPayments, distributorPayments, salesmanPayments, messages, logout;
     public static Activity a;
     static SharedPreferences sharedPreferences;
 
@@ -343,7 +343,6 @@ public class Class_Genric {
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Order_Page.class));
                         drawer.closeDrawer(Gravity.LEFT);
-
                     }
                 });
 

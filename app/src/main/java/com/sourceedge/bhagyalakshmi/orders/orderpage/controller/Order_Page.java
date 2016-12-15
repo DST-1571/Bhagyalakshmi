@@ -51,8 +51,8 @@ public class Order_Page extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
         orderPageRecyclerView = (RecyclerView) findViewById(R.id.order_page_recyclerView);
+        fab= (FloatingActionButton) findViewById(R.id.fab);
         orderedLayout = (LinearLayout) findViewById(R.id.ordered_layout);
         emptyOrders = (LinearLayout) findViewById(R.id.empty_orders);
         orderNow = (Button) findViewById(R.id.order_now);

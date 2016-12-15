@@ -250,8 +250,10 @@
                 android:layout_height="@dimen/view_1dp"
                 android:background="@color/white_60"/>
 
-
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_1dp"
+                android:background="@color/white_60"/>
 
             <LinearLayout
                 android:id="@+id/distributor_sales_payments"

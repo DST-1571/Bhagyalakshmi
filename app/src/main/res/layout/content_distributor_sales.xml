@@ -45,6 +45,8 @@
                     android:layout_marginRight="@dimen/dimen_10dp"
                     android:background="@drawable/primary_outline"
                     android:text=""
+                    android:textColor="@color/lightgrey"
+                    android:enabled="false"
                     android:maxLines="1"
                     android:padding="@dimen/dimen_15dp" />
             </LinearLayout>
@@ -128,7 +130,9 @@
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginRight="@dimen/dimen_10dp"
                 android:background="@drawable/primary_outline"
+                android:textColor="@color/lightgrey"
                 android:text=""
+                android:enabled="false"
                 android:maxLines="1"
                 android:padding="@dimen/dimen_15dp" />
 
@@ -179,6 +183,8 @@
                 android:background="@drawable/primary_outline"
                 android:text=""
                 android:maxLines="1"
+                android:textColor="@color/lightgrey"
+                android:enabled="false"
                 android:padding="@dimen/dimen_15dp" />
             <TextView
                 android:layout_width="match_parent"
@@ -217,8 +223,11 @@
                 android:layout_marginRight="@dimen/dimen_10dp"
                 android:background="@drawable/primary_outline"
                 android:text=""
+                android:textColor="@color/lightgrey"
                 android:maxLines="1"
+                android:enabled="false"
                 android:padding="@dimen/dimen_15dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -236,7 +245,9 @@
                 android:background="@drawable/primary_outline"
                 android:inputType="number"
                 android:maxLines="1"
+                android:textColor="@color/lightgrey"
                 android:enabled="false"
+                android:textSize="14dp"
                 android:padding="@dimen/dimen_15dp" />
             <TextView
                 android:layout_width="match_parent"
@@ -273,6 +284,8 @@
                 android:background="@drawable/primary_outline"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
+                android:enabled="false"
+                android:textColor="@color/lightgrey"
                 android:padding="@dimen/dimen_15dp" />
             <LinearLayout
                 android:layout_width="match_parent"
