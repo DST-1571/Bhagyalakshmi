@@ -128,6 +128,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     submitButton.setVisibility(View.GONE);
                 }
 
+
                 break;
             case Class_Genric.DISTRIBUTOR:
                 if (Class_Static.tempOrderingProduct.size() != 0) {
