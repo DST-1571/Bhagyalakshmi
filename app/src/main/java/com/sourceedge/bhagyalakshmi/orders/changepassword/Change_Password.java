@@ -5,6 +5,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,10 +31,11 @@ public class Change_Password extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Class_Genric.applyFontForToolbarTitle(toolbar, Change_Password.this);
-        drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
+       /* drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         Class_Genric.setupDrawer(toolbar, drawer, mDrawerToggle, Change_Password.this);
-        Class_Genric.drawerOnClicks(Change_Password.this);
+        Class_Genric.drawerOnClicks(Change_Password.this);*/
         oldPassword = (EditText) findViewById(R.id.old_password);
         newPassword = (EditText) findViewById(R.id.new_password);
         confirmPassword = (EditText) findViewById(R.id.confirm_password);
@@ -65,6 +68,26 @@ public class Change_Password extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
 }

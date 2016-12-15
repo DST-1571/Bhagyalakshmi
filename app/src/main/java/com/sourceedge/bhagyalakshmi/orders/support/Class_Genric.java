@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -114,6 +115,20 @@ public class Class_Genric {
                         createFromAsset(context.getAssets(), "fonts/RobotoCondensed-Regular.ttf");
                 tv.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
             }
+        }
+    }
+
+    public static void hideKeyboard(Context context)
+    {
+        try
+        {
+            InputMethodManager inputManager = (InputMethodManager) ((Activity)context).getSystemService(((Activity)context).INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(((Activity)context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+        catch (Exception e)
+        {
+            // Ignore exceptions if any
+            Log.e("KeyBoardUtil", e.toString(), e);
         }
     }
 
@@ -272,7 +287,8 @@ public class Class_Genric {
                 salesDistributorRetailers.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        Toast.makeText(context,"Coming Soon",Toast.LENGTH_SHORT).show();
+                        drawer.closeDrawer(Gravity.LEFT);
                     }
                 });
                 break;

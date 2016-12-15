@@ -60,7 +60,7 @@
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.DrawerLayout
+        <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -72,13 +72,13 @@
             <include
                 android:id="@+id/content_order_page"
                 layout="@layout/content_order_page" />
-            <include
+           <!-- <include
                 layout="@layout/navigation_drawer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="start" />
+                android:layout_gravity="start" />-->
 
-        </android.support.v4.widget.DrawerLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

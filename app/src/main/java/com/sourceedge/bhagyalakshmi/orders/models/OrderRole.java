@@ -9,11 +9,13 @@ public class OrderRole {
     private String Id;
     private String Name;
     private String Address;
+    private String UserType;
 
     public OrderRole(){
         Id="";
         Name="";
         Address="";
+        UserType="";
     }
 
     public String getId() {
@@ -38,5 +40,13 @@ public class OrderRole {
 
     public void setAddress(String address) {
         Address = address;
+    }
+
+    public String getUserType() {
+        return UserType;
+    }
+
+    public void setUserType(String userType) {
+        UserType = userType;
     }
 }

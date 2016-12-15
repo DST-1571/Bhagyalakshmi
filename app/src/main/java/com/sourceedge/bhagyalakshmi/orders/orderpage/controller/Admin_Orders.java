@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -26,11 +28,11 @@ public class Admin_Orders extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         orderedLayout=(LinearLayout)findViewById(R.id.active_ordered_layout);
         emptyOrders=(LinearLayout)findViewById(R.id.empty_active_orders);
         orderPageRecyclerView=(RecyclerView)findViewById(R.id.active_order_page_recyclerView);
         orderPageRecyclerView.setLayoutManager(new LinearLayoutManager(Admin_Orders.this));
-
         InitializeAdapter(Admin_Orders.this);
     }
 
@@ -43,6 +45,20 @@ public class Admin_Orders extends AppCompatActivity {
             orderPageRecyclerView.setVisibility(View.GONE);
             emptyOrders.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

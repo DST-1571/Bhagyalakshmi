@@ -36,6 +36,7 @@ public class Admin_Orders_Adapter extends RecyclerView.Adapter<Admin_Orders_Adap
         holder.clientName.setText(data.get(position).getClient().getName());
         holder.clientAddress.setText(data.get(position).getClient().getAddress());
         holder.userName.setText(data.get(position).getUser().getName());
+        holder.userType.setText(data.get(position).getUser().getUserType());
     }
 
     @Override

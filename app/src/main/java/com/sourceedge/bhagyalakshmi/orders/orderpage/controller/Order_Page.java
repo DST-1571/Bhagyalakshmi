@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,8 +32,8 @@ import java.util.ArrayList;
 
 public class Order_Page extends AppCompatActivity {
     Toolbar toolbar;
-    DrawerLayout drawer;
-    ActionBarDrawerToggle mDrawerToggle;
+   // DrawerLayout drawer;
+    //ActionBarDrawerToggle mDrawerToggle;
     FloatingActionButton fab;
     static RecyclerView orderPageRecyclerView;
     static LinearLayout orderedLayout, emptyOrders;
@@ -47,7 +49,8 @@ public class Order_Page extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         orderPageRecyclerView = (RecyclerView) findViewById(R.id.order_page_recyclerView);
         orderedLayout = (LinearLayout) findViewById(R.id.ordered_layout);
@@ -55,8 +58,8 @@ public class Order_Page extends AppCompatActivity {
         orderNow = (Button) findViewById(R.id.order_now);
         orderPageRecyclerView.setLayoutManager(new LinearLayoutManager(Order_Page.this));
         orderSearch=(EditText)findViewById(R.id.order_search);
-        Class_Genric.setupDrawer(toolbar, drawer, mDrawerToggle, Order_Page.this);
-        Class_Genric.drawerOnClicks(Order_Page.this);
+       /* Class_Genric.setupDrawer(toolbar, drawer, mDrawerToggle, Order_Page.this);
+        Class_Genric.drawerOnClicks(Order_Page.this);*/
         onClicks();
         InitializeAdapter(Order_Page.this);
         Functionality(Order_Page.this);
@@ -145,9 +148,22 @@ public class Order_Page extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Class_Static.home=true;
         finish();
     }
 }
