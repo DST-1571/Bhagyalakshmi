@@ -39,11 +39,11 @@ import java.util.ArrayList;
 public class Product_Order_Lookup extends AppCompatActivity {
     Toolbar toolbar;
     public static FloatingActionButton fab;
-    public static TextView distributorSalesManName, grandTotal,action_text_pane;
+    public static TextView distributorSalesManName, grandTotal, action_text_pane;
     public static EditText retailerSearch;
     public static RecyclerView orderProductRecyclerview, retailerList;
     public static LinearLayout orderProductListLayout, searchPane, emptyProducts;
-    public static LinearLayout scrollView,order_header2,order_header1;
+    public static LinearLayout scrollView, order_header2, order_header1;
     public static Button submitButton;
     int viewHeight;
 
@@ -60,7 +60,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         distributorSalesManName = (TextView) findViewById(R.id.user_name);
         grandTotal = (TextView) findViewById(R.id.grand_total_amount123);
-        action_text_pane=(TextView)findViewById(R.id.action_text_pane);
+        action_text_pane = (TextView) findViewById(R.id.action_text_pane);
         retailerSearch = (EditText) findViewById(R.id.retailer_search);
         orderProductListLayout = (LinearLayout) findViewById(R.id.order_product_list_layout);
         orderProductRecyclerview = (RecyclerView) findViewById(R.id.order_product_recyclerview);
@@ -70,8 +70,8 @@ public class Product_Order_Lookup extends AppCompatActivity {
         submitButton = (Button) findViewById(R.id.submit_button);
         searchPane = (LinearLayout) findViewById(R.id.search_pane);
         emptyProducts = (LinearLayout) findViewById(R.id.empty_products);
-        order_header1=(LinearLayout)findViewById(R.id.order_header1);
-        order_header2=(LinearLayout)findViewById(R.id.order_header2);
+        order_header1 = (LinearLayout) findViewById(R.id.order_header1);
+        order_header2 = (LinearLayout) findViewById(R.id.order_header2);
         scrollView = (LinearLayout) findViewById(R.id.orderitemlist);
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
             case Class_Genric.ADMIN:
@@ -85,9 +85,9 @@ public class Product_Order_Lookup extends AppCompatActivity {
                 distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor");
                 break;
             case Class_Genric.SALESPERSON:
-                    searchPane.setVisibility(View.VISIBLE);
-                    retailerSearch.setHint("Select Distributor");
-                    distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
+                searchPane.setVisibility(View.VISIBLE);
+                retailerSearch.setHint("Select Distributor");
+                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
                 break;
         }
 
@@ -106,7 +106,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     orderProductListLayout.setVisibility(View.VISIBLE);
                     orderProductRecyclerview.setVisibility(View.VISIBLE);
                     submitButton.setVisibility(View.VISIBLE);
-                    if(Class_Static.viewOrderedProducts) {
+                    if (Class_Static.viewOrderedProducts) {
                         fab.setVisibility(View.GONE);
                         searchPane.setVisibility(View.GONE);
                         submitButton.setVisibility(View.GONE);
@@ -114,7 +114,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                         order_header1.setVisibility(View.GONE);
                         order_header2.setVisibility(View.VISIBLE);
                         orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
-                    }else {
+                    } else {
                         fab.setVisibility(View.VISIBLE);
                         searchPane.setVisibility(View.VISIBLE);
                         submitButton.setVisibility(View.VISIBLE);
@@ -137,7 +137,23 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     orderProductRecyclerview.setVisibility(View.VISIBLE);
                     submitButton.setVisibility(View.VISIBLE);
                     emptyProducts.setVisibility(View.GONE);
-                    orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                    if (Class_Static.viewOrderedProducts) {
+                        fab.setVisibility(View.GONE);
+                        searchPane.setVisibility(View.GONE);
+                        submitButton.setVisibility(View.GONE);
+                        action_text_pane.setVisibility(View.GONE);
+                        order_header1.setVisibility(View.GONE);
+                        order_header2.setVisibility(View.VISIBLE);
+                        orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                    } else {
+                        fab.setVisibility(View.VISIBLE);
+                        searchPane.setVisibility(View.VISIBLE);
+                        submitButton.setVisibility(View.VISIBLE);
+                        action_text_pane.setVisibility(View.VISIBLE);
+                        order_header1.setVisibility(View.VISIBLE);
+                        order_header2.setVisibility(View.GONE);
+                        orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                    }
                 } else {
                     scrollView.setVisibility(View.GONE);
                     emptyProducts.setVisibility(View.VISIBLE);

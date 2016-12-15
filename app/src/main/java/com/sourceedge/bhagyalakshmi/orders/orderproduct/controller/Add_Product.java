@@ -161,23 +161,37 @@ public class Add_Product extends AppCompatActivity {
                 if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
                     Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
                 } else {
-                    Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
-                    Class_Static.tempProduct.setName(productSearch.getText().toString());
-                    Class_Static.tempProduct.setBrand(productBrand.getText().toString());
-                    Class_Static.tempProduct.setCategory(productCategory.getText().toString());
-                    Class_Static.tempProduct.setDescription(productDescription.getText().toString());
-                    Class_Static.tempProduct.setUnits(productUnit.getText().toString());
-                    Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
-                    Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                    Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
-                    Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
-                    productSearch.setText("");
-                    productBrand.setText("");
-                    productCategory.setText("");
-                    productDescription.setText("");
-                    productUnit.setText("");
-                    productPrice.setText("");
-                    productQuantity.setText("");
+                    Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+                    boolean found=false;
+                    while (iter.hasNext()) {
+                        Product prod = iter.next();
+                        if (prod.getId().matches(Class_Static.tempProduct.getId())){
+                            int qty=(prod.getQuantity()+Integer.parseInt(productQuantity.getText().toString()));
+                            prod.setQuantity(qty);
+                            prod.setAmount(prod.getQuantity()*prod.getPrice());
+                            found=true;
+                            break;
+                        }
+                    }
+                    if(!found) {
+                        Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                        Class_Static.tempProduct.setName(productSearch.getText().toString());
+                        Class_Static.tempProduct.setBrand(productBrand.getText().toString());
+                        Class_Static.tempProduct.setCategory(productCategory.getText().toString());
+                        Class_Static.tempProduct.setDescription(productDescription.getText().toString());
+                        Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                        Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                        Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
+                        Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                        Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
+                        productSearch.setText("");
+                        productBrand.setText("");
+                        productCategory.setText("");
+                        productDescription.setText("");
+                        productUnit.setText("");
+                        productPrice.setText("");
+                        productQuantity.setText("");
+                    }
                 }
             }
         });
