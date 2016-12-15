@@ -1,6 +1,7 @@
 package com.sourceedge.bhagyalakshmi.orders.support;
 
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
+import com.sourceedge.bhagyalakshmi.orders.models.OrderProduct;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 
@@ -16,6 +17,7 @@ public class Class_Static {
     public static String timestamp="";
     public static ArrayList<Date> timestamplist=new ArrayList<Date>();
     public static boolean editProductOrder=false;
+    public static boolean viewOrderedProducts=false;
     public static boolean home=false;
     public static ArrayList<Role> tempRoleList=new ArrayList<Role>();
     public static Role tempRole=new Role();
@@ -23,6 +25,8 @@ public class Class_Static {
     public static Product tempProduct=new Product();
     public static ArrayList<Product> tempOrderingProduct=new ArrayList<Product>();
     public static ArrayList<Order> tempOrder=new ArrayList<Order>();
+    public static Order OrdredProducts=new Order();
+    public static OrderProduct Ordered=new OrderProduct();
 
     public static void ClearStaticData(){
         timestamp="";
@@ -34,5 +38,6 @@ public class Class_Static {
         tempProductList=new ArrayList<Product>();
         tempProduct=new Product();
         tempOrderingProduct=new ArrayList<Product>();
+        OrdredProducts=new Order();
     }
 }

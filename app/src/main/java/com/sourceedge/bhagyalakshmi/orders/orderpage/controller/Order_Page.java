@@ -112,6 +112,7 @@ public class Order_Page extends AppCompatActivity {
                     case Class_Genric.DISTRIBUTORSALES:
                     case Class_Genric.DISTRIBUTOR:
                     case Class_Genric.SALESPERSON:
+                        Class_Static.viewOrderedProducts=false;
                         Class_Static.tempOrderingProduct = new ArrayList<Product>();
                         startActivity(new Intent(Order_Page.this, Product_Order_Lookup.class));
                         break;
