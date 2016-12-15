@@ -35,9 +35,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import static com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard.total_order_count;
 import static com.sourceedge.bhagyalakshmi.orders.support.Class_Genric.MyPref;
@@ -169,9 +176,10 @@ public class Class_SyncApi {
     public static void DistributorApi(final Context context) {
         dbHelper=new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
+        /*ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));*/
         Class_Genric.ShowDialog(context, "Loading...", true);
-
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Distributor, new Response.Listener<String>() {
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Distributor/*Class_Genric.generateUrl(Class_Urls.Distributor, params)*/, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
@@ -181,14 +189,34 @@ public class Class_SyncApi {
                         try {
                             gson = new Gson();
                             ArrayList<Role> rolelist = new ArrayList<Role>();
-                            Type listType = new TypeToken<ArrayList<Role>>() {
-                            }.getType();
+                            Type listType = new TypeToken<ArrayList<Role>>() {}.getType();
                             JSONArray jsonArray = new JSONArray(response);
                             rolelist = gson.fromJson(jsonArray.toString(), listType);
+                            for(int i=0;i<rolelist.size();i++){
+                                if(rolelist.get(i).getTimeStamp().contains("T")){
+                                    rolelist.get(i).setTimeStamp(rolelist.get(i).getTimeStamp().replace("T", ""));
+                                }
+                            }
                             Class_ModelDB.setRoleList(rolelist);
                             dbHelper.saveRole();
                             dbHelper.loadRole();
 
+                            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-ddHH:mm:SS");
+
+                            for(int j=0;j<Class_ModelDB.getRoleList().size();j++){
+                                try {
+                                    Date date=format.parse(Class_ModelDB.getRoleList().get(j).getTimeStamp());
+                                    Class_Static.timestamplist.add(date);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            SortedSet<Date> set = new TreeSet<Date>();
+                            for(int k=0;k<Class_Static.timestamplist.size();k++){
+                                set.add( Class_Static.timestamplist.get(k) );
+                            }
+                            Date max=set.last();
+                            Class_Static.timestamp= new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").format(max);
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -292,15 +320,15 @@ public class Class_SyncApi {
 
     public static void RetailerApi(final Context context) {
         dbHelper=new Class_DBHelper(context);
-        String s = "2016-12-06T11:29:26";
+        /*String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
             s = s.replace("T", "");
-        }
+        }*/
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("TimeStamp", s));
+        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
         Class_Genric.ShowDialog(context, "Loading...", true);
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Retailer, params), new Response.Listener<String>() {
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Retailer/*Class_Genric.generateUrl(Class_Urls.Retailer, params)*/, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
@@ -313,9 +341,29 @@ public class Class_SyncApi {
                             }.getType();
                             JSONArray jsonArray = new JSONArray(response);
                             model = gson.fromJson(jsonArray.toString(), listType);
+                            for(int i=0;i<model.size();i++){
+                                if(model.get(i).getTimeStamp().contains("T")){
+                                    model.get(i).setTimeStamp(model.get(i).getTimeStamp().replace("T", ""));
+                                }
+                            }
                             Class_ModelDB.setRoleList(model);
                             dbHelper.saveRole();
                             dbHelper.loadRole();
+                            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-ddHH:mm:SS");
+                            for(int j=0;j<Class_ModelDB.getRoleList().size();j++){
+                                try {
+                                    Date date=format.parse(Class_ModelDB.getRoleList().get(j).getTimeStamp());
+                                    Class_Static.timestamplist.add(date);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            SortedSet<Date> set = new TreeSet<Date>();
+                            for(int k=0;k<Class_Static.timestamplist.size();k++){
+                                set.add( Class_Static.timestamplist.get(k) );
+                            }
+                            Date max=set.last();
+                            Class_Static.timestamp= new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").format(max);
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -422,16 +470,16 @@ public class Class_SyncApi {
 
     public static void ProductApi(final Context context) {
         dbHelper=new Class_DBHelper(context);
-        String s = "2016-12-06T11:29:26";
+        /*String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
             s = s.replace("T", "");
-        }
+        }*/
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("TimeStamp", s));
+        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
         Class_Genric.ShowDialog(context, "Loading...", true);
 
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Product, params), new Response.Listener<String>() {
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Product/*Class_Genric.generateUrl(Class_Urls.Product, params)*/, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
@@ -551,14 +599,14 @@ public class Class_SyncApi {
 
     public static void PlaceOrderApi(final Context context, String UserId, String ClientId, ArrayList<Product> orderedProduct, String total) {
         ArrayList<OrderProduct> products = new ArrayList<OrderProduct>();
-        String s = Class_Static.tempRole.getTimeStamp();
+        /*String s = Class_Static.tempRole.getTimeStamp();
         if (s.contains("T")) {
             s = s.replace("T", "");
-        }
+        }*/
         sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params1 = new ArrayList<KeyValuePair>();
-        params1.add(new KeyValuePair("TimeStamp", s));
+        params1.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
 
         for (int i = 0; i < orderedProduct.size(); i++) {
             OrderProduct obj = new OrderProduct();
@@ -580,7 +628,7 @@ public class Class_SyncApi {
             e.printStackTrace();
         }
         Class_Genric.ShowDialog(context, "Loading...", true);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Class_Genric.generateUrl(Class_Urls.PlaceOrder, params1), jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Class_Urls.PlaceOrder/*Class_Genric.generateUrl(Class_Urls.PlaceOrder, params1)*/, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
@@ -629,15 +677,15 @@ public class Class_SyncApi {
 
     public static void OrderApi(final Context context) {
         dbHelper = new Class_DBHelper(context);
-        String s = "2016-12-06T11:29:26";
+        /*String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
             s = s.replace("T", "");
-        }
+        }*/
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("TimeStamp", s));
+        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
         Class_Genric.ShowDialog(context, "Loading...", true);
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Order, params), new Response.Listener<String>() {
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Order/*Class_Genric.generateUrl(Class_Urls.Order, params)*/, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Class_Genric.ShowDialog(context, "Loading...", false);

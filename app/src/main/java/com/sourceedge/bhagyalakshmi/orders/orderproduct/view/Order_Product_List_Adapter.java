@@ -47,7 +47,7 @@ public class Order_Product_List_Adapter extends RecyclerView.Adapter<Order_Produ
 
     @Override
     public void onBindViewHolder(Order_Product_List_Adapter.ViewHolder holder, int position) {
-        holder.category.setText(data.get(position).getCategory());
+        holder.category.setText(data.get(position).getName());
         holder.description.setText(data.get(position).getDescription());
         holder.quantity.setText(data.get(position).getQuantity()+"");
         holder.unit.setText(data.get(position).getUnits());

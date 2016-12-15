@@ -28,6 +28,18 @@ public class Product {
         Description="";
     }
 
+    public Product(Product tempProduct) {
+        Id=tempProduct.getId();
+        Name=tempProduct.getName();
+        Category=tempProduct.getCategory();
+        Brand=tempProduct.getBrand();
+        Units=tempProduct.getUnits();
+        Price=tempProduct.getPrice();
+        Quantity=tempProduct.getQuantity();
+        Amount=tempProduct.getAmount();
+        Description=tempProduct.getDescription();
+    }
+
     public String getId() {
         return Id;
     }
