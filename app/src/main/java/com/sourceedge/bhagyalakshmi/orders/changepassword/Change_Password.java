@@ -42,8 +42,6 @@ public class Change_Password extends AppCompatActivity {
         cancelButton = (Button) findViewById(R.id.cancel_button);
         saveButton = (Button) findViewById(R.id.save_button);
         OnClicks();
-
-
     }
 
     private void OnClicks() {
