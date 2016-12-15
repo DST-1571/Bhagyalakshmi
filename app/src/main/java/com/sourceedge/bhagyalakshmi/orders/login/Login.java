@@ -57,8 +57,6 @@ public class Login extends AppCompatActivity  {
                         Class_SyncApi.LoginApi(Login.this,username,password);
                     } else password.setError("Field cannot be empty");
                 } else username.setError("Field cannot be empty");
-
-
             }
         });
     }

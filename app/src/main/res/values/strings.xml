@@ -26,7 +26,7 @@
     <string name="admin_order_id">Order Id</string>
     <string name="admin_name">Name</string>
     <string name="admin_placed_by">Placed By</string>
-    <string name="distributorsales_category_distributor">Category/\nDescription</string>
+    <string name="distributorsales_category_distributor">Product/\nDescription</string>
     <string name="distributorsales_qty_units">Qty/Units</string>
     <string name="distributorsales_price">Price</string>
     <string name="distributorsales_action">Action</string>

@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -62,6 +63,8 @@ public class Add_Product extends AppCompatActivity {
         productList = (RecyclerView) findViewById(R.id.product_list);
         retailerLayout = (LinearLayout) findViewById(R.id.retailer_layout);
         productList.setLayoutManager(new LinearLayoutManager(Add_Product.this));
+
+
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
             case Class_Genric.ADMIN:
                 break;

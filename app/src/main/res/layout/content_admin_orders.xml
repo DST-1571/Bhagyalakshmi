@@ -41,15 +41,18 @@
             android:layout_marginTop="@dimen/dimen_10dp">
 
             <EditText
-                android:layout_toLeftOf="@+id/order_search"
+                android:id="@+id/order_search"
+
+                android:layout_toLeftOf="@+id/search_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:hint="Search"
                 android:paddingLeft="@dimen/dimen_10dp"
-                android:textSize="@dimen/dimen_20dp"/>
+                android:textSize="@dimen/dimen_20dp"
+                android:inputType="text|textNoSuggestions"/>
             <ImageView
-                android:id="@+id/order_search"
+                android:id="@+id/search_image"
                 android:layout_width="@dimen/dimen_40dp"
                 android:layout_height="@dimen/dimen_40dp"
                 android:padding="@dimen/dimen_10dp"

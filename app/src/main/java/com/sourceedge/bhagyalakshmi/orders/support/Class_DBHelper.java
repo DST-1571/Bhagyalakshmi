@@ -93,6 +93,7 @@ public class Class_DBHelper extends SQLiteOpenHelper {
                     isPresentInt = res.getString(res.getColumnIndex("IsPresent"));  //your variable
                 } while (res.moveToNext());
             }
+
         }
        /* while (res.isAfterLast() == false) {
             //initialModel.setSections(gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), ArrayList.class));

@@ -67,7 +67,7 @@
                     android:layout_toLeftOf="@+id/search_icon"
                     android:background="@android:color/transparent"
                     android:hint="Select Retailer"
-                    android:inputType="text"
+                    android:inputType="text|textNoSuggestions"
                     android:maxLines="1" />
 
                 <ImageView
