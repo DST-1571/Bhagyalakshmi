@@ -13,7 +13,7 @@
     <string name="drawer_my_profile">My Profile</string>
     <string name="drawer_change_password">Change Password</string>
     <string name="drawer_location">Location</string>
-    <string name="drawer_my_orders">My Orders</string>
+    <string name="drawer_my_orders">Orders</string>
     <string name="drawer_active_orders">Active Orders</string>
     <string name="drawer_sales_distributors_retailers">Sales/Distributors/Retailers</string>
     <string name="drawer_payments">Payments</string>
@@ -46,7 +46,6 @@
     <string name="reset">RESET</string>
     <string name="select">SELECT</string>
     <string name="submit">SUBMIT</string>
-
     <string name="opendrawer">open</string>
     <string name="closedrawer">close</string>
     <string name="title_activity_distributor_sales">DistributorSales</string>
@@ -69,4 +68,8 @@
     <string name="title_activity_order__page">Order_Page</string>
     <string name="title_activity_admin__orders">Admin_Orders</string>
     <string name="title_activity_splash">Splash</string>
+    <string name="placed_by">Placed By  :</string>
+    <string name="lable_customer_name">Customer Name</string>
+    <string name="lable_order_date">Order Date  :</string>
+    <string name="lable_order_no">Order No  :</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.sourceedge.bhagyalakshmi.orders.orderproduct.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Add_Product;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Search_Customer;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 
@@ -43,10 +47,9 @@ public class Role_List_Adapter extends RecyclerView.Adapter<Role_List_Adapter.Vi
             public void onClick(View v) {
                 Class_Static.tempRole=new Role();
                 Class_Static.tempRole = data.get(position);
-                Product_Order_Lookup.retailerSearch.setText(Class_Static.tempRole.getName());
-                Product_Order_Lookup.retailerList.setVisibility(View.GONE);
-                Product_Order_Lookup.orderProductRecyclerview.setVisibility(View.GONE);
-                Product_Order_Lookup.fab.performClick();
+                Class_Static.editProductOrder = false;
+                ((Activity)mContext).startActivity(new Intent(mContext, Add_Product.class));
+                ((Activity)mContext).finish();
             }
         });
     }

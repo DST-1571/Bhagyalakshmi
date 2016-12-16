@@ -12,7 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/dimen_60dp"
         android:src="@drawable/ic_plus_white_24dp"/>
 
     <RelativeLayout
@@ -32,13 +34,129 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
-        <TextView
-            android:layout_marginLeft="@dimen/dimen_15dp"
-            android:id="@+id/user_name"
+        //bill header
+        <LinearLayout
+            android:background="@color/primary_400"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/dimen_6dp"
-            android:textColor="@color/white"/>
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="@dimen/dimen_5dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginRight="@dimen/dimen_2dp"
+                    android:weightSum="1"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:padding="@dimen/dimen_2dp"
+                        android:textSize="@dimen/textsize_12sp"
+                        android:layout_weight="0.4"
+                        android:layout_width="0dp"
+                        android:text="@string/lable_order_date"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/orderdate"
+                        android:padding="@dimen/dimen_2dp"
+                        android:textSize="@dimen/textsize_12sp"
+                        android:maxLines="1"
+                        android:layout_weight="0.6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+
+                    android:layout_marginLeft="@dimen/dimen_2dp"
+                    android:weightSum="1"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:padding="@dimen/dimen_2dp"
+                        android:textSize="@dimen/textsize_12sp"
+                        android:layout_weight="0.4"
+                        android:layout_width="0dp"
+                        android:text="@string/lable_order_no"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/ordernumber"
+                        android:padding="@dimen/dimen_2dp"
+                        android:textSize="@dimen/textsize_12sp"
+                        android:maxLines="1"
+                        android:layout_weight="0.6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:padding="@dimen/dimen_5dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+
+                    android:layout_marginLeft="@dimen/dimen_2dp"
+                    android:weightSum="1"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:padding="@dimen/dimen_2dp"
+                        android:textSize="@dimen/textsize_12sp"
+                        android:layout_weight="0.4"
+                        android:layout_width="0dp"
+                        android:text="@string/placed_by"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/placedby"
+                        android:padding="@dimen/dimen_2dp"
+                        android:textSize="@dimen/textsize_12sp"
+                        android:maxLines="1"
+                        android:layout_weight="0.6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginRight="@dimen/dimen_2dp"
+                    android:weightSum="1"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/customerlable"
+                        android:padding="@dimen/dimen_2dp"
+                        android:textSize="@dimen/textsize_12sp"
+                        android:layout_weight="0.4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:textColor="@color/white"
+                        android:id="@+id/customername"
+                        android:padding="@dimen/dimen_2dp"
+                        android:textSize="@dimen/textsize_12sp"
+                        android:maxLines="1"
+                        android:layout_weight="0.6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
     </android.support.design.widget.AppBarLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -47,7 +165,10 @@
 
             <include
                 android:id="@+id/content_retailer_look_up"
-                layout="@layout/content_retailer_look_up" />
+                layout="@layout/content_retailer_look_up"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
         </RelativeLayout>
 

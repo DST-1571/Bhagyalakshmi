@@ -25,6 +25,7 @@
             android:layout_marginBottom="@dimen/dimen_10dp"
             android:orientation="vertical">
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/retailer_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +75,7 @@
                     android:layout_marginRight="@dimen/dimen_10dp"
                     android:background="@drawable/primary_outline">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/product_search"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -288,6 +289,8 @@
                 android:textColor="@color/lightgrey"
                 android:padding="@dimen/dimen_15dp" />
             <LinearLayout
+                android:padding="@dimen/dimen_2dp"
+                android:weightSum="2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -295,6 +298,7 @@
                 android:layout_marginBottom="@dimen/dimen_10dp">
 
                 <Button
+                    android:visibility="gone"
                     android:id="@+id/button_reset"
                     android:layout_width="@dimen/dimen_100dp"
                     android:layout_height="wrap_content"
@@ -305,17 +309,20 @@
                     android:layout_marginRight="@dimen/dimen_20dp"/>
 
                 <Button
+                    android:layout_margin="@dimen/dimen_2dp"
                     android:id="@+id/button_add"
-                    android:layout_width="@dimen/dimen_100dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="@string/add"
+                    android:text="@string/save_button_title"
                     android:textColor="@color/white"
-                    android:background="@drawable/rounded_button"
-                    android:layout_marginRight="@dimen/dimen_20dp"/>
+                    android:background="@drawable/rounded_button"/>
 
                 <Button
+                    android:layout_margin="@dimen/dimen_2dp"
                     android:id="@+id/button_add_new"
-                    android:layout_width="@dimen/dimen_100dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="@string/addandnew"
                     android:textColor="@color/white"

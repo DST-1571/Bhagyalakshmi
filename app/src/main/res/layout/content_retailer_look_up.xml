@@ -11,7 +11,6 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup"
     tools:showIn="@layout/activity_retailer_look_up">
-
     <LinearLayout
         android:id="@+id/empty_products"
         android:layout_width="match_parent"
@@ -47,6 +46,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/search_pane"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,24 +59,27 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/primaryroundoutline">
 
-                <EditText
-                    android:id="@+id/retailer_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_30dp"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_toLeftOf="@+id/search_icon"
-                    android:background="@android:color/transparent"
-                    android:hint="Select Retailer"
-                    android:inputType="text|textNoSuggestions"
-                    android:maxLines="1" />
-
                 <ImageView
-                    android:id="@+id/search_icon"
                     android:layout_width="@dimen/dimen_30dp"
                     android:layout_height="@dimen/dimen_30dp"
                     android:layout_alignParentRight="true"
                     android:padding="@dimen/dimen_6dp"
                     android:src="@drawable/ic_magnify_grey600_24dp" />
+
+                <TextView
+                    android:layout_marginLeft="@dimen/dimen_4dp"
+                    android:id="@+id/retailer_search"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_height="@dimen/dimen_30dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Select Retailer"
+                    android:inputType="text"
+                    android:padding="@dimen/dimen_2dp"
+                    android:maxLines="1"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/search_icon"
+                    android:layout_toStartOf="@+id/search_icon" />
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -91,7 +94,6 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

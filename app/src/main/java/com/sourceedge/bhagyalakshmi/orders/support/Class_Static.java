@@ -19,6 +19,7 @@ public class Class_Static {
     public static boolean editProductOrder=false;
     public static boolean viewOrderedProducts=false;
     public static boolean home=false;
+    public static boolean Flag_SearchCustomer=false;
     public static ArrayList<Role> tempRoleList=new ArrayList<Role>();
     public static Role tempRole=new Role();
     public static ArrayList<Product> tempProductList=new ArrayList<Product>();

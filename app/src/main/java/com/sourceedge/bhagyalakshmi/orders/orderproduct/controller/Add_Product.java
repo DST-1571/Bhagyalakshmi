@@ -1,6 +1,7 @@
 package com.sourceedge.bhagyalakshmi.orders.orderproduct.controller;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,10 +16,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Product_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
@@ -30,11 +33,13 @@ import java.util.Iterator;
 
 public class Add_Product extends AppCompatActivity {
     Toolbar toolbar;
-    public static TextView distributorSalesManName, retailerName, productBrand, productCategory, productDescription;
-    public static EditText productSearch, productUnit, productQuantity, productPrice;
+    public static TextView productSearch;
+    public static TextView  retailerName, productBrand, productCategory, productDescription;
+    public static EditText  productUnit, productQuantity, productPrice;
     Button buttonAdd, buttonReset, buttonAddNew;
     LinearLayout retailerLayout, searchPane;
     public static RecyclerView productList;
+    ScrollView scrollview;
     int viewHeight;
 
     @Override
@@ -47,10 +52,11 @@ public class Add_Product extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
+        scrollview= (ScrollView) findViewById(R.id.scrollview);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        distributorSalesManName = (TextView) findViewById(R.id.user_name);
+        //distributorSalesManName = (TextView) findViewById(R.id.user_name);
         retailerName = (TextView) findViewById(R.id.retailer_name);
-        productSearch = (EditText) findViewById(R.id.product_search);
+        productSearch = (TextView) findViewById(R.id.product_search);
         productBrand = (TextView) findViewById(R.id.product_brand);
         productCategory = (TextView) findViewById(R.id.product_category);
         productDescription = (TextView) findViewById(R.id.product_description);
@@ -69,14 +75,14 @@ public class Add_Product extends AppCompatActivity {
             case Class_Genric.ADMIN:
                 break;
             case Class_Genric.DISTRIBUTORSALES:
-                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor(DSP)");
+                //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor(DSP)");
                 break;
             case Class_Genric.DISTRIBUTOR:
                 retailerLayout.setVisibility(View.GONE);
-                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor");
+                //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor");
                 break;
             case Class_Genric.SALESPERSON:
-                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
+                //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
                 break;
         }
         retailerName.setText(Class_Static.tempRole.getName().toString());
@@ -92,8 +98,10 @@ public class Add_Product extends AppCompatActivity {
             buttonAdd.setText("SAVE");
             buttonReset.setText("CANCEL");
         }
+
         Functionalities(Add_Product.this);
         OnClicks();
+
     }
 
     private void OnClicks() {
@@ -121,22 +129,21 @@ public class Add_Product extends AppCompatActivity {
                     Class_Static.editProductOrder = false;
                 } else {
                     if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
-                        Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
                     } else {
                         Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
-                        boolean found=false;
+                        boolean found = false;
                         while (iter.hasNext()) {
                             Product prod = iter.next();
-                            if (prod.getId().matches(Class_Static.tempProduct.getId())){
-                                int qty=(prod.getQuantity()+Integer.parseInt(productQuantity.getText().toString()));
+                            if (prod.getId().matches(Class_Static.tempProduct.getId())) {
+                                int qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
                                 prod.setQuantity(qty);
-                                prod.setAmount(prod.getQuantity()*prod.getPrice());
-                                found=true;
+                                prod.setAmount(prod.getQuantity() * prod.getPrice());
+                                found = true;
                                 break;
                             }
                         }
-                        if(!found)
-                        {
+                        if (!found) {
                             Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                             Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
                             Class_Static.tempProduct.setName(productSearch.getText().toString());
@@ -146,11 +153,12 @@ public class Add_Product extends AppCompatActivity {
                             Class_Static.tempProduct.setUnits(productUnit.getText().toString());
                             Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
                             Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
-                            Product tempProd=new Product(Class_Static.tempProduct);
+                            Product tempProd = new Product(Class_Static.tempProduct);
                             Class_Static.tempOrderingProduct.add(tempProd);
-                    }
+                        }
                     }
                 }
+                startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
                 finish();
             }
         });
@@ -192,6 +200,7 @@ public class Add_Product extends AppCompatActivity {
                         productPrice.setText("");
                         productQuantity.setText("");
                     }
+                    scrollview.fullScroll(ScrollView.FOCUS_UP);
                 }
             }
         });
@@ -215,7 +224,14 @@ public class Add_Product extends AppCompatActivity {
     }
 
     private void Functionalities(final Context context) {
-        productSearch.addTextChangedListener(new TextWatcher() {
+        productSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Class_Static.Flag_SearchCustomer = false;
+                startActivity(new Intent(Add_Product.this, Search_Customer.class));
+            }
+        });
+        /*productSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -250,7 +266,7 @@ public class Add_Product extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -271,8 +287,10 @@ public class Add_Product extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         if (Class_Static.tempOrderingProduct.size() != 0) {
-            Product_Order_Lookup.retailerSearch.setEnabled(false);
-        } else Product_Order_Lookup.retailerSearch.setEnabled(true);
+            //Product_Order_Lookup.retailerSearch.setEnabled(false);
+        } else {
+            //Product_Order_Lookup.retailerSearch.setEnabled(true);
+        }
         finish();
     }
 }

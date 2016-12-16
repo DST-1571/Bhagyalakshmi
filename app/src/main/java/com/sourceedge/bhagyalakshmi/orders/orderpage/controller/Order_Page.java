@@ -1,5 +1,6 @@
 package com.sourceedge.bhagyalakshmi.orders.orderpage.controller;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,9 +22,11 @@ import android.widget.LinearLayout;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Add_Product;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.view.Order_Page_Adapter;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Search_Customer;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
@@ -38,7 +41,6 @@ public class Order_Page extends AppCompatActivity {
     static RecyclerView orderPageRecyclerView;
     static LinearLayout orderedLayout, emptyOrders;
     EditText orderSearch;
-    Button orderNow;
     static ArrayList<Order> LocalOrder=new ArrayList<Order>();
 
     @Override
@@ -55,7 +57,7 @@ public class Order_Page extends AppCompatActivity {
         fab= (FloatingActionButton) findViewById(R.id.fab);
         orderedLayout = (LinearLayout) findViewById(R.id.ordered_layout);
         emptyOrders = (LinearLayout) findViewById(R.id.empty_orders);
-        orderNow = (Button) findViewById(R.id.order_now);
+
         orderPageRecyclerView.setLayoutManager(new LinearLayoutManager(Order_Page.this));
         orderSearch=(EditText)findViewById(R.id.order_search);
        /* Class_Genric.setupDrawer(toolbar, drawer, mDrawerToggle, Order_Page.this);
@@ -63,8 +65,6 @@ public class Order_Page extends AppCompatActivity {
         onClicks();
         InitializeAdapter(Order_Page.this);
         Functionality(Order_Page.this);
-
-
     }
 
     private void Functionality(final Context context) {
@@ -109,22 +109,22 @@ public class Order_Page extends AppCompatActivity {
                 switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
                     case Class_Genric.ADMIN:
                         break;
-                    case Class_Genric.DISTRIBUTORSALES:
+
                     case Class_Genric.DISTRIBUTOR:
+                        Class_Static.viewOrderedProducts=false;
+                        Class_Static.tempOrderingProduct = new ArrayList<Product>();
+                        Class_Static.editProductOrder = false;
+                        startActivity(new Intent(Order_Page.this, Add_Product.class));
+
+                        break;
+                    case Class_Genric.DISTRIBUTORSALES:
                     case Class_Genric.SALESPERSON:
                         Class_Static.viewOrderedProducts=false;
                         Class_Static.tempOrderingProduct = new ArrayList<Product>();
-                        startActivity(new Intent(Order_Page.this, Product_Order_Lookup.class));
+                        Class_Static.Flag_SearchCustomer = true;
+                        startActivity(new Intent(Order_Page.this, Search_Customer.class));
                         break;
                 }
-            }
-        });
-
-        orderNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Class_Static.tempOrderingProduct = new ArrayList<Product>();
-                startActivity(new Intent(Order_Page.this, Product_Order_Lookup.class));
             }
         });
 

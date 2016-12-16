@@ -32,6 +32,7 @@ public class Order_Product_List_Adapter extends RecyclerView.Adapter<Order_Produ
     public Order_Product_List_Adapter(Context context, ArrayList<Product> model){
         this.mContext=context;
         this.data=model;
+        amount=0.0;
         for (Product prod : data) {
             amount+=prod.getAmount();
         }

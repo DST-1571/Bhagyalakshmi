@@ -301,6 +301,7 @@ public class Class_Genric {
                 salesmanMyOrders.setVisibility(View.GONE);
                 distributorPayments.setVisibility(View.GONE);
                 salesmanPayments.setVisibility(View.GONE);
+                retailers.setVisibility(View.GONE);
                 salesDistributorRetailers.setVisibility(View.GONE);
                 distributorSalesMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override

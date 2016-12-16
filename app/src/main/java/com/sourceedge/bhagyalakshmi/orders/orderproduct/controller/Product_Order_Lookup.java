@@ -13,9 +13,11 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,12 +41,15 @@ import java.util.ArrayList;
 public class Product_Order_Lookup extends AppCompatActivity {
     Toolbar toolbar;
     public static FloatingActionButton fab;
-    public static TextView distributorSalesManName, grandTotal, action_text_pane;
-    public static EditText retailerSearch;
+    //public static EditText retailerSearch;
+    //public static TextView retailerSearch;
+    public static TextView  grandTotal, action_text_pane;
+    //public static EditText retailerSearch;
     public static RecyclerView orderProductRecyclerview, retailerList;
-    public static LinearLayout orderProductListLayout, searchPane, emptyProducts;
     public static LinearLayout scrollView, order_header2, order_header1;
     public static Button submitButton;
+    static LinearLayout orderProductListLayout, emptyProducts;//search_pane
+    TextView customerlable, customername, orderdate, ordernumber, placedby;
     int viewHeight;
 
     @Override
@@ -56,44 +61,58 @@ public class Product_Order_Lookup extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Class_Genric.setOrientation(Product_Order_Lookup.this);
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        distributorSalesManName = (TextView) findViewById(R.id.user_name);
         grandTotal = (TextView) findViewById(R.id.grand_total_amount123);
         action_text_pane = (TextView) findViewById(R.id.action_text_pane);
-        retailerSearch = (EditText) findViewById(R.id.retailer_search);
+        //retailerSearch = (EditText) findViewById(R.id.retailer_search);
+        action_text_pane = (TextView) findViewById(R.id.action_text_pane);
+        //retailerSearch = (EditText) findViewById(R.id.retailer_search);
+        customerlable = (TextView) findViewById(R.id.customerlable);
+        customername = (TextView) findViewById(R.id.customername);
+        orderdate = (TextView) findViewById(R.id.orderdate);
+        ordernumber = (TextView) findViewById(R.id.customername);
+        placedby = (TextView) findViewById(R.id.placedby);
+        //retailerSearch = (TextView) findViewById(R.id.retailer_search);
         orderProductListLayout = (LinearLayout) findViewById(R.id.order_product_list_layout);
         orderProductRecyclerview = (RecyclerView) findViewById(R.id.order_product_recyclerview);
         retailerList = (RecyclerView) findViewById(R.id.retailer_list);
         orderProductRecyclerview.setLayoutManager(new LinearLayoutManager(Product_Order_Lookup.this));
         retailerList.setLayoutManager(new LinearLayoutManager(Product_Order_Lookup.this));
         submitButton = (Button) findViewById(R.id.submit_button);
-        searchPane = (LinearLayout) findViewById(R.id.search_pane);
+        //searchPane = (LinearLayout) findViewById(R.id.search_pane);
         emptyProducts = (LinearLayout) findViewById(R.id.empty_products);
         order_header1 = (LinearLayout) findViewById(R.id.order_header1);
         order_header2 = (LinearLayout) findViewById(R.id.order_header2);
         scrollView = (LinearLayout) findViewById(R.id.orderitemlist);
+        placedby.setText(Class_ModelDB.getCurrentuserModel().getName());
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
             case Class_Genric.ADMIN:
+                customerlable.setText("");
                 break;
             case Class_Genric.DISTRIBUTORSALES:
-                searchPane.setVisibility(View.VISIBLE);
-                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor(DSP)");
+                customerlable.setText("Retailer :");
+                customername.setText(Class_Static.tempRole.getName());
+                //searchPane.setVisibility(View.GONE);
                 break;
             case Class_Genric.DISTRIBUTOR:
-                searchPane.setVisibility(View.GONE);
-                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor");
+                //searchPane.setVisibility(View.GONE);
                 break;
             case Class_Genric.SALESPERSON:
-                searchPane.setVisibility(View.VISIBLE);
-                retailerSearch.setHint("Select Distributor");
-                distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
+                //searchPane.setVisibility(View.VISIBLE);
+               // retailerSearch.setHint("Select Distributor");
+                customerlable.setText("Distributor :");
+                customername.setText(Class_Static.tempRole.getName());
+                //searchPane.setVisibility(View.GONE);
+                //retailerSearch.setHint("Select Distributor");
+                //searchPane.setVisibility(View.VISIBLE);
+                //retailerSearch.setHint("Select Distributor");
                 break;
         }
 
         onClicks();
         Functionalities(Product_Order_Lookup.this);
         InitializeAdapter(Product_Order_Lookup.this);
+
     }
 
     public static void InitializeAdapter(Context context) {
@@ -106,65 +125,69 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     orderProductListLayout.setVisibility(View.VISIBLE);
                     orderProductRecyclerview.setVisibility(View.VISIBLE);
                     submitButton.setVisibility(View.VISIBLE);
-                    if (Class_Static.viewOrderedProducts) {
-                        fab.setVisibility(View.GONE);
-                        searchPane.setVisibility(View.GONE);
-                        submitButton.setVisibility(View.GONE);
-                        action_text_pane.setVisibility(View.GONE);
-                        order_header1.setVisibility(View.GONE);
-                        order_header2.setVisibility(View.VISIBLE);
-                        orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                        if (Class_Static.viewOrderedProducts) {
+                            fab.setVisibility(View.GONE);
+                            setMargins(fab, 60, context);
+                            //searchPane.setVisibility(View.GONE);
+                            submitButton.setVisibility(View.GONE);
+                            action_text_pane.setVisibility(View.GONE);
+                            order_header1.setVisibility(View.GONE);
+                            order_header2.setVisibility(View.VISIBLE);
+                            orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                        } else {
+                            fab.setVisibility(View.VISIBLE);
+                            //searchPane.setVisibility(View.VISIBLE);
+                            submitButton.setVisibility(View.VISIBLE);
+                            action_text_pane.setVisibility(View.VISIBLE);
+                            order_header1.setVisibility(View.VISIBLE);
+                            order_header2.setVisibility(View.GONE);
+                            orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                        }
                     } else {
-                        fab.setVisibility(View.VISIBLE);
-                        searchPane.setVisibility(View.VISIBLE);
-                        submitButton.setVisibility(View.VISIBLE);
-                        action_text_pane.setVisibility(View.VISIBLE);
-                        order_header1.setVisibility(View.VISIBLE);
-                        order_header2.setVisibility(View.GONE);
-                        orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                        orderProductListLayout.setVisibility(View.VISIBLE);
+                        submitButton.setVisibility(View.GONE);
+                        grandTotal.setText("");
+                        setMargins(fab, 16, context);
                     }
-                } else {
-                    orderProductListLayout.setVisibility(View.GONE);
-                    submitButton.setVisibility(View.GONE);
-                }
 
 
-                break;
-            case Class_Genric.DISTRIBUTOR:
-                if (Class_Static.tempOrderingProduct.size() != 0) {
-                    scrollView.setVisibility(View.VISIBLE);
-                    orderProductListLayout.setVisibility(View.VISIBLE);
-                    orderProductRecyclerview.setVisibility(View.VISIBLE);
-                    submitButton.setVisibility(View.VISIBLE);
-                    emptyProducts.setVisibility(View.GONE);
-                    if (Class_Static.viewOrderedProducts) {
-                        fab.setVisibility(View.GONE);
-                        searchPane.setVisibility(View.GONE);
-                        submitButton.setVisibility(View.GONE);
-                        action_text_pane.setVisibility(View.GONE);
-                        order_header1.setVisibility(View.GONE);
-                        order_header2.setVisibility(View.VISIBLE);
-                        orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
-                    } else {
-                        fab.setVisibility(View.VISIBLE);
-                        searchPane.setVisibility(View.VISIBLE);
-                        submitButton.setVisibility(View.VISIBLE);
-                        action_text_pane.setVisibility(View.VISIBLE);
-                        order_header1.setVisibility(View.VISIBLE);
-                        order_header2.setVisibility(View.GONE);
-                        orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
-                    }
-                } else {
-                    scrollView.setVisibility(View.GONE);
-                    emptyProducts.setVisibility(View.VISIBLE);
+                    break;
+                    case Class_Genric.DISTRIBUTOR:
+                        if (Class_Static.tempOrderingProduct.size() != 0) {
+                            scrollView.setVisibility(View.VISIBLE);
+                            orderProductListLayout.setVisibility(View.VISIBLE);
+                            orderProductRecyclerview.setVisibility(View.VISIBLE);
+                            submitButton.setVisibility(View.VISIBLE);
+                            setMargins(fab, 60, context);
+                            emptyProducts.setVisibility(View.GONE);
+                            if (Class_Static.viewOrderedProducts) {
+                                fab.setVisibility(View.GONE);
+                                //searchPane.setVisibility(View.GONE);
+                                submitButton.setVisibility(View.GONE);
+                                action_text_pane.setVisibility(View.GONE);
+                                order_header1.setVisibility(View.GONE);
+                                order_header2.setVisibility(View.VISIBLE);
+                                orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                            } else {
+                                fab.setVisibility(View.VISIBLE);
+                                //searchPane.setVisibility(View.VISIBLE);
+                                submitButton.setVisibility(View.VISIBLE);
+                                action_text_pane.setVisibility(View.VISIBLE);
+                                order_header1.setVisibility(View.VISIBLE);
+                                order_header2.setVisibility(View.GONE);
+                                orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                            }
+                        } else {
+                            scrollView.setVisibility(View.GONE);
+                            emptyProducts.setVisibility(View.VISIBLE);
+                        }
+                        break;
                 }
-                break;
+
         }
 
-    }
-
     private void Functionalities(final Context context) {
-        retailerSearch.addTextChangedListener(new TextWatcher() {
+       /* retailerSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -200,10 +223,17 @@ public class Product_Order_Lookup extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
             }
-        });
+        });*/
     }
 
     private void onClicks() {
+        /*retailerSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Class_Static.Flag_SearchCustomer = true;
+                startActivity(new Intent(Product_Order_Lookup.this, Search_Customer.class));
+            }
+        });*/
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,28 +261,19 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     case Class_Genric.ADMIN:
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
-                        if (retailerSearch.getText().toString().isEmpty() || retailerSearch.getText().toString().length() == 0 || retailerSearch.getText().toString().equals("") || retailerSearch.getText().toString() == null) {
-                            Toast.makeText(Product_Order_Lookup.this, "Please Select Retailer", Toast.LENGTH_SHORT).show();
-                        } else {
-                            retailerSearch.setEnabled(false);
-                            Class_Static.editProductOrder = false;
-                            startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
-                        }
+                        Class_Static.editProductOrder = false;
+                        startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
                         break;
                     case Class_Genric.DISTRIBUTOR:
                         Class_Static.editProductOrder = false;
                         startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
                         break;
                     case Class_Genric.SALESPERSON:
-                        if (retailerSearch.getText().toString().isEmpty() || retailerSearch.getText().toString().length() == 0 || retailerSearch.getText().toString().equals("") || retailerSearch.getText().toString() == null) {
-                            Toast.makeText(Product_Order_Lookup.this, "Please Select Distributor", Toast.LENGTH_SHORT).show();
-                        } else {
-                            retailerSearch.setEnabled(false);
-                            Class_Static.editProductOrder = false;
-                            startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
-                        }
+                        Class_Static.editProductOrder = false;
+                        startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
                         break;
                 }
+                finish();
             }
         });
     }
@@ -281,6 +302,17 @@ public class Product_Order_Lookup extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         InitializeAdapter(Product_Order_Lookup.this);
+    }
+
+
+    public static void setMargins(View v, int b, Context context) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            int x = Class_Genric.convertDpToPixels(16, context);
+            b = Class_Genric.convertDpToPixels(b, context);
+            p.setMargins(x, x, x, b);
+            v.requestLayout();
+        }
     }
 }
 

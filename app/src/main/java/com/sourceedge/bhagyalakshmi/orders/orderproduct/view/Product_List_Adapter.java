@@ -1,5 +1,6 @@
 package com.sourceedge.bhagyalakshmi.orders.orderproduct.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ public class Product_List_Adapter extends RecyclerView.Adapter<Product_List_Adap
                 Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
                 Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
                 Add_Product.productPrice.setText(Class_Static.tempProduct.getPrice() + "");
-                Add_Product.productList.setVisibility(View.GONE);
+                ((Activity)mContext).finish();
             }
         });
     }
