@@ -50,6 +50,7 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
             @Override
             public void onClick(View v) {
                 Class_Static.viewOrderedProducts=true;
+                Class_Static.OrdredProducts=new Order();
                 Class_Static.tempOrderingProduct=new ArrayList<Product>();
                 Class_Static.OrdredProducts=data.get(position);
                 for(int i=0;i<Class_Static.OrdredProducts.getProducts().size();i++){

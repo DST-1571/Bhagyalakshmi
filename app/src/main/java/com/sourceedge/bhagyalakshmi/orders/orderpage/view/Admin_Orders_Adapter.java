@@ -1,14 +1,22 @@
 package com.sourceedge.bhagyalakshmi.orders.orderpage.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
+import com.sourceedge.bhagyalakshmi.orders.models.Product;
+import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Admin_View_Order;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 
 import java.util.ArrayList;
 
@@ -19,6 +27,7 @@ import java.util.ArrayList;
 public class Admin_Orders_Adapter extends RecyclerView.Adapter<Admin_Orders_Adapter.ViewHolder> {
     Context mcontext;
     ArrayList<Order> data;
+    Product prod;
     public Admin_Orders_Adapter(Context context, ArrayList<Order> model) {
         this.mcontext = context;
         this.data = model;
@@ -31,12 +40,38 @@ public class Admin_Orders_Adapter extends RecyclerView.Adapter<Admin_Orders_Adap
     }
 
     @Override
-    public void onBindViewHolder(Admin_Orders_Adapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(Admin_Orders_Adapter.ViewHolder holder, final int position) {
         holder.orderId.setText(data.get(position).getOrderNumber());
         holder.clientName.setText(data.get(position).getClient().getName());
         holder.clientAddress.setText(data.get(position).getClient().getAddress());
         holder.userName.setText(data.get(position).getUser().getName());
         holder.userType.setText(data.get(position).getUser().getUserType());
+        holder.adminOrderPane.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Class_Static.OrdredProducts=new Order();
+                Class_Static.tempOrderingProduct=new ArrayList<Product>();
+                Class_Static.OrdredProducts=data.get(position);
+                for(int i=0;i<Class_Static.OrdredProducts.getProducts().size();i++){
+                    for(int j = 0; j< Class_ModelDB.getProductList().size(); j++){
+                        if(Class_Static.OrdredProducts.getProducts().get(i).getProductId().matches(Class_ModelDB.getProductList().get(j).getId())){
+                            prod=new Product();
+                            prod.setId(Class_ModelDB.getProductList().get(j).getId());
+                            prod.setName(Class_ModelDB.getProductList().get(j).getName());
+                            prod.setQuantity(new Double(Class_Static.OrdredProducts.getProducts().get(i).getQuantity()).intValue());
+                            prod.setPrice(Class_Static.OrdredProducts.getProducts().get(i).getPrice());
+                            prod.setAmount(prod.getQuantity()*prod.getPrice());
+                            prod.setCategory(Class_ModelDB.getProductList().get(j).getCategory());
+                            prod.setDescription(Class_ModelDB.getProductList().get(j).getDescription());
+                            prod.setBrand(Class_ModelDB.getProductList().get(j).getBrand());
+                            prod.setUnits(Class_Static.OrdredProducts.getProducts().get(i).getUnit());
+                            Class_Static.tempOrderingProduct.add(prod);
+                        }
+                    }
+                }
+                ((Activity)mcontext).startActivity(new Intent(mcontext, Admin_View_Order.class));
+            }
+        });
     }
 
     @Override
@@ -46,6 +81,7 @@ public class Admin_Orders_Adapter extends RecyclerView.Adapter<Admin_Orders_Adap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView orderId,clientName,clientAddress,userName,userType;
+        LinearLayout adminOrderPane;
         public ViewHolder(View v) {
             super(v);
             orderId=(TextView)v.findViewById(R.id.order_id);
@@ -53,6 +89,7 @@ public class Admin_Orders_Adapter extends RecyclerView.Adapter<Admin_Orders_Adap
             clientAddress=(TextView)v.findViewById(R.id.client_address);
             userName=(TextView)v.findViewById(R.id.user_name);
             userType=(TextView)v.findViewById(R.id.user_type);
+            adminOrderPane=(LinearLayout)v.findViewById(R.id.admin_order_pane);
         }
     }
 }

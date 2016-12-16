@@ -20,9 +20,7 @@
         <activity
             android:name=".login.Login"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".dashboard.Dashboard"
             android:label="@string/title_activity_dashboard"
@@ -76,7 +74,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".orderpage.controller.Admin_View_Order"
+            android:label="@string/title_activity_admin__view__order"
+            android:theme="@style/AppTheme"></activity>
         <activity android:name=".orderproduct.controller.Search_Customer"></activity>
     </application>
 

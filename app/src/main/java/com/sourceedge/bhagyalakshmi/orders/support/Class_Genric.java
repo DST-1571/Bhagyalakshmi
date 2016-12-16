@@ -315,6 +315,7 @@ public class Class_Genric {
                 retailers.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Class_Static.viewOrderedProducts=false;
                         a.startActivity(new Intent(a,  Product_Order_Lookup.class));
                         drawer.closeDrawer(Gravity.LEFT);
 

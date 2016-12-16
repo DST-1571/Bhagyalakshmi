@@ -46,7 +46,6 @@ public class Admin_Orders extends AppCompatActivity {
         orderPageRecyclerView=(RecyclerView)findViewById(R.id.active_order_page_recyclerView);
         orderPageRecyclerView.setLayoutManager(new LinearLayoutManager(Admin_Orders.this));
         Functionality(Admin_Orders.this);
-
         InitializeAdapter(Admin_Orders.this);
     }
 
@@ -91,10 +90,12 @@ public class Admin_Orders extends AppCompatActivity {
         LocalOrder= (ArrayList<Order>) Class_ModelDB.getOrderList().clone();
         if(Class_ModelDB.getOrderList().size()!=0){
             emptyOrders.setVisibility(View.GONE);
+            orderedLayout.setVisibility(View.VISIBLE);
             orderPageRecyclerView.setVisibility(View.VISIBLE);
             orderPageRecyclerView.setAdapter(new Admin_Orders_Adapter(context, Class_ModelDB.getOrderList()));
         }else {
             orderPageRecyclerView.setVisibility(View.GONE);
+            orderedLayout.setVisibility(View.GONE);
             emptyOrders.setVisibility(View.VISIBLE);
         }
     }

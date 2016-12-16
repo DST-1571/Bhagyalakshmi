@@ -68,6 +68,7 @@
     <string name="title_activity_order__page">Order_Page</string>
     <string name="title_activity_admin__orders">Admin_Orders</string>
     <string name="title_activity_splash">Splash</string>
+    <string name="title_activity_admin__view__order">Admin_View_Order</string>
     <string name="placed_by">Placed By  :</string>
     <string name="lable_customer_name">Customer Name</string>
     <string name="lable_order_date">Order Date  :</string>
