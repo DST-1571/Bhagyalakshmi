@@ -27,6 +27,7 @@
     <string name="admin_name">Name</string>
     <string name="admin_placed_by">Placed By</string>
     <string name="order_value">Order Value</string>
+    <string name="order_status">Order Status</string>
 
     <string name="distributorsales_category_distributor">Product/\nDescription</string>
     <string name="distributorsales_qty_units">Qty/Units</string>

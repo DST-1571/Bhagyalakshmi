@@ -46,6 +46,7 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
         holder.orderId.setText(data.get(position).getOrderNumber());
         holder.clientName.setText(data.get(position).getClient().getName());
         holder.totalAmount.setText(Class_Genric.rupee+data.get(position).getTotalAmount().toString());
+        holder.orderStatus.setText(data.get(position).getStatus());
         holder.orderedPane.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +82,7 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView orderId, clientName, totalAmount;
+        TextView orderId, clientName, totalAmount,orderStatus;
         LinearLayout orderedPane;
 
         public ViewHolder(View v) {
@@ -89,6 +90,7 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
             orderId = (TextView) v.findViewById(R.id.order_id);
             clientName = (TextView) v.findViewById(R.id.client_name);
             totalAmount = (TextView) v.findViewById(R.id.total_amount);
+            orderStatus=(TextView)v.findViewById(R.id.order_status);
             orderedPane=(LinearLayout)v.findViewById(R.id.ordered_pane);
         }
     }

@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="@dimen/dimen_60dp"
                     android:gravity="center"
                     android:background="@drawable/searchbar_round"
                     android:layout_marginBottom="@dimen/dimen_10dp"
@@ -87,7 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="@dimen/dimen_32dp"
         android:src="@drawable/ic_plus_white_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>
