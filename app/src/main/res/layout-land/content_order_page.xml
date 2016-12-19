@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_order__page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page"
+    tools:showIn="@layout/activity_order_page">
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/empty_orders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="There are no Orders!!!"
+            android:textSize="@dimen/textsize_18sp"
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ordered_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:paddingLeft="@dimen/dimen_4dp"
+                        android:id="@+id/order_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@color/viewcolor"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:text="@string/admin_order_id"
+                            android:textSize="@dimen/textsize_18sp"
+                            android:textColor="@color/colorPrimary"
+                            android:padding="@dimen/dimen_10dp"
+                            android:gravity="left"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:text="@string/admin_name"
+                            android:textSize="@dimen/textsize_18sp"
+                            android:textColor="@color/colorPrimary"
+                            android:padding="@dimen/dimen_10dp"
+                            android:gravity="left"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:text="@string/order_value"
+                            android:textSize="@dimen/textsize_18sp"
+                            android:textColor="@color/colorPrimary"
+                            android:padding="@dimen/dimen_10dp"
+                            android:gravity="left"/>
+
+                    </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:background="@color/white"
+                        android:id="@+id/order_page_recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/order_header"
+                        android:padding="@dimen/dimen_5dp">
+                    </android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

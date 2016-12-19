@@ -5,78 +5,231 @@
     android:id="@+id/content_retailer_look_up"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup"
-    tools:showIn="@layout/activity_retailer_look_up"
-    android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true">
-
-    <TextView
+    tools:showIn="@layout/activity_retailer_look_up">
+    <LinearLayout
+        android:id="@+id/empty_products"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary_400"
-        android:padding="@dimen/dimen_15dp"
-        android:text="John Doe - Distributor(DSP)"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_18sp" />
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <RelativeLayout
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/dimen_10dp"
+            android:text="There are no Products Added!!!"
+            android:textSize="@dimen/textsize_18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/dimen_10dp"
+            android:text="Click on Fab to add product"
+            android:textSize="@dimen/textsize_18sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/orderitemlist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dimen_10dp"
+        android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
 
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/search_pane"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_15dp"
-                android:text="@string/retaillookup_title"
-                android:textColor="@color/black"
-                android:textSize="@dimen/textsize_16sp" />
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_8dp">
 
             <RelativeLayout
+                android:id="@+id/search_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/primaryroundoutline">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_30dp"
+                    android:layout_height="@dimen/dimen_30dp"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/dimen_6dp"
+                    android:src="@drawable/ic_magnify_grey600_24dp" />
+
+                <TextView
+                    android:layout_marginLeft="@dimen/dimen_4dp"
+                    android:id="@+id/retailer_search"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_height="@dimen/dimen_30dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Select Retailer"
+                    android:inputType="text"
+                    android:padding="@dimen/dimen_2dp"
+                    android:maxLines="1"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/search_icon"
+                    android:layout_toStartOf="@+id/search_icon" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/retailer_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginRight="@dimen/dimen_10dp"
-                android:background="@drawable/primary_outline">
+                android:layout_marginTop="@dimen/dimen_2dp"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/dimen_5dp"
+                android:visibility="gone" />
 
-                <EditText
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/order_product_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/submit_button"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/order_header1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/search_icon"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:padding="@dimen/dimen_15dp" />
+                    android:background="@color/view"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
 
-                <ImageView
-                    android:id="@+id/search_icon"
-                    android:layout_width="@dimen/dimen_50dp"
-                    android:layout_height="@dimen/dimen_50dp"
-                    android:layout_alignParentRight="true"
-                    android:padding="@dimen/dimen_10dp"
-                    android:src="@drawable/ic_magnify_grey600_24dp" />
-            </RelativeLayout>
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.9"
+                        android:gravity="left|center"
+                        android:padding="@dimen/dimen_4dp"
+                        android:text="@string/distributorsales_category_distributor"
+                        android:textColor="@color/colorPrimary" />
 
-        <Button
-            android:layout_width="@dimen/dimen_120dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/select"
-            android:textSize="@dimen/textsize_18sp"
-            android:textColor="@color/white"
-            android:background="@color/colorPrimary"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
-    </RelativeLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:gravity="left|center"
+                        android:padding="@dimen/dimen_4dp"
+                        android:text="@string/distributorsales_qty_units"
+                        android:textColor="@color/colorPrimary" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.8"
+                        android:gravity="left|center"
+                        android:padding="@dimen/dimen_4dp"
+                        android:text="@string/distributorsales_price"
+                        android:textColor="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/action_text_pane"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.8"
+                        android:gravity="center"
+                        android:padding="@dimen/dimen_4dp"
+                        android:text="@string/distributorsales_action"
+                        android:textColor="@color/colorPrimary" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/order_header2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/view"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:padding="@dimen/dimen_4dp"
+                        android:text="@string/distributorsales_category_distributor"
+                        android:textColor="@color/colorPrimary" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:padding="@dimen/dimen_4dp"
+                        android:text="@string/distributorsales_qty_units"
+                        android:textColor="@color/colorPrimary" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:padding="@dimen/dimen_4dp"
+                        android:text="@string/distributorsales_price"
+                        android:textColor="@color/colorPrimary" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/order_product_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/grand_total_pane"
+                        android:padding="@dimen/dimen_5dp" />
+
+                    <LinearLayout
+                        android:id="@+id/grand_total_pane"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true">
+
+                        <TextView
+                            android:id="@+id/grand_total_amount123"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:padding="@dimen/dimen_10dp"
+                            android:text="Total"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textsize_18sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimary"
+                android:text="@string/submit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_18sp" />
+        </RelativeLayout>
 
 
+    </LinearLayout>
 </LinearLayout>

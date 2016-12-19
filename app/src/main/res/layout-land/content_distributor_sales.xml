@@ -12,14 +12,6 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary_400"
-        android:padding="@dimen/dimen_15dp"
-        android:text="John Doe - Distributor Sales"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_18sp" />
 
     <ScrollView
         android:id="@+id/scrollview"
@@ -27,28 +19,93 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/footer">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="550dp"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/dimen_10dp"
             android:orientation="vertical">
-            <TextView
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/retailer_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dimen_15dp"
-                android:text="@string/retail_name"
-                android:textSize="@dimen/textsize_16sp"
-                android:textColor="@color/black" />
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_15dp"
+                    android:text="@string/retail_name"
+                    android:textSize="@dimen/textsize_16sp"
+                    android:textColor="@color/black" />
 
-            <EditText
+                <TextView
+                    android:id="@+id/retailer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:background="@drawable/primary_outline"
+                    android:text=""
+                    android:textColor="@color/lightgrey"
+                    android:enabled="false"
+                    android:maxLines="1"
+                    android:padding="@dimen/dimen_15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_pane"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:background="@drawable/primary_outline"
-                android:inputType="text"
-                android:maxLines="1"
-                android:padding="@dimen/dimen_15dp" />
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_15dp"
+                    android:text="@string/product_title"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textsize_16sp" />
+
+                <RelativeLayout
+                    android:id="@+id/search_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:background="@drawable/primary_outline">
+
+                    <TextView
+                        android:id="@+id/product_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/search_icon"
+                        android:background="@android:color/transparent"
+                        android:inputType="text|textNoSuggestions"
+                        android:maxLines="1"
+                        android:padding="@dimen/dimen_15dp" />
+
+                    <ImageView
+                        android:id="@+id/search_icon"
+                        android:layout_width="@dimen/dimen_50dp"
+                        android:layout_height="@dimen/dimen_50dp"
+                        android:layout_alignParentRight="true"
+                        android:padding="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_magnify_grey600_24dp" />
+                </RelativeLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:visibility="gone"
+                    android:padding="@dimen/dimen_5dp"
+                    android:id="@+id/product_list"
+                    android:layout_width="match_parent"
+                    android:background="@android:color/transparent"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_2dp"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,28 +113,40 @@
                 android:text="@string/brand"
                 android:textSize="@dimen/textsize_16sp"
                 android:textColor="@color/black" />
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:background="@drawable/primary_outline">
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="25dp">
-                </Spinner>
-            </RelativeLayout>
-
-           <!-- <EditText
+            <!-- <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="@dimen/dimen_10dp"
+                 android:layout_marginRight="@dimen/dimen_10dp"
+                 android:background="@drawable/primary_outline">
+                 <Spinner
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:padding="25dp">
+                 </Spinner>
+             </RelativeLayout>-->
+            <TextView
+                android:id="@+id/product_brand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginRight="@dimen/dimen_10dp"
                 android:background="@drawable/primary_outline"
-                android:inputType="text"
+                android:textColor="@color/lightgrey"
+                android:text=""
+                android:enabled="false"
                 android:maxLines="1"
-                android:padding="@dimen/dimen_15dp" />-->
+                android:padding="@dimen/dimen_15dp" />
+
+            <!-- <EditText
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="@dimen/dimen_10dp"
+                 android:layout_marginRight="@dimen/dimen_10dp"
+                 android:background="@drawable/primary_outline"
+                 android:inputType="text"
+                 android:maxLines="1"
+                 android:padding="@dimen/dimen_15dp" />-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,16 +155,16 @@
                 android:textSize="@dimen/textsize_16sp"
                 android:textColor="@color/black" />
 
-           <!-- <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:background="@drawable/primary_outline"
-                android:inputType="text"
-                android:maxLines="1"
-                android:padding="@dimen/dimen_15dp" />-->
-            <RelativeLayout
+            <!-- <EditText
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="@dimen/dimen_10dp"
+                 android:layout_marginRight="@dimen/dimen_10dp"
+                 android:background="@drawable/primary_outline"
+                 android:inputType="text"
+                 android:maxLines="1"
+                 android:padding="@dimen/dimen_15dp" />-->
+            <!--<RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_10dp"
@@ -106,7 +175,19 @@
                     android:layout_height="wrap_content"
                     android:padding="25dp">
                 </Spinner>
-            </RelativeLayout>
+            </RelativeLayout>-->
+            <TextView
+                android:id="@+id/product_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:background="@drawable/primary_outline"
+                android:text=""
+                android:maxLines="1"
+                android:textColor="@color/lightgrey"
+                android:enabled="false"
+                android:padding="@dimen/dimen_15dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,7 +205,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:padding="@dimen/dimen_15dp" />-->
-            <RelativeLayout
+            <!--RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_10dp"
@@ -135,7 +216,20 @@
                     android:layout_height="wrap_content"
                     android:padding="25dp">
                 </Spinner>
-            </RelativeLayout>
+            </RelativeLayout>-->
+            <TextView
+                android:id="@+id/product_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:background="@drawable/primary_outline"
+                android:text=""
+                android:textColor="@color/lightgrey"
+                android:maxLines="1"
+                android:enabled="false"
+                android:padding="@dimen/dimen_15dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,13 +239,17 @@
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/product_unit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginRight="@dimen/dimen_10dp"
                 android:background="@drawable/primary_outline"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLines="1"
+                android:textColor="@color/lightgrey"
+                android:enabled="false"
+                android:textSize="14dp"
                 android:padding="@dimen/dimen_15dp" />
             <TextView
                 android:layout_width="match_parent"
@@ -162,12 +260,13 @@
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/product_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginRight="@dimen/dimen_10dp"
                 android:background="@drawable/primary_outline"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLines="1"
                 android:padding="@dimen/dimen_15dp" />
             <TextView
@@ -179,32 +278,57 @@
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/product_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_10dp"
                 android:layout_marginRight="@dimen/dimen_10dp"
                 android:background="@drawable/primary_outline"
-                android:inputType="text"
+                android:inputType="numberDecimal"
                 android:maxLines="1"
+                android:enabled="false"
+                android:textColor="@color/lightgrey"
                 android:padding="@dimen/dimen_15dp" />
             <LinearLayout
+                android:padding="@dimen/dimen_2dp"
+                android:weightSum="2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginTop="@dimen/dimen_30dp">
+                android:layout_marginTop="@dimen/dimen_30dp"
+                android:layout_marginBottom="@dimen/dimen_10dp">
+
                 <Button
+                    android:visibility="gone"
+                    android:id="@+id/button_reset"
                     android:layout_width="@dimen/dimen_100dp"
                     android:layout_height="wrap_content"
                     android:text="@string/reset"
                     android:textColor="@color/white"
                     android:background="@drawable/rounded_button"
-                    android:layout_marginRight="@dimen/dimen_30dp"/>
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_20dp"/>
+
                 <Button
-                    android:layout_width="@dimen/dimen_100dp"
+                    android:layout_margin="@dimen/dimen_2dp"
+                    android:id="@+id/button_add"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="@string/add"
+                    android:text="@string/save_button_title"
                     android:textColor="@color/white"
-                    android:background="@drawable/rounded_button" />
+                    android:background="@drawable/rounded_button"/>
+
+                <Button
+                    android:layout_margin="@dimen/dimen_2dp"
+                    android:id="@+id/button_add_new"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/addandnew"
+                    android:textColor="@color/white"
+                    android:background="@drawable/rounded_button"
+                    android:layout_marginRight="@dimen/dimen_10dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
