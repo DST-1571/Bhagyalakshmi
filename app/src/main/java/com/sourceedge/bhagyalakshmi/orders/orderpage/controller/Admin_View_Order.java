@@ -25,6 +25,7 @@ public class Admin_View_Order extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin__view__order);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerView=(RecyclerView)findViewById(R.id.admin_view_order);
