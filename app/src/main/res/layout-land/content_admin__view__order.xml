@@ -9,55 +9,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Admin_View_Order"
     tools:showIn="@layout/activity_admin__view__order">
-    <LinearLayout
-        android:layout_above="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/order_header2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/view"
-            android:orientation="horizontal"
-            android:weightSum="3">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:padding="@dimen/dimen_4dp"
-                android:text="@string/distributorsales_category_distributor"
-                android:textColor="@color/colorPrimary" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:padding="@dimen/dimen_4dp"
-                android:text="@string/distributorsales_qty_units"
-                android:textColor="@color/colorPrimary" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="left|center"
-                android:padding="@dimen/dimen_4dp"
-                android:text="@string/distributorsales_price"
-                android:textColor="@color/colorPrimary" />
-
-        </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/admin_view_order"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
     <LinearLayout
         android:id="@+id/footer"
         android:layout_alignParentBottom="true"
@@ -72,6 +24,61 @@
             android:textSize="@dimen/textsize_18sp"
             android:textStyle="bold"
             android:padding="@dimen/dimen_10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <LinearLayout
+            android:id="@+id/order_header2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/view"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:padding="@dimen/dimen_4dp"
+                android:textSize="@dimen/textsize_18sp"
+                android:text="@string/distributorsales_category_distributor"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:textSize="@dimen/textsize_18sp"
+                android:padding="@dimen/dimen_4dp"
+                android:text="@string/distributorsales_qty_units"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:padding="@dimen/dimen_4dp"
+                android:textSize="@dimen/textsize_18sp"
+                android:text="@string/distributorsales_price"
+                android:textColor="@color/colorPrimary" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/admin_view_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
 
