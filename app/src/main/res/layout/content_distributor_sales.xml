@@ -257,17 +257,41 @@
                 android:text="@string/quantity"
                 android:textSize="@dimen/textsize_16sp"
                 android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/product_quantity"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:background="@drawable/primary_outline"
-                android:inputType="number"
-                android:maxLines="1"
-                android:padding="@dimen/dimen_15dp" />
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/decrement_quantity"
+                    android:layout_width="@dimen/dimen_50dp"
+                    android:layout_height="@dimen/dimen_50dp"
+                    android:padding="@dimen/dimen_10dp"
+                    android:layout_toLeftOf="@+id/product_quantity"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:src="@drawable/ic_minus_grey600_24dp"/>
+                <EditText
+                    android:id="@+id/product_quantity"
+                    android:layout_width="@dimen/dimen_120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:background="@drawable/primary_outline"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:text="0"
+                    android:gravity="center"
+                    android:padding="@dimen/dimen_15dp" />
+                <ImageView
+                    android:id="@+id/increment_quantity"
+                    android:layout_width="@dimen/dimen_50dp"
+                    android:layout_height="@dimen/dimen_50dp"
+                    android:padding="@dimen/dimen_10dp"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_toRightOf="@+id/product_quantity"
+                    android:src="@drawable/ic_plus_grey600_24dp"/>
+            </RelativeLayout>
+
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
