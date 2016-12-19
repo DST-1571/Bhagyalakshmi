@@ -29,6 +29,7 @@ public class Class_Static {
     public static Order OrdredProducts=new Order();
     public static OrderProduct Ordered=new OrderProduct();
 
+
     public static void ClearStaticData(){
         timestamp="";
         timestamplist=new ArrayList<Date>();

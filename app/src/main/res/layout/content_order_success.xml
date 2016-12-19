@@ -21,26 +21,30 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:src="@drawable/successorder" />
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/checked"
+                    android:id="@+id/imageView" />
+
                 <TextView
+                    android:textStyle="bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Thank You"
+                    android:textSize="@dimen/textsize_18sp"
                     android:gravity="center"
-                    android:textSize="@dimen/textsize_24sp"
                     android:textColor="@color/colorPrimary"
                     android:padding="@dimen/dimen_10dp"/>
                 <TextView
                     android:id="@+id/order_number"
                     android:layout_width="match_parent"
+                    android:textStyle="bold"
                     android:layout_height="wrap_content"
                     android:text="Your Order Id is JA51423"
                     android:gravity="center"
-                    android:textSize="@dimen/textsize_24sp"
-                    android:textColor="@color/colorPrimary"
                     android:padding="@dimen/dimen_10dp"/>
                 <TextView
                     android:id="@+id/order_placedby"
@@ -48,8 +52,7 @@
                     android:layout_height="wrap_content"
                     android:text="Order Placed By Ganesh Stores(Distributor)"
                     android:gravity="center"
-                    android:textSize="@dimen/textsize_18sp"
-                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
                     android:padding="@dimen/dimen_10dp"/>
             </LinearLayout>
 

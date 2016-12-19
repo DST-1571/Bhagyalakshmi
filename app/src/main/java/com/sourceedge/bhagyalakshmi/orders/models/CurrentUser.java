@@ -9,14 +9,14 @@ public class CurrentUser {
     private String Name;
     private String UserType;
     private String Token;
-    private String Acl;
+    private String ACL;
 
     public CurrentUser(){
         Id="";
         Name="";
         UserType="";
         Token="";
-        Acl="";
+        ACL="";
     }
 
     public String getId() {
@@ -51,11 +51,11 @@ public class CurrentUser {
         Token = token;
     }
 
-    public String getAcl() {
-        return Acl;
+    public String getACL() {
+        return ACL;
     }
 
-    public void setAcl(String acl) {
-        Acl = acl;
+    public void setACL(String ACL) {
+        this.ACL = ACL;
     }
 }

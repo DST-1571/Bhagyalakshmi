@@ -30,7 +30,7 @@ public class Dashboard extends AppCompatActivity {
     Class_DBHelper dbHelper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         Class_Genric.setOrientation(Dashboard.this);

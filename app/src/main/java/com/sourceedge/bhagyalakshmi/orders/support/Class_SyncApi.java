@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sourceedge.bhagyalakshmi.orders.changepassword.Change_Password;
 import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
 import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
 import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
@@ -137,6 +138,7 @@ public class Class_SyncApi {
 
                 switch (mStatusCode) {
                     case 200:
+                        Toast.makeText(context,"Password Updated",Toast.LENGTH_SHORT).show();
                         ((Activity) context).finish();
                         break;
                 }

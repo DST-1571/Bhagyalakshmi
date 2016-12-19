@@ -286,7 +286,6 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:enabled="false"
-                android:textColor="@color/lightgrey"
                 android:padding="@dimen/dimen_15dp" />
             <LinearLayout
                 android:padding="@dimen/dimen_2dp"

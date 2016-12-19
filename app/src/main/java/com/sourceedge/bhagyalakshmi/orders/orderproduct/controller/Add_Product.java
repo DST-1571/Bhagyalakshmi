@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Product_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
@@ -75,13 +76,22 @@ public class Add_Product extends AppCompatActivity {
             case Class_Genric.ADMIN:
                 break;
             case Class_Genric.DISTRIBUTORSALES:
+                if(Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")){
+                    productPrice.setEnabled(true);
+                }
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor(DSP)");
                 break;
             case Class_Genric.DISTRIBUTOR:
+                if(Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")){
+                    productPrice.setEnabled(true);
+                }
                 retailerLayout.setVisibility(View.GONE);
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor");
                 break;
             case Class_Genric.SALESPERSON:
+                if(Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")){
+                    productPrice.setEnabled(true);
+                }
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
                 break;
         }
