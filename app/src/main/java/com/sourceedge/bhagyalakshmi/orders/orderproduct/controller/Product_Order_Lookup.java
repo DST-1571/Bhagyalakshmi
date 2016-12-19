@@ -32,7 +32,9 @@ import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Centura User1 on 13-12-2016.
@@ -49,7 +51,8 @@ public class Product_Order_Lookup extends AppCompatActivity {
     public static LinearLayout scrollView, order_header2, order_header1;
     public static Button submitButton;
     static LinearLayout orderProductListLayout, emptyProducts;//search_pane
-    TextView customerlable, customername, orderdate, ordernumber, placedby;
+    static TextView customername,orderdate,ordernumber,customerlable;
+    TextView placedby;
     int viewHeight;
 
     @Override
@@ -126,6 +129,8 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     orderProductRecyclerview.setVisibility(View.VISIBLE);
                     submitButton.setVisibility(View.VISIBLE);
                         if (Class_Static.viewOrderedProducts) {
+                            orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
+                            ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
                             fab.setVisibility(View.GONE);
                             setMargins(fab, 60, context);
                             //searchPane.setVisibility(View.GONE);
@@ -135,6 +140,8 @@ public class Product_Order_Lookup extends AppCompatActivity {
                             order_header2.setVisibility(View.VISIBLE);
                             orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
                         } else {
+                            orderdate.setText( Class_Genric.getDate());
+                            orderdate.setText("-");
                             fab.setVisibility(View.VISIBLE);
                             //searchPane.setVisibility(View.VISIBLE);
                             submitButton.setVisibility(View.VISIBLE);
@@ -161,6 +168,8 @@ public class Product_Order_Lookup extends AppCompatActivity {
                             setMargins(fab, 60, context);
                             emptyProducts.setVisibility(View.GONE);
                             if (Class_Static.viewOrderedProducts) {
+                                orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
+                                ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
                                 fab.setVisibility(View.GONE);
                                 //searchPane.setVisibility(View.GONE);
                                 submitButton.setVisibility(View.GONE);
@@ -169,6 +178,8 @@ public class Product_Order_Lookup extends AppCompatActivity {
                                 order_header2.setVisibility(View.VISIBLE);
                                 orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
                             } else {
+                                orderdate.setText( Class_Genric.getDate());
+                                orderdate.setText("-");
                                 fab.setVisibility(View.VISIBLE);
                                 //searchPane.setVisibility(View.VISIBLE);
                                 submitButton.setVisibility(View.VISIBLE);
@@ -179,6 +190,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                             }
                         } else {
                             scrollView.setVisibility(View.GONE);
+                            setMargins(fab, 16, context);
                             emptyProducts.setVisibility(View.VISIBLE);
                         }
                         break;

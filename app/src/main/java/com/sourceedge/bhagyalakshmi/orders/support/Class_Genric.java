@@ -31,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.changepassword.Change_Password;
 import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
+import com.sourceedge.bhagyalakshmi.orders.location.MapsActivity;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Admin_Orders;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.location.Location;
@@ -40,7 +41,11 @@ import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import static com.sourceedge.bhagyalakshmi.orders.R.color.view;
 
@@ -103,7 +108,7 @@ public class Class_Genric {
         if (mContext.getResources().getBoolean(R.bool.isPhone))
             ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         else
-            ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     public static void applyFontForToolbarTitle(Toolbar toolbar, Activity context) {
@@ -271,8 +276,8 @@ public class Class_Genric {
                 location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, Location.class));
-                        drawer.closeDrawer(Gravity.LEFT);
+                        //a.startActivity(new Intent(a, MapsActivity.class));
+                        //drawer.closeDrawer(Gravity.LEFT);
                     }
                 });
 
@@ -484,5 +489,24 @@ public class Class_Genric {
                 ((Activity)mContext).getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(((Activity)mContext).getCurrentFocus().getWindowToken(),
                 InputMethodManager.RESULT_HIDDEN);
+    }
+
+    public static String getDate() {
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => " + c.getTime());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String formattedDate = df.format(c.getTime());
+        return formattedDate;
+    }
+    public static String getDate(String datetime) {
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String formattedDate="";
+        try {
+            Date date=df.parse(datetime);
+            formattedDate =new SimpleDateFormat("yyyy-MM-dd").format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedDate;
     }
 }

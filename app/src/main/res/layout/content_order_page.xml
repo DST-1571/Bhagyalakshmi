@@ -56,7 +56,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
                             android:text="@string/admin_order_id"
-                            android:textSize="@dimen/textsize_18sp"
                             android:textColor="@color/colorPrimary"
                             android:padding="@dimen/dimen_10dp"
                             android:gravity="left"/>
@@ -65,7 +64,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.9"
                             android:text="@string/admin_name"
-                            android:textSize="@dimen/textsize_18sp"
                             android:textColor="@color/colorPrimary"
                             android:padding="@dimen/dimen_10dp"
                             android:gravity="left"/>
@@ -74,7 +72,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.9"
                             android:text="@string/order_value"
-                            android:textSize="@dimen/textsize_18sp"
                             android:textColor="@color/colorPrimary"
                             android:padding="@dimen/dimen_10dp"
                             android:gravity="left"/>

@@ -165,10 +165,7 @@
 
             <include
                 android:id="@+id/content_retailer_look_up"
-                layout="@layout/content_retailer_look_up"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                layout="@layout/content_retailer_look_up" />
 
         </RelativeLayout>
 

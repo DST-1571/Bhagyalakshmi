@@ -32,7 +32,6 @@ public class Admin_View_Order extends AppCompatActivity {
         total=(TextView)findViewById(R.id.total);
         recyclerView.setLayoutManager(new LinearLayoutManager(Admin_View_Order.this));
         InitializeAdapter();
-
     }
 
     private void InitializeAdapter() {

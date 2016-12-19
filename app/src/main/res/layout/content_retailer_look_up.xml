@@ -11,31 +11,20 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup"
     tools:showIn="@layout/activity_retailer_look_up">
+
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/empty_products"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:visibility="gone">
-
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/dimen_10dp"
-            android:text="There are no Products Added!!!"
-            android:textSize="@dimen/textsize_18sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/dimen_10dp"
-            android:text="Click on Fab to add product"
-            android:textSize="@dimen/textsize_18sp" />
-
-
+            android:text="There are no Products Added!!!" />
     </LinearLayout>
 
     <LinearLayout

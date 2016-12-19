@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Admin_Orders">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,6 +24,40 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <LinearLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:background="@drawable/searchbar_round"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <EditText
+                    android:id="@+id/order_search"
+                    android:layout_toLeftOf="@+id/search_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:hint="Search Order"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/viewcolor"
+                    android:layout_marginLeft="@dimen/dimen_15dp"
+                    android:textSize="@dimen/dimen_15dp"/>
+                <ImageView
+                    android:id="@+id/search_icon"
+                    android:layout_width="@dimen/dimen_30dp"
+                    android:layout_height="@dimen/dimen_30dp"
+                    android:padding="@dimen/dimen_6dp"
+                    android:src="@drawable/ic_magnify_grey600_24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+        </LinearLayout>
 
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.widget.DrawerLayout

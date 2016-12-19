@@ -22,7 +22,6 @@ public class Location extends AppCompatActivity {
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

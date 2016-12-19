@@ -8,6 +8,7 @@
     <dimen name="dimen_6dp">6dp</dimen>
     <dimen name="dimen_8dp">8dp</dimen>
     <dimen name="dimen_320dp">320dp</dimen>
+    <dimen name="dimen_200dp">200dp</dimen>
     <dimen name="dimen_150dp">150dp</dimen>
     <dimen name="dimen_2dp">2dp</dimen>
     <dimen name="button_width">120dp</dimen>
@@ -17,7 +18,7 @@
     <dimen name="textsize_16sp">16sp</dimen>
     <dimen name="textsize_14sp">14sp</dimen>
     <dimen name="textsize_12sp">12sp</dimen>
-
+    <dimen name="textsize_10sp">10sp</dimen>
     <dimen name="dimen_5dp">5dp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
     <dimen name="dimen_15dp">15dp</dimen>
