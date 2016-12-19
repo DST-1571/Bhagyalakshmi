@@ -11,7 +11,7 @@
         android:background="@color/white"
         android:textColor="@color/black"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_80dp"
         android:layout_marginBottom="1dp"
         android:padding="15dp" />
 </LinearLayout>
