@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,9 @@ public class Order_Product_List_Adapter extends RecyclerView.Adapter<Order_Produ
     @Override
     public void onBindViewHolder(Order_Product_List_Adapter.ViewHolder holder, int position) {
             holder.category.setText(data.get(position).getCatagoryName());
+            holder.category.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            holder.category.setSelected(true);
+            holder.category.setSingleLine(true);
             holder.description.setText(data.get(position).getDescription());
             holder.quantity.setText(data.get(position).getQuantity()+"");
             holder.unit.setText(data.get(position).getUnits());
