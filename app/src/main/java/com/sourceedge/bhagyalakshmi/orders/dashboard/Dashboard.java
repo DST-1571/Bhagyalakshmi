@@ -26,7 +26,7 @@ public class Dashboard extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     ScrollView dashboard_scrollview;
     public static TextView total_order_count;
-    CardView totalOrder,adminRetailersDistributors,statistics;
+    CardView adminRetailersDistributors,statistics;
     Class_DBHelper dbHelper;
 
     @Override
@@ -60,7 +60,6 @@ public class Dashboard extends AppCompatActivity {
 
         dashboard_scrollview=(ScrollView)findViewById(R.id.dashboard_scrollview);
 
-        totalOrder=(CardView)findViewById(R.id.total_order);   //
         adminRetailersDistributors=(CardView)findViewById(R.id.admin_retailers_distributors);
 
         statistics=(CardView)findViewById(R.id.statistics);//

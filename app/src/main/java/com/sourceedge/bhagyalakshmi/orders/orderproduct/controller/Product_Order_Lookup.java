@@ -73,7 +73,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
         customerlable = (TextView) findViewById(R.id.customerlable);
         customername = (TextView) findViewById(R.id.customername);
         orderdate = (TextView) findViewById(R.id.orderdate);
-        ordernumber = (TextView) findViewById(R.id.customername);
+        ordernumber = (TextView) findViewById(R.id.ordernumber);
         placedby = (TextView) findViewById(R.id.placedby);
         //retailerSearch = (TextView) findViewById(R.id.retailer_search);
         orderProductListLayout = (LinearLayout) findViewById(R.id.order_product_list_layout);
@@ -131,6 +131,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                         if (Class_Static.viewOrderedProducts) {
                             orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
                             ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
+                            customername.setText(Class_Static.OrdredProducts.getClient().getName());
                             fab.setVisibility(View.GONE);
                             setMargins(fab, 60, context);
                             //searchPane.setVisibility(View.GONE);

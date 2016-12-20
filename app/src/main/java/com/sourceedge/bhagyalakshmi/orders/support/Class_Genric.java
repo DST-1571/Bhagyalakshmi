@@ -499,14 +499,6 @@ public class Class_Genric {
         return formattedDate;
     }
     public static String getDate(String datetime) {
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        String formattedDate="";
-        try {
-            Date date=df.parse(datetime);
-            formattedDate =new SimpleDateFormat("yyyy-MM-dd").format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return formattedDate;
+        return datetime.substring(0,10);
     }
 }

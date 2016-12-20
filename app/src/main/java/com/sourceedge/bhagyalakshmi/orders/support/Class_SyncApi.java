@@ -83,7 +83,7 @@ public class Class_SyncApi {
                             editor.commit();
                             dbHelper.saveCurrentUser();
                             dbHelper.loadCurrentUser();
-                            String s=Class_ModelDB.getCurrentuserModel().getUserType();
+                            String s = Class_ModelDB.getCurrentuserModel().getUserType();
                             Toast.makeText(context, "Successfully Logged In", Toast.LENGTH_SHORT).show();
                             Class_Static.home = true;
                             ((Activity) context).startActivity(new Intent(context, Dashboard.class));
@@ -138,7 +138,7 @@ public class Class_SyncApi {
 
                 switch (mStatusCode) {
                     case 200:
-                        Toast.makeText(context,"Password Updated",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Password Updated", Toast.LENGTH_SHORT).show();
                         ((Activity) context).finish();
                         break;
                 }
@@ -176,7 +176,7 @@ public class Class_SyncApi {
     }
 
     public static void DistributorApi(final Context context) {
-        dbHelper=new Class_DBHelper(context);
+        dbHelper = new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
         /*ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));*/
@@ -191,11 +191,12 @@ public class Class_SyncApi {
                         try {
                             gson = new Gson();
                             ArrayList<Role> rolelist = new ArrayList<Role>();
-                            Type listType = new TypeToken<ArrayList<Role>>() {}.getType();
+                            Type listType = new TypeToken<ArrayList<Role>>() {
+                            }.getType();
                             JSONArray jsonArray = new JSONArray(response);
                             rolelist = gson.fromJson(jsonArray.toString(), listType);
-                            for(int i=0;i<rolelist.size();i++){
-                                if(rolelist.get(i).getTimeStamp().contains("T")){
+                            for (int i = 0; i < rolelist.size(); i++) {
+                                if (rolelist.get(i).getTimeStamp().contains("T")) {
                                     rolelist.get(i).setTimeStamp(rolelist.get(i).getTimeStamp().replace("T", ""));
                                 }
                             }
@@ -203,22 +204,22 @@ public class Class_SyncApi {
                             dbHelper.saveRole();
                             dbHelper.loadRole();
 
-                            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-ddHH:mm:SS");
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-ddHH:mm:SS");
 
-                            for(int j=0;j<Class_ModelDB.getRoleList().size();j++){
+                            for (int j = 0; j < Class_ModelDB.getRoleList().size(); j++) {
                                 try {
-                                    Date date=format.parse(Class_ModelDB.getRoleList().get(j).getTimeStamp());
+                                    Date date = format.parse(Class_ModelDB.getRoleList().get(j).getTimeStamp());
                                     Class_Static.timestamplist.add(date);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
                             }
                             SortedSet<Date> set = new TreeSet<Date>();
-                            for(int k=0;k<Class_Static.timestamplist.size();k++){
-                                set.add( Class_Static.timestamplist.get(k) );
+                            for (int k = 0; k < Class_Static.timestamplist.size(); k++) {
+                                set.add(Class_Static.timestamplist.get(k));
                             }
-                            Date max=set.last();
-                            Class_Static.timestamp= new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").format(max);
+                            Date max = set.last();
+                            Class_Static.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").format(max);
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -230,9 +231,9 @@ public class Class_SyncApi {
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof NoConnectionError) {
-                    if(dbHelper.CheckDataExists(Class_DBHelper.DataTableRole)){
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableRole)) {
                         dbHelper.loadRole();
-                    }else {
+                    } else {
                         Class_Genric.NetCheck(context);
                     }
                 } else {
@@ -321,7 +322,7 @@ public class Class_SyncApi {
     }
 
     public static void RetailerApi(final Context context) {
-        dbHelper=new Class_DBHelper(context);
+        dbHelper = new Class_DBHelper(context);
         /*String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
             s = s.replace("T", "");
@@ -343,29 +344,29 @@ public class Class_SyncApi {
                             }.getType();
                             JSONArray jsonArray = new JSONArray(response);
                             model = gson.fromJson(jsonArray.toString(), listType);
-                            for(int i=0;i<model.size();i++){
-                                if(model.get(i).getTimeStamp().contains("T")){
+                            for (int i = 0; i < model.size(); i++) {
+                                if (model.get(i).getTimeStamp().contains("T")) {
                                     model.get(i).setTimeStamp(model.get(i).getTimeStamp().replace("T", ""));
                                 }
                             }
                             Class_ModelDB.setRoleList(model);
                             dbHelper.saveRole();
                             dbHelper.loadRole();
-                            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-ddHH:mm:SS");
-                            for(int j=0;j<Class_ModelDB.getRoleList().size();j++){
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-ddHH:mm:SS");
+                            for (int j = 0; j < Class_ModelDB.getRoleList().size(); j++) {
                                 try {
-                                    Date date=format.parse(Class_ModelDB.getRoleList().get(j).getTimeStamp());
+                                    Date date = format.parse(Class_ModelDB.getRoleList().get(j).getTimeStamp());
                                     Class_Static.timestamplist.add(date);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
                             }
                             SortedSet<Date> set = new TreeSet<Date>();
-                            for(int k=0;k<Class_Static.timestamplist.size();k++){
-                                set.add( Class_Static.timestamplist.get(k) );
+                            for (int k = 0; k < Class_Static.timestamplist.size(); k++) {
+                                set.add(Class_Static.timestamplist.get(k));
                             }
-                            Date max=set.last();
-                            Class_Static.timestamp= new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").format(max);
+                            Date max = set.last();
+                            Class_Static.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").format(max);
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -378,22 +379,27 @@ public class Class_SyncApi {
                 Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError)
                     if (error instanceof NoConnectionError) {
-                        if(dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)){
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
                             dbHelper.loadProduct();
-                        }else {
+                        } else {
                             Class_Genric.NetCheck(context);
                         }
-                } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 404:
-                            Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
-                            break;
+                    } else {
+                        if (error != null && error.networkResponse != null) {
+                            mStatusCode = error.networkResponse.statusCode;
+                            switch (mStatusCode) {
+                                case 400:
+                                    Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
+                                    break;
+                                case 404:
+                                    Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        }
+                        else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+
                     }
-                }
             }
         }) {
             @Override
@@ -471,7 +477,7 @@ public class Class_SyncApi {
     }
 
     public static void ProductApi(final Context context) {
-        dbHelper=new Class_DBHelper(context);
+        dbHelper = new Class_DBHelper(context);
         /*String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
             s = s.replace("T", "");
@@ -511,19 +517,19 @@ public class Class_SyncApi {
                 Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError)
                     if (error instanceof NoConnectionError) {
-                        if(dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)){
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
                             dbHelper.loadProduct();
-                        }else {
+                        } else {
                             Class_Genric.NetCheck(context);
                         }
-                } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                            break;
+                    } else {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
                     }
-                }
             }
         }) {
             @Override
@@ -714,24 +720,23 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError){
+                if (error instanceof TimeoutError) {
 
-                }
-                   else if (error instanceof NoConnectionError) {
-                        if(dbHelper.CheckDataExists(Class_DBHelper.DataTableOrders)){
-                            dbHelper.loadOrders();
-                            Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
-                        }else {
-                            Class_Genric.NetCheck(context);
-                        }
+                } else if (error instanceof NoConnectionError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableOrders)) {
+                        dbHelper.loadOrders();
+                        Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
                     } else {
-                        mStatusCode = error.networkResponse.statusCode;
-                        switch (mStatusCode) {
-                            case 400:
-                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
+                        Class_Genric.NetCheck(context);
                     }
+                } else {
+                    mStatusCode = error.networkResponse.statusCode;
+                    switch (mStatusCode) {
+                        case 400:
+                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
             }
         }) {
             @Override
