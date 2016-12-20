@@ -39,6 +39,7 @@ public class Add_Product extends AppCompatActivity {
     public static TextView productSearch;
     public static TextView retailerName, productGroup, productCategory;
     public static EditText productUnit, productQuantity, productPrice;
+    ImageView searchGroupIcon,searchCategoryIcon;
     ImageButton incrementQuantity, decrementQuantity;
     Button buttonAdd, buttonReset, buttonAddNew;
     LinearLayout retailerLayout, searchPane;
@@ -59,6 +60,8 @@ public class Add_Product extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //distributorSalesManName = (TextView) findViewById(R.id.user_name);
         retailerName = (TextView) findViewById(R.id.retailer_name);
+        searchGroupIcon=(ImageView)findViewById(R.id.search_group_icon);
+        searchCategoryIcon=(ImageView) findViewById(R.id.search_category_icon);
         productSearch = (TextView) findViewById(R.id.product_search);
         productGroup = (TextView) findViewById(R.id.product_group);
         productCategory = (TextView) findViewById(R.id.product_category);
@@ -71,7 +74,6 @@ public class Add_Product extends AppCompatActivity {
         buttonReset = (Button) findViewById(R.id.button_reset);
         buttonAddNew = (Button) findViewById(R.id.button_add_new);
         retailerLayout = (LinearLayout) findViewById(R.id.retailer_layout);
-        Class_Static.tempProduct= new Product();
 
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
             case Class_Genric.ADMIN:
@@ -110,9 +112,18 @@ public class Add_Product extends AppCompatActivity {
             productUnit.setText(Class_Static.tempProduct.getUnits());
             productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
             productPrice.setText(Class_Static.tempProduct.getPrice() + "");
+            productQuantity.requestFocus();
             productSearch.setEnabled(false);
+            searchCategoryIcon.setVisibility(View.INVISIBLE);
+            searchGroupIcon.setVisibility(View.INVISIBLE);
+            productGroup.setEnabled(false);
+            productCategory.setEnabled(false);
             buttonAdd.setText("SAVE");
             buttonReset.setText("CANCEL");
+        } else{
+            Class_Static.tempProduct= new Product();
+            searchCategoryIcon.setVisibility(View.VISIBLE);
+            searchGroupIcon.setVisibility(View.VISIBLE);
         }
 
         Functionalities(Add_Product.this);

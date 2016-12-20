@@ -92,7 +92,7 @@
                         android:layout_height="@dimen/dimen_50dp"
                         android:layout_alignParentRight="true"
                         android:padding="@dimen/dimen_10dp"
-                        android:src="@drawable/ic_magnify_grey600_24dp" />
+                        android:src="@drawable/down_arrow" />
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
@@ -134,7 +134,7 @@
                         android:layout_height="@dimen/dimen_50dp"
                         android:layout_alignParentRight="true"
                         android:padding="@dimen/dimen_10dp"
-                        android:src="@drawable/ic_magnify_grey600_24dp" />
+                        android:src="@drawable/down_arrow" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -177,7 +177,7 @@
                         android:layout_height="@dimen/dimen_50dp"
                         android:layout_alignParentRight="true"
                         android:padding="@dimen/dimen_10dp"
-                        android:src="@drawable/ic_magnify_grey600_24dp" />
+                        android:src="@drawable/down_arrow" />
                 </RelativeLayout>
             </LinearLayout>
 

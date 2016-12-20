@@ -26,6 +26,8 @@ public class Product {
         Description="";
         SectionId="";
         CategoryId="";
+        SectionName="";
+        CatagoryName="";
     }
 
     public void setProductDetais(Product tempPtoduct){
@@ -37,6 +39,8 @@ public class Product {
         Description=tempPtoduct.getDescription();
         SectionId=tempPtoduct.getSectionId();
         CategoryId=tempPtoduct.getCategoryId();
+        SectionName=tempPtoduct.getSectionName();
+        CatagoryName=tempPtoduct.getCatagoryName();
     }
 
     public String getSectionId() {
