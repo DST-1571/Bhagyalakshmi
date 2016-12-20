@@ -213,7 +213,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <ImageView
+                <ImageButton
                     android:id="@+id/decrement_quantity"
                     android:layout_width="@dimen/dimen_50dp"
                     android:layout_height="@dimen/dimen_50dp"
@@ -234,7 +234,7 @@
                     android:text="1"
                     android:gravity="center"
                     android:padding="@dimen/dimen_15dp" />
-                <ImageView
+                <ImageButton
                     android:id="@+id/increment_quantity"
                     android:layout_width="@dimen/dimen_50dp"
                     android:layout_height="@dimen/dimen_50dp"
