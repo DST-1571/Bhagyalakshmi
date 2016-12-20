@@ -33,7 +33,10 @@
         android:id="@+id/ordered_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/empty_orders"
+        android:layout_toEndOf="@+id/empty_orders">
 
 
             <LinearLayout
@@ -71,7 +74,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.9"
-                            android:text="@string/order_value"
+                            android:text="@string/order_status"
                             android:textColor="@color/colorPrimary"
                             android:padding="@dimen/dimen_10dp"
                             android:gravity="left"/>

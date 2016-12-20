@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -38,7 +39,7 @@ public class Add_Product extends AppCompatActivity {
     public static TextView productSearch;
     public static TextView retailerName, productBrand, productCategory, productDescription;
     public static EditText productUnit, productQuantity, productPrice;
-    ImageView incrementQuantity, decrementQuantity;
+    ImageButton incrementQuantity, decrementQuantity;
     Button buttonAdd, buttonReset, buttonAddNew;
     LinearLayout retailerLayout, searchPane;
     public static RecyclerView productList;
@@ -66,8 +67,8 @@ public class Add_Product extends AppCompatActivity {
         productUnit = (EditText) findViewById(R.id.product_unit);
         productQuantity = (EditText) findViewById(R.id.product_quantity);
         productPrice = (EditText) findViewById(R.id.product_price);
-        incrementQuantity = (ImageView) findViewById(R.id.increment_quantity);
-        decrementQuantity = (ImageView) findViewById(R.id.decrement_quantity);
+        incrementQuantity = (ImageButton) findViewById(R.id.increment_quantity);
+        decrementQuantity = (ImageButton) findViewById(R.id.decrement_quantity);
         buttonAdd = (Button) findViewById(R.id.button_add);
         buttonReset = (Button) findViewById(R.id.button_reset);
         buttonAddNew = (Button) findViewById(R.id.button_add_new);
@@ -82,12 +83,16 @@ public class Add_Product extends AppCompatActivity {
             case Class_Genric.DISTRIBUTORSALES:
                 if(Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")){
                     productPrice.setEnabled(true);
+                }else{
+                    productPrice.setEnabled(false);
                 }
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor(DSP)");
                 break;
             case Class_Genric.DISTRIBUTOR:
                 if(Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")){
                     productPrice.setEnabled(true);
+                }else{
+                    productPrice.setEnabled(false);
                 }
                 retailerLayout.setVisibility(View.GONE);
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor");
@@ -95,6 +100,8 @@ public class Add_Product extends AppCompatActivity {
             case Class_Genric.SALESPERSON:
                 if(Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")){
                     productPrice.setEnabled(true);
+                }else{
+                    productPrice.setEnabled(false);
                 }
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
                 break;

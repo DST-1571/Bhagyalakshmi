@@ -26,10 +26,11 @@
             <TextView
                 android:padding="@dimen/dimen_2dp"
                 android:textSize="@dimen/dimen_10dp"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingRight="@dimen/textsize_10sp"
                 android:gravity="center_horizontal|left"
                 android:text="" />
         </LinearLayout>
