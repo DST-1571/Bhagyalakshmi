@@ -103,15 +103,17 @@ public class Class_SyncApi {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
                 } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            username.setError("Username or Password Invalid");
-                            break;
-                        case 401:
-                            password.setError("Password Invalid");
-                            break;
-                    }
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                username.setError("Username or Password Invalid");
+                                break;
+                            case 401:
+                                password.setError("Password Invalid");
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -152,12 +154,14 @@ public class Class_SyncApi {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
                 } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
                 }
             }
         }) {
@@ -239,12 +243,14 @@ public class Class_SyncApi {
                         Class_Genric.NetCheck(context);
                     }
                 } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
                 }
             }
         }) {
@@ -295,15 +301,17 @@ public class Class_SyncApi {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
                 } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 404:
-                            Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 404:
+                                Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
                 }
             }
         }) {
@@ -452,15 +460,18 @@ public class Class_SyncApi {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
                 } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 404:
-                            Toast.makeText(context, "Retailer not Found", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 404:
+                                Toast.makeText(context, "Retailer not Found", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
                 }
             }
         }) {
@@ -529,12 +540,14 @@ public class Class_SyncApi {
                             Class_Genric.NetCheck(context);
                         }
                     } else {
-                        mStatusCode = error.networkResponse.statusCode;
-                        switch (mStatusCode) {
-                            case 400:
-                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
+                        if (error != null && error.networkResponse != null) {
+                            mStatusCode = error.networkResponse.statusCode;
+                            switch (mStatusCode) {
+                                case 400:
+                                    Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
                     }
             }
         }) {
@@ -594,12 +607,14 @@ public class Class_SyncApi {
                             Class_Genric.NetCheck(context);
                         }
                     } else {
-                        mStatusCode = error.networkResponse.statusCode;
-                        switch (mStatusCode) {
-                            case 400:
-                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
+                        if (error != null && error.networkResponse != null) {
+                            mStatusCode = error.networkResponse.statusCode;
+                            switch (mStatusCode) {
+                                case 400:
+                                    Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
                     }
             }
         }) {
@@ -662,12 +677,15 @@ public class Class_SyncApi {
                             Class_Genric.NetCheck(context);
                         }
                     } else {
-                        mStatusCode = error.networkResponse.statusCode;
-                        switch (mStatusCode) {
-                            case 400:
-                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
+                        if (error != null && error.networkResponse != null) {
+                            mStatusCode = error.networkResponse.statusCode;
+                            switch (mStatusCode) {
+                                case 400:
+                                    Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
                     }
             }
         }) {
@@ -719,12 +737,15 @@ public class Class_SyncApi {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
                 } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
                 }
             }
         }) {
@@ -797,12 +818,15 @@ public class Class_SyncApi {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
                 } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
                 }
             }
         }) {
@@ -869,12 +893,15 @@ public class Class_SyncApi {
                         Class_Genric.NetCheck(context);
                     }
                 } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
                 }
             }
         }) {
@@ -926,15 +953,18 @@ public class Class_SyncApi {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
                 } else {
-                    mStatusCode = error.networkResponse.statusCode;
-                    switch (mStatusCode) {
-                        case 400:
-                            Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 404:
-                            Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 404:
+                                Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
                 }
             }
         }) {
