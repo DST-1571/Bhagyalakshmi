@@ -78,16 +78,6 @@
                     android:layout_marginRight="@dimen/dimen_10dp"
                     android:background="@drawable/primary_outline">
 
-                    <TextView
-                        android:id="@+id/product_search"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/search_icon"
-                        android:background="@android:color/transparent"
-                        android:inputType="text|textNoSuggestions"
-                        android:maxLines="1"
-                        android:padding="@dimen/dimen_15dp" />
-
                     <ImageView
                         android:id="@+id/search_icon"
                         android:layout_width="@dimen/dimen_50dp"
@@ -95,6 +85,18 @@
                         android:layout_alignParentRight="true"
                         android:padding="@dimen/dimen_10dp"
                         android:src="@drawable/ic_magnify_grey600_24dp" />
+
+                    <TextView
+                        android:id="@+id/product_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:inputType="text|textNoSuggestions"
+                        android:maxLines="1"
+                        android:padding="@dimen/dimen_15dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
                 </RelativeLayout>
                 <android.support.v7.widget.RecyclerView
                     android:visibility="gone"
@@ -154,6 +156,7 @@
                         android:maxLines="1"
                         android:padding="@dimen/dimen_15dp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:padding="@dimen/dimen_10dp"
                     android:orientation="vertical"

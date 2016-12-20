@@ -45,13 +45,13 @@ public class Product_Order_Lookup extends AppCompatActivity {
     public static FloatingActionButton fab;
     //public static EditText retailerSearch;
     //public static TextView retailerSearch;
-    public static TextView  grandTotal, action_text_pane;
+    public static TextView grandTotal, action_text_pane;
     //public static EditText retailerSearch;
     public static RecyclerView orderProductRecyclerview, retailerList;
     public static LinearLayout scrollView, order_header2, order_header1;
     public static Button submitButton;
     static LinearLayout orderProductListLayout, emptyProducts;//search_pane
-    static TextView customername,orderdate,ordernumber,customerlable;
+    static TextView customername, orderdate, ordernumber, customerlable;
     TextView placedby;
     int viewHeight;
 
@@ -102,7 +102,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                 break;
             case Class_Genric.SALESPERSON:
                 //searchPane.setVisibility(View.VISIBLE);
-               // retailerSearch.setHint("Select Distributor");
+                // retailerSearch.setHint("Select Distributor");
                 customerlable.setText("Distributor :");
                 customername.setText(Class_Static.tempRole.getName());
                 //searchPane.setVisibility(View.GONE);
@@ -128,76 +128,78 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     orderProductListLayout.setVisibility(View.VISIBLE);
                     orderProductRecyclerview.setVisibility(View.VISIBLE);
                     submitButton.setVisibility(View.VISIBLE);
-                        if (Class_Static.viewOrderedProducts) {
-                            orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
-                            ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
-                            customername.setText(Class_Static.OrdredProducts.getClient().getName());
-                            fab.setVisibility(View.GONE);
-                            setMargins(fab, 60, context);
-                            //searchPane.setVisibility(View.GONE);
-                            submitButton.setVisibility(View.GONE);
-                            action_text_pane.setVisibility(View.GONE);
-                            order_header1.setVisibility(View.GONE);
-                            order_header2.setVisibility(View.VISIBLE);
-                            orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
-                        } else {
-                            orderdate.setText( Class_Genric.getDate());
-                            orderdate.setText("-");
-                            fab.setVisibility(View.VISIBLE);
-                            //searchPane.setVisibility(View.VISIBLE);
-                            submitButton.setVisibility(View.VISIBLE);
-                            action_text_pane.setVisibility(View.VISIBLE);
-                            order_header1.setVisibility(View.VISIBLE);
-                            order_header2.setVisibility(View.GONE);
-                            orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
-                        }
-                    } else {
-                        orderProductListLayout.setVisibility(View.VISIBLE);
+                    if (Class_Static.viewOrderedProducts) {
+                        orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
+                        ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
+                        customername.setText(Class_Static.OrdredProducts.getClient().getName());
+                        fab.setVisibility(View.GONE);
+                        setMargins(fab, 60, context);
+                        //searchPane.setVisibility(View.GONE);
                         submitButton.setVisibility(View.GONE);
-                        grandTotal.setText("");
-                        setMargins(fab, 16, context);
+                        action_text_pane.setVisibility(View.GONE);
+                        order_header1.setVisibility(View.GONE);
+                        order_header2.setVisibility(View.VISIBLE);
+                        orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                    } else {
+                        orderdate.setText(Class_Genric.getDate());
+                        orderdate.setText("-");
+                        fab.setVisibility(View.VISIBLE);
+                        //searchPane.setVisibility(View.VISIBLE);
+                        submitButton.setVisibility(View.VISIBLE);
+                        action_text_pane.setVisibility(View.VISIBLE);
+                        order_header1.setVisibility(View.VISIBLE);
+                        order_header2.setVisibility(View.GONE);
+                        orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
                     }
-
-
-                    break;
-                    case Class_Genric.DISTRIBUTOR:
-                        if (Class_Static.tempOrderingProduct.size() != 0) {
-                            scrollView.setVisibility(View.VISIBLE);
-                            orderProductListLayout.setVisibility(View.VISIBLE);
-                            orderProductRecyclerview.setVisibility(View.VISIBLE);
-                            submitButton.setVisibility(View.VISIBLE);
-                            setMargins(fab, 60, context);
-                            emptyProducts.setVisibility(View.GONE);
-                            if (Class_Static.viewOrderedProducts) {
-                                orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
-                                ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
-                                fab.setVisibility(View.GONE);
-                                //searchPane.setVisibility(View.GONE);
-                                submitButton.setVisibility(View.GONE);
-                                action_text_pane.setVisibility(View.GONE);
-                                order_header1.setVisibility(View.GONE);
-                                order_header2.setVisibility(View.VISIBLE);
-                                orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
-                            } else {
-                                orderdate.setText( Class_Genric.getDate());
-                                orderdate.setText("-");
-                                fab.setVisibility(View.VISIBLE);
-                                //searchPane.setVisibility(View.VISIBLE);
-                                submitButton.setVisibility(View.VISIBLE);
-                                action_text_pane.setVisibility(View.VISIBLE);
-                                order_header1.setVisibility(View.VISIBLE);
-                                order_header2.setVisibility(View.GONE);
-                                orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
-                            }
-                        } else {
-                            scrollView.setVisibility(View.GONE);
-                            setMargins(fab, 16, context);
-                            emptyProducts.setVisibility(View.VISIBLE);
-                        }
-                        break;
+                } else {
+                    fab.setVisibility(View.VISIBLE);
+                    orderProductListLayout.setVisibility(View.VISIBLE);
+                    submitButton.setVisibility(View.GONE);
+                    grandTotal.setText("");
+                    setMargins(fab, 16, context);
                 }
 
+
+                break;
+            case Class_Genric.DISTRIBUTOR:
+                if (Class_Static.tempOrderingProduct.size() != 0) {
+                    scrollView.setVisibility(View.VISIBLE);
+                    orderProductListLayout.setVisibility(View.VISIBLE);
+                    orderProductRecyclerview.setVisibility(View.VISIBLE);
+                    submitButton.setVisibility(View.VISIBLE);
+                    setMargins(fab, 60, context);
+                    emptyProducts.setVisibility(View.GONE);
+                    if (Class_Static.viewOrderedProducts) {
+                        orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
+                        ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
+                        fab.setVisibility(View.GONE);
+                        //searchPane.setVisibility(View.GONE);
+                        submitButton.setVisibility(View.GONE);
+                        action_text_pane.setVisibility(View.GONE);
+                        order_header1.setVisibility(View.GONE);
+                        order_header2.setVisibility(View.VISIBLE);
+                        orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                    } else {
+                        orderdate.setText(Class_Genric.getDate());
+                        orderdate.setText("-");
+                        fab.setVisibility(View.VISIBLE);
+                        //searchPane.setVisibility(View.VISIBLE);
+                        submitButton.setVisibility(View.VISIBLE);
+                        action_text_pane.setVisibility(View.VISIBLE);
+                        order_header1.setVisibility(View.VISIBLE);
+                        order_header2.setVisibility(View.GONE);
+                        orderProductRecyclerview.setAdapter(new Order_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                    }
+                } else {
+                    fab.setVisibility(View.VISIBLE);
+                    scrollView.setVisibility(View.GONE);
+                    setMargins(fab, 16, context);
+                    emptyProducts.setVisibility(View.VISIBLE);
+                }
+                break;
         }
+
+    }
 
     private void Functionalities(final Context context) {
        /* retailerSearch.addTextChangedListener(new TextWatcher() {
