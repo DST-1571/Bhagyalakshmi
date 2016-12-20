@@ -16,6 +16,7 @@ public class Product {
     private int Quantity;
     private Double Amount;
     private String Description;
+    private String Code;
 
     public Product(){
         Id="";
@@ -26,6 +27,7 @@ public class Product {
         Description="";
         SectionId="";
         CategoryId="";
+        Code="";
         SectionName="";
         CatagoryName="";
     }
@@ -39,8 +41,7 @@ public class Product {
         Description=tempPtoduct.getDescription();
         SectionId=tempPtoduct.getSectionId();
         CategoryId=tempPtoduct.getCategoryId();
-        SectionName=tempPtoduct.getSectionName();
-        CatagoryName=tempPtoduct.getCatagoryName();
+        Code=tempPtoduct.getCode();
     }
 
     public String getSectionId() {
@@ -82,6 +83,19 @@ public class Product {
         Quantity=tempProduct.getQuantity();
         Amount=tempProduct.getAmount();
         Description=tempProduct.getDescription();
+        CatagoryName= tempProduct.getCatagoryName();
+        CategoryId= tempProduct.getCategoryId();
+        SectionName= tempProduct.getSectionName();
+        SectionId= tempProduct.getSectionId();
+        Code=tempProduct.getCode();
+    }
+
+    public String getCode() {
+        return Code;
+    }
+
+    public void setCode(String code) {
+        Code = code;
     }
 
     public String getId() {

@@ -48,9 +48,9 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:padding="@dimen/dimen_2dp"
+                android:maxLines="1"
                 android:id="@+id/unit"
-                android:textSize="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="" />

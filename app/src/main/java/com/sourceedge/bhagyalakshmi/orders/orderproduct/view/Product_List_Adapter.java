@@ -49,10 +49,11 @@ public class Product_List_Adapter extends RecyclerView.Adapter<Product_List_Adap
                 Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
                 Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
                 Add_Product.productPrice.setText(Class_Static.tempProduct.getPrice() + "");
-                ((Activity)mContext).finish();
+                ((Activity) mContext).finish();
             }
         });
     }
+
     @Override
     public int getItemCount() {
         return data.size();
@@ -60,6 +61,7 @@ public class Product_List_Adapter extends RecyclerView.Adapter<Product_List_Adap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView text;
+
         public ViewHolder(View itemView) {
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.text1);

@@ -113,7 +113,6 @@ public class Product_Order_Lookup extends AppCompatActivity {
         }
 
         onClicks();
-        Functionalities(Product_Order_Lookup.this);
         InitializeAdapter(Product_Order_Lookup.this);
 
     }
@@ -201,54 +200,9 @@ public class Product_Order_Lookup extends AppCompatActivity {
 
     }
 
-    private void Functionalities(final Context context) {
-       /* retailerSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().matches("")) {
-                    retailerList.setVisibility(View.VISIBLE);
-                    orderProductRecyclerview.setVisibility(View.GONE);
-                    Class_Static.tempRoleList = new ArrayList<Role>();
-                    viewHeight = Class_Genric.convertDpToPixels(55, context);
-                    viewHeight = viewHeight * ((Class_Static.tempRoleList.size()));
-                    retailerList.getLayoutParams().height = viewHeight;
-                    retailerList.setAdapter(new Role_List_Adapter(context, Class_Static.tempRoleList));
-                } else {
-                    retailerList.setVisibility(View.VISIBLE);
-                    orderProductRecyclerview.setVisibility(View.GONE);
-                    Class_Static.tempRoleList = new ArrayList<Role>();
-                    if (!Class_Static.tempRole.getName().toLowerCase().matches(s.toString().toLowerCase()))
-                        for (Role role : Class_ModelDB.getRoleList()) {
-                            if (role.getName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
-                                Class_Static.tempRoleList.add(role);
-                            }
-                        }
-                    viewHeight = Class_Genric.convertDpToPixels(55, context);
-                    viewHeight = viewHeight * ((Class_Static.tempRoleList.size()));
-                    retailerList.getLayoutParams().height = viewHeight;
-                    retailerList.setAdapter(new Role_List_Adapter(context, Class_Static.tempRoleList));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });*/
-    }
 
     private void onClicks() {
-        /*retailerSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Class_Static.Flag_SearchCustomer = true;
-                startActivity(new Intent(Product_Order_Lookup.this, Search_Customer.class));
-            }
-        });*/
+
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
