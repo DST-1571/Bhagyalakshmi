@@ -7,9 +7,10 @@ package com.sourceedge.bhagyalakshmi.orders.models;
 public class Product {
 
     private String Id;
-    private String Name;
-    private String Category;
-    private String Brand;
+    private String SectionId;
+    private String CategoryId;
+    private String SectionName;
+    private String CatagoryName;
     private String Units;
     private Double Price;
     private int Quantity;
@@ -18,21 +19,60 @@ public class Product {
 
     public Product(){
         Id="";
-        Name="";
-        Category="";
-        Brand="";
         Units="";
         Price=0.0;
         Quantity=0;
         Amount=0.0;
         Description="";
+        SectionId="";
+        CategoryId="";
+    }
+
+    public void setProductDetais(Product tempPtoduct){
+        Id=tempPtoduct.getId();
+        Units=tempPtoduct.getUnits();
+        Price=tempPtoduct.getPrice();
+        Quantity=tempPtoduct.getQuantity();
+        Amount=tempPtoduct.getAmount();
+        Description=tempPtoduct.getDescription();
+        SectionId=tempPtoduct.getSectionId();
+        CategoryId=tempPtoduct.getCategoryId();
+    }
+
+    public String getSectionId() {
+        return SectionId;
+    }
+
+    public void setSectionId(String sectionId) {
+        SectionId = sectionId;
+    }
+
+    public String getCategoryId() {
+        return CategoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        CategoryId = categoryId;
+    }
+
+    public String getSectionName() {
+        return SectionName;
+    }
+
+    public void setSectionName(String sectionName) {
+        SectionName = sectionName;
+    }
+
+    public String getCatagoryName() {
+        return CatagoryName;
+    }
+
+    public void setCatagoryName(String catagoryName) {
+        CatagoryName = catagoryName;
     }
 
     public Product(Product tempProduct) {
         Id=tempProduct.getId();
-        Name=tempProduct.getName();
-        Category=tempProduct.getCategory();
-        Brand=tempProduct.getBrand();
         Units=tempProduct.getUnits();
         Price=tempProduct.getPrice();
         Quantity=tempProduct.getQuantity();
@@ -46,30 +86,6 @@ public class Product {
 
     public void setId(String id) {
         Id = id;
-    }
-
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String name) {
-        Name = name;
-    }
-
-    public String getCategory() {
-        return Category;
-    }
-
-    public void setCategory(String category) {
-        Category = category;
-    }
-
-    public String getBrand() {
-        return Brand;
-    }
-
-    public void setBrand(String brand) {
-        Brand = brand;
     }
 
     public String getUnits() {

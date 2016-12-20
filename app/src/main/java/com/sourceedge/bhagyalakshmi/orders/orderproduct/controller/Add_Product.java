@@ -36,12 +36,11 @@ import java.util.Iterator;
 public class Add_Product extends AppCompatActivity {
     Toolbar toolbar;
     public static TextView productSearch;
-    public static TextView retailerName, productBrand, productCategory, productDescription;
+    public static TextView retailerName, productGroup, productCategory;
     public static EditText productUnit, productQuantity, productPrice;
     ImageView incrementQuantity, decrementQuantity;
     Button buttonAdd, buttonReset, buttonAddNew;
     LinearLayout retailerLayout, searchPane;
-    public static RecyclerView productList;
     ScrollView scrollview;
     int viewHeight;
 
@@ -60,9 +59,8 @@ public class Add_Product extends AppCompatActivity {
         //distributorSalesManName = (TextView) findViewById(R.id.user_name);
         retailerName = (TextView) findViewById(R.id.retailer_name);
         productSearch = (TextView) findViewById(R.id.product_search);
-        productBrand = (TextView) findViewById(R.id.product_brand);
+        productGroup = (TextView) findViewById(R.id.product_group);
         productCategory = (TextView) findViewById(R.id.product_category);
-        productDescription = (TextView) findViewById(R.id.product_description);
         productUnit = (EditText) findViewById(R.id.product_unit);
         productQuantity = (EditText) findViewById(R.id.product_quantity);
         productPrice = (EditText) findViewById(R.id.product_price);
@@ -71,29 +69,27 @@ public class Add_Product extends AppCompatActivity {
         buttonAdd = (Button) findViewById(R.id.button_add);
         buttonReset = (Button) findViewById(R.id.button_reset);
         buttonAddNew = (Button) findViewById(R.id.button_add_new);
-        productList = (RecyclerView) findViewById(R.id.product_list);
         retailerLayout = (LinearLayout) findViewById(R.id.retailer_layout);
-        productList.setLayoutManager(new LinearLayoutManager(Add_Product.this));
-
+        Class_Static.tempProduct= new Product();
 
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
             case Class_Genric.ADMIN:
                 break;
             case Class_Genric.DISTRIBUTORSALES:
-                if(Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")){
+                if (Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")) {
                     productPrice.setEnabled(true);
                 }
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor(DSP)");
                 break;
             case Class_Genric.DISTRIBUTOR:
-                if(Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")){
+                if (Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")) {
                     productPrice.setEnabled(true);
                 }
                 retailerLayout.setVisibility(View.GONE);
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor");
                 break;
             case Class_Genric.SALESPERSON:
-                if(Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")){
+                if (Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")) {
                     productPrice.setEnabled(true);
                 }
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
@@ -101,10 +97,9 @@ public class Add_Product extends AppCompatActivity {
         }
         retailerName.setText(Class_Static.tempRole.getName().toString());
         if (Class_Static.editProductOrder) {
-            productSearch.setText(Class_Static.tempProduct.getName());
-            productBrand.setText(Class_Static.tempProduct.getBrand());
-            productCategory.setText(Class_Static.tempProduct.getCategory());
-            productDescription.setText(Class_Static.tempProduct.getDescription());
+            productSearch.setText(Class_Static.tempProduct.getDescription());
+            productGroup.setText(Class_Static.tempProduct.getSectionName());
+            productCategory.setText(Class_Static.tempProduct.getCatagoryName());
             productUnit.setText(Class_Static.tempProduct.getUnits());
             productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
             productPrice.setText(Class_Static.tempProduct.getPrice() + "");
@@ -134,12 +129,12 @@ public class Add_Product extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ("".equals(productQuantity.getText().toString().trim())) {
-                    productQuantity.setText("0");
+                    productQuantity.setText("1");
                 }
-                    if (!productQuantity.getText().toString().matches("0")) {
-                        productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) - 1) + "");
-                    } else
-                        Toast.makeText(Add_Product.this, "Min Count is 0", Toast.LENGTH_SHORT).show();
+                if (!productQuantity.getText().toString().matches("1")) {
+                    productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) - 1) + "");
+                } else
+                    Toast.makeText(Add_Product.this, "Min Count is 1", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -152,10 +147,9 @@ public class Add_Product extends AppCompatActivity {
                                          public void onClick(View v) {
                                              if (Class_Static.editProductOrder) {
                                                  Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
-                                                 Class_Static.tempProduct.setName(productSearch.getText().toString());
-                                                 Class_Static.tempProduct.setBrand(productBrand.getText().toString());
-                                                 Class_Static.tempProduct.setCategory(productCategory.getText().toString());
-                                                 Class_Static.tempProduct.setDescription(productDescription.getText().toString());
+                                                 Class_Static.tempProduct.setDescription(productSearch.getText().toString());
+                                                 Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
+                                                 Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
                                                  Class_Static.tempProduct.setUnits(productUnit.getText().toString());
                                                  Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                                                  Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
@@ -188,10 +182,9 @@ public class Add_Product extends AppCompatActivity {
                                                      if (!found) {
                                                          Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                                                          Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
-                                                         Class_Static.tempProduct.setName(productSearch.getText().toString());
-                                                         Class_Static.tempProduct.setBrand(productBrand.getText().toString());
-                                                         Class_Static.tempProduct.setCategory(productCategory.getText().toString());
-                                                         Class_Static.tempProduct.setDescription(productDescription.getText().toString());
+                                                         Class_Static.tempProduct.setDescription(productSearch.getText().toString());
+                                                         Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
+                                                         Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
                                                          Class_Static.tempProduct.setUnits(productUnit.getText().toString());
                                                          Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
                                                          Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
@@ -229,24 +222,18 @@ public class Add_Product extends AppCompatActivity {
                                                     }
                                                     if (!found) {
                                                         Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
-                                                        Class_Static.tempProduct.setName(productSearch.getText().toString());
-                                                        Class_Static.tempProduct.setBrand(productBrand.getText().toString());
-                                                        Class_Static.tempProduct.setCategory(productCategory.getText().toString());
-                                                        Class_Static.tempProduct.setDescription(productDescription.getText().toString());
+                                                        Class_Static.tempProduct.setDescription(productSearch.getText().toString());
+                                                        Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
+                                                        Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
                                                         Class_Static.tempProduct.setUnits(productUnit.getText().toString());
                                                         Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                                                         Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
                                                         Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
                                                         Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
-                                                        productSearch.setText("");
-                                                        productBrand.setText("");
-                                                        productCategory.setText("");
-                                                        productDescription.setText("");
-                                                        productUnit.setText("");
-                                                        productPrice.setText("");
-                                                        productQuantity.setText("");
+                                                        cleanScreen();
                                                     }
                                                     scrollview.fullScroll(ScrollView.FOCUS_UP);
+                                                    Class_Static.tempProduct= new Product();
                                                 }
                                             }
                                         }
@@ -262,9 +249,8 @@ public class Add_Product extends AppCompatActivity {
                                                    finish();
                                                } else {
                                                    productSearch.setText("");
-                                                   productBrand.setText("");
+                                                   productGroup.setText("");
                                                    productCategory.setText("");
-                                                   productDescription.setText("");
                                                    productUnit.setText("");
                                                    productPrice.setText("");
                                                    productQuantity.setText("");
@@ -276,49 +262,39 @@ public class Add_Product extends AppCompatActivity {
     }
 
     private void Functionalities(final Context context) {
-        productSearch.setOnClickListener(new View.OnClickListener() {
+
+        productGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Class_Static.Flag_SearchCustomer = false;
+                Class_Static.Flag_SEARCH = Class_Static.SEARCHGROUP;
                 startActivity(new Intent(Add_Product.this, Search_Customer.class));
             }
         });
-        /*productSearch.addTextChangedListener(new TextWatcher() {
+        productCategory.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onClick(View view) {
+                if (!Class_Static.tempProduct.getSectionId().matches("")) {
+                    Class_Static.Flag_SEARCH = Class_Static.SEARCHCATAGORY;
+                    startActivity(new Intent(Add_Product.this, Search_Customer.class));
+                } else Toast.makeText(context, "Please Select A Group", Toast.LENGTH_SHORT).show();
 
             }
-
+        });
+        productSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().matches("")) {
-                    productList.setVisibility(View.VISIBLE);
-                    Class_Static.tempProductList = new ArrayList<Product>();
-                    viewHeight = Class_Genric.convertDpToPixels(55, context);
-                    viewHeight = viewHeight * ((Class_Static.tempProductList.size()));
-                    productList.getLayoutParams().height = viewHeight;
-                    productList.setAdapter(new Product_List_Adapter(context, Class_Static.tempProductList));
-                } else {
-                    productList.setVisibility(View.VISIBLE);
-                    Class_Static.tempProductList = new ArrayList<Product>();
-                    if (!Class_Static.tempProduct.getName().toLowerCase().matches(s.toString().toLowerCase()))
-                        for (Product product : Class_ModelDB.getProductList()) {
-                            if (product.getName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
-                                Class_Static.tempProductList.add(product);
-                            }
-                        }
-                    viewHeight = Class_Genric.convertDpToPixels(55, context);
-                    viewHeight = viewHeight * ((Class_Static.tempProductList.size()));
-                    productList.getLayoutParams().height = viewHeight;
-                    productList.setAdapter(new Product_List_Adapter(context, Class_Static.tempProductList));
-                }
-            }
+            public void onClick(View view) {
 
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                if (!Class_Static.tempProduct.getSectionId().matches("")) {
+                    if (!Class_Static.tempProduct.getCategoryId().matches("")) {
+                        Class_Static.Flag_SEARCH = Class_Static.SEARCHPRODUCT;
+                        startActivity(new Intent(Add_Product.this, Search_Customer.class));
+                    } else
+                        Toast.makeText(context, "Please Select A Catagory", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(context, "Please Select A Group", Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
+
     }
 
     @Override
@@ -344,5 +320,14 @@ public class Add_Product extends AppCompatActivity {
             //Product_Order_Lookup.retailerSearch.setEnabled(true);
         }
         finish();
+    }
+
+    private void cleanScreen(){
+        productSearch.setText("");
+        productGroup.setText("");
+        productCategory.setText("");
+        productUnit.setText("");
+        productPrice.setText("");
+        productQuantity.setText("");
     }
 }

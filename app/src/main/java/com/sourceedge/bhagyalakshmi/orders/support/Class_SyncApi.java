@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sourceedge.bhagyalakshmi.orders.changepassword.Change_Password;
 import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
+import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
 import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
 import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
@@ -29,6 +30,7 @@ import com.sourceedge.bhagyalakshmi.orders.models.OrderProduct;
 import com.sourceedge.bhagyalakshmi.orders.models.PlaceOrder;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
+import com.sourceedge.bhagyalakshmi.orders.models.Sections;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Success;
 
 import org.json.JSONArray;
@@ -365,7 +367,10 @@ public class Class_SyncApi {
                             for (int k = 0; k < Class_Static.timestamplist.size(); k++) {
                                 set.add(Class_Static.timestamplist.get(k));
                             }
-                            Date max = set.last();
+
+                            Date max = new Date();
+                            if (set.size() > 0)
+                                max = set.last();
                             Class_Static.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").format(max);
                             break;
                         } catch (JSONException e) {
@@ -395,8 +400,7 @@ public class Class_SyncApi {
                                     Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
                                     break;
                             }
-                        }
-                        else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
 
 
                     }
@@ -477,6 +481,8 @@ public class Class_SyncApi {
     }
 
     public static void ProductApi(final Context context) {
+        GroupsApi(context);
+        CatagoryApi(context);
         dbHelper = new Class_DBHelper(context);
         /*String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
@@ -502,6 +508,139 @@ public class Class_SyncApi {
                             JSONArray jsonArray = new JSONArray(response);
                             model = gson.fromJson(jsonArray.toString(), listType);
                             Class_ModelDB.setProductList(model);
+                            dbHelper.saveProduct();
+                            dbHelper.loadProduct();
+
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError)
+                    if (error instanceof NoConnectionError) {
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
+                            dbHelper.loadProduct();
+                        } else {
+                            Class_Genric.NetCheck(context);
+                        }
+                    } else {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(postRequest);
+    }
+
+    public static void GroupsApi(final Context context) {
+        dbHelper = new Class_DBHelper(context);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
+        Class_Genric.ShowDialog(context, "Loading...", true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Section/*Class_Genric.generateUrl(Class_Urls.Product, params)*/, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<Sections> model = new ArrayList<Sections>();
+                            Type listType = new TypeToken<ArrayList<Sections>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            model = gson.fromJson(jsonArray.toString(), listType);
+                            Class_ModelDB.setSectionList(model);
+                            dbHelper.saveProduct();
+                            dbHelper.loadProduct();
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError)
+                    if (error instanceof NoConnectionError) {
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
+                            dbHelper.loadProduct();
+                        } else {
+                            Class_Genric.NetCheck(context);
+                        }
+                    } else {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(postRequest);
+    }
+
+    public static void CatagoryApi(final Context context) {
+        dbHelper = new Class_DBHelper(context);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
+        Class_Genric.ShowDialog(context, "Loading...", true);
+
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Catagory/*Class_Genric.generateUrl(Class_Urls.Product, params)*/, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<Catagories> model = new ArrayList<Catagories>();
+                            Type listType = new TypeToken<ArrayList<Catagories>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            model = gson.fromJson(jsonArray.toString(), listType);
+                            Class_ModelDB.setCatagoryList(model);
                             dbHelper.saveProduct();
                             dbHelper.loadProduct();
 

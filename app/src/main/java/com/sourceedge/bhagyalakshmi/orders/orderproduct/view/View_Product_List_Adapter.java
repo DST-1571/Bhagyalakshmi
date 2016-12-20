@@ -47,7 +47,7 @@ public class View_Product_List_Adapter extends RecyclerView.Adapter<View_Product
 
     @Override
     public void onBindViewHolder(View_Product_List_Adapter.ViewHolder holder, int position) {
-        holder.category.setText(data.get(position).getName());
+        holder.category.setText(data.get(position).getCatagoryName());
         holder.description.setText(data.get(position).getDescription());
         holder.quantity.setText(data.get(position).getQuantity()+"");
         holder.unit.setText(data.get(position).getUnits());

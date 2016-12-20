@@ -121,7 +121,7 @@ public class Order_Page extends AppCompatActivity {
                     case Class_Genric.SALESPERSON:
                         Class_Static.viewOrderedProducts=false;
                         Class_Static.tempOrderingProduct = new ArrayList<Product>();
-                        Class_Static.Flag_SearchCustomer = true;
+                        Class_Static.Flag_SEARCH = Class_Static.SEARCHCUSTOMER;
                         startActivity(new Intent(Order_Page.this, Search_Customer.class));
                         break;
                 }

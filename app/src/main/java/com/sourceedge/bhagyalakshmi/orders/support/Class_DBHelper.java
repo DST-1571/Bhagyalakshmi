@@ -10,10 +10,12 @@ import android.os.Environment;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
 import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
+import com.sourceedge.bhagyalakshmi.orders.models.Sections;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -38,6 +40,8 @@ public class Class_DBHelper extends SQLiteOpenHelper {
     public static String DataTableRole = "Role";
     public static String DataTableOrders = "Orders";
     public static String DataTableProduct = "Product";
+    public static String DataTableGroup = "Group";
+    public static String DataTableCatagory = "Catagory";
 
     public Class_DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -145,6 +149,31 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void saveSections() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(this.InitialData, "TableName=?", new String[]{DataTableGroup});
+        CheckData(DataTableGroup, false);
+        contentValues = new ContentValues();
+        contentValues.put(this.TableName, DataTableGroup);
+        contentValues.put(this.Data, gson.toJsonTree(Class_ModelDB.getSectionList()).getAsJsonArray().toString());
+        db.insert(this.InitialData, null, contentValues);
+        CheckData(DataTableGroup, true);
+        db.close();
+    }
+
+    public void saveCatagories() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(this.InitialData, "TableName=?", new String[]{DataTableCatagory});
+        CheckData(DataTableCatagory, false);
+        contentValues = new ContentValues();
+        contentValues.put(this.TableName, DataTableCatagory);
+        contentValues.put(this.Data, gson.toJsonTree(Class_ModelDB.getCatagoryList()).getAsJsonArray().toString());
+
+        db.insert(this.InitialData, null, contentValues);
+        CheckData(DataTableCatagory, true);
+        db.close();
+    }
+
     public void saveOrders() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(this.InitialData, "TableName=?", new String[]{DataTableOrders});
@@ -202,6 +231,38 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void loadSections() {
+        SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{DataTableGroup});
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            //initialModel.setSections(gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), ArrayList.class));
+            Type listType = new TypeToken<ArrayList<Sections>>() {
+            }.getType();
+            ArrayList<Sections> sectionlist = new ArrayList<Sections>();
+            sectionlist = gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), listType);
+            Class_ModelDB.setSectionList(sectionlist);
+            res.moveToNext();
+        }
+        db.close();
+    }
+
+    public void loadcatagory() {
+        SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{DataTableCatagory});
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            //initialModel.setSections(gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), ArrayList.class));
+            Type listType = new TypeToken<ArrayList<Product>>() {
+            }.getType();
+            ArrayList<Catagories> catagorylist = new ArrayList<Catagories>();
+            catagorylist = gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), listType);
+            Class_ModelDB.setCatagoryList(catagorylist);
+            res.moveToNext();
+        }
+        db.close();
+    }
+
     public void loadOrders() {
         SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
         Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{DataTableOrders});
@@ -240,6 +301,8 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         saveCurrentUser();
         saveRole();
         saveProduct();
+        saveCatagories();
+        saveSections();
         saveOrders();
     }
 
@@ -247,6 +310,8 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         loadCurrentUser();
         loadRole();
         loadProduct();
+        loadcatagory();
+        loadSections();
         loadOrders();
     }
 }

@@ -234,11 +234,11 @@ public class Class_Genric {
     }
 
     public static int getType(String LoginType) {
-        if (LoginType.matches("Admin"))
+        if (LoginType.toString().toLowerCase().matches(("admin").toLowerCase()))
             return ADMIN;
-        if (LoginType.matches("DistributorSalesMan"))
+        if (LoginType.toLowerCase().matches(("distributorsalesperson").toLowerCase()))
             return DISTRIBUTORSALES;
-        if (LoginType.matches("Distributor"))
+        if (LoginType.toLowerCase().matches(("distributor").toLowerCase()))
             return DISTRIBUTOR;
         else return SALESPERSON;
     }

@@ -36,7 +36,7 @@
     <string name="retaillookup_title">Select Retailer</string>
     <string name="product_title">Select Product</string>
     <string name="retail_name">Retailer Name</string>
-    <string name="brand">Brand</string>
+    <string name="group">Category Group</string>
     <string name="category">Category</string>
     <string name="description">Description</string>
     <string name="units">Units</string>

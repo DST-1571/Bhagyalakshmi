@@ -1,10 +1,12 @@
 package com.sourceedge.bhagyalakshmi.orders.support;
 
+import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
 import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
 import com.sourceedge.bhagyalakshmi.orders.models.OrderProduct;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
+import com.sourceedge.bhagyalakshmi.orders.models.Sections;
 import com.sourceedge.bhagyalakshmi.orders.models.User;
 
 import java.util.ArrayList;
@@ -24,6 +26,45 @@ public class Class_ModelDB {
     private static Product productModel=new Product();
     private static ArrayList<Product> productList=new ArrayList<Product>();
 
+    private static Sections sectionsModel = new Sections();
+    private static ArrayList<Sections> sectionList=new ArrayList<Sections>();
+
+    private static Catagories CatagoryModel=new Catagories();
+
+    public static Sections getSectionsModel() {
+        return sectionsModel;
+    }
+
+    public static void setSectionsModel(Sections sectionsModel) {
+        Class_ModelDB.sectionsModel = sectionsModel;
+    }
+
+    public static ArrayList<Sections> getSectionList() {
+        return sectionList;
+    }
+
+    public static void setSectionList(ArrayList<Sections> sectionList) {
+        Class_ModelDB.sectionList = sectionList;
+    }
+
+    public static Catagories getCatagoryModel() {
+        return CatagoryModel;
+    }
+
+    public static void setCatagoryModel(Catagories catagoryModel) {
+        CatagoryModel = catagoryModel;
+    }
+
+    public static ArrayList<Catagories> getCatagoryList() {
+        return catagoryList;
+    }
+
+    public static void setCatagoryList(ArrayList<Catagories> catagoryList) {
+        Class_ModelDB.catagoryList = catagoryList;
+    }
+
+    private static ArrayList<Catagories> catagoryList=new ArrayList<Catagories>();
+
     private static Role roleModel=new Role();
     private static ArrayList<Role> roleList=new ArrayList<Role>();
 
@@ -31,10 +72,6 @@ public class Class_ModelDB {
     private static ArrayList<User> userList=new ArrayList<User>();
 
     private static CurrentUser currentuserModel=new CurrentUser();
-
-
-
-
 
     //Getter and Setter of all above models
 

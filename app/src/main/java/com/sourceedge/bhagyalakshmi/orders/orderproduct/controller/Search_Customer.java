@@ -12,8 +12,12 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
+import com.sourceedge.bhagyalakshmi.orders.models.Sections;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Catagory_List_Adapter;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Group_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Product_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Role_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
@@ -40,8 +44,7 @@ public class Search_Customer extends AppCompatActivity {
         retailerList = (RecyclerView) findViewById(R.id.retailer_list);
         retailerList.setLayoutManager(new LinearLayoutManager(Search_Customer.this));
 
-        if (Class_Static.Flag_SearchCustomer)
-        {
+        if (Class_Static.Flag_SEARCH == Class_Static.SEARCHCUSTOMER) {
             switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
                 case Class_Genric.ADMIN:
                     break;
@@ -59,18 +62,7 @@ public class Search_Customer extends AppCompatActivity {
             Class_Static.tempRoleList = Class_ModelDB.getRoleList();
             retailerList.setAdapter(new Role_List_Adapter(Search_Customer.this, Class_Static.tempRoleList));
 
-        }
-        else
-        {
-            Class_Static.tempProductList = new ArrayList<Product>();
-            Class_Static.tempProductList = Class_ModelDB.getProductList();
-            retailerList.setAdapter(new Product_List_Adapter(Search_Customer.this, Class_Static.tempProductList));
-            retailerSearch.setHint("Search Product");
-        }
-
-
-        //search customer
-        if (Class_Static.Flag_SearchCustomer)
+            //
             retailerSearch.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -102,8 +94,17 @@ public class Search_Customer extends AppCompatActivity {
                 }
             });
 
-            //Search Product
-        else
+        } else if (Class_Static.Flag_SEARCH == Class_Static.SEARCHPRODUCT) {
+            Class_Static.tempProductList = new ArrayList<Product>();
+            for (Product product : Class_ModelDB.getProductList()) {
+                if (product.getCategoryId().toString().toLowerCase().matches(Class_Static.tempProduct.getCategoryId().toString().toLowerCase())) {
+                    Class_Static.tempProductList.add(product);
+                }
+            }
+            retailerList.setAdapter(new Product_List_Adapter(Search_Customer.this, Class_Static.tempProductList));
+            retailerSearch.setHint("Search Product");
+
+            //
             retailerSearch.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -114,16 +115,19 @@ public class Search_Customer extends AppCompatActivity {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (s.toString().matches("")) {
                         Class_Static.tempProductList = new ArrayList<Product>();
-                        Class_Static.tempProductList = Class_ModelDB.getProductList();
+                        for (Product product : Class_ModelDB.getProductList()) {
+                            if (product.getCategoryId().toString().toLowerCase().matches(Class_Static.tempProduct.getCategoryId().toString().toLowerCase())) {
+                                Class_Static.tempProductList.add(product);
+                            }
+                        }
                         retailerList.setAdapter(new Product_List_Adapter(Search_Customer.this, Class_Static.tempProductList));
                     } else {
                         Class_Static.tempProductList = new ArrayList<Product>();
-                        if (!Class_Static.tempProduct.getName().toLowerCase().matches(s.toString().toLowerCase()))
-                            for (Product product : Class_ModelDB.getProductList()) {
-                                if (product.getName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
-                                    Class_Static.tempProductList.add(product);
-                                }
+                        for (Product product : Class_ModelDB.getProductList()) {
+                            if (product.getDescription().toString().toLowerCase().contains(s.toString().toLowerCase()) && product.getCategoryId().toString().toLowerCase().matches(Class_Static.tempProduct.getCategoryId().toString().toLowerCase())) {
+                                Class_Static.tempProductList.add(product);
                             }
+                        }
                         retailerList.setAdapter(new Product_List_Adapter(Search_Customer.this, Class_Static.tempProductList));
                     }
                 }
@@ -133,6 +137,86 @@ public class Search_Customer extends AppCompatActivity {
 
                 }
             });
+        } else if (Class_Static.Flag_SEARCH == Class_Static.SEARCHGROUP) {
+            Class_Static.tempGroupList = new ArrayList<Sections>();
+            Class_Static.tempGroupList = Class_ModelDB.getSectionList();
+            retailerList.setAdapter(new Group_List_Adapter(Search_Customer.this, Class_Static.tempGroupList));
+            retailerSearch.setHint("Search Category Group");
+
+            //
+            retailerSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.toString().matches("")) {
+                        Class_Static.tempGroupList = new ArrayList<Sections>();
+                        Class_Static.tempGroupList = Class_ModelDB.getSectionList();
+                        retailerList.setAdapter(new Group_List_Adapter(Search_Customer.this, Class_Static.tempGroupList));
+                    } else {
+                        Class_Static.tempGroupList = new ArrayList<Sections>();
+                            for (Sections section : Class_ModelDB.getSectionList()) {
+                                if (section.getName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                                    Class_Static.tempGroupList.add(section);
+                                }
+                            }
+                        retailerList.setAdapter(new Group_List_Adapter(Search_Customer.this, Class_Static.tempGroupList));
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        } else if (Class_Static.Flag_SEARCH == Class_Static.SEARCHCATAGORY) {
+            Class_Static.tempCategotyList = new ArrayList<Catagories>();
+            for (Catagories catagory : Class_ModelDB.getCatagoryList()) {
+                if (catagory.getSectionId().toString().toLowerCase().matches(Class_Static.tempProduct.getSectionId().toString().toLowerCase())) {
+                    Class_Static.tempCategotyList.add(catagory);
+                }
+            }
+            retailerList.setAdapter(new Catagory_List_Adapter(Search_Customer.this, Class_Static.tempCategotyList));
+            retailerSearch.setHint("Search Catagory");
+
+            //
+            retailerSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.toString().matches("")) {
+                        Class_Static.tempCategotyList = new ArrayList<Catagories>();
+                        for (Catagories catagory : Class_ModelDB.getCatagoryList()) {
+                            if (catagory.getSectionId().toString().toLowerCase().matches(Class_Static.tempProduct.getSectionId().toString().toLowerCase())) {
+                                Class_Static.tempCategotyList.add(catagory);
+                            }
+                        }
+                        retailerList.setAdapter(new Catagory_List_Adapter(Search_Customer.this, Class_Static.tempCategotyList));
+                    } else {
+                        Class_Static.tempCategotyList = new ArrayList<Catagories>();
+                            for (Catagories catagory : Class_ModelDB.getCatagoryList()) {
+                                if (catagory.getName().toString().toLowerCase().contains(s.toString().toLowerCase())&& catagory.getSectionId().toString().toLowerCase().matches(Class_Static.tempProduct.getSectionId().toString().toLowerCase())) {
+                                    Class_Static.tempCategotyList.add(catagory);
+                                }
+                            }
+                        retailerList.setAdapter(new Catagory_List_Adapter(Search_Customer.this, Class_Static.tempCategotyList));
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        }
+
     }
 
     @Override

@@ -128,7 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dimen_15dp"
-                        android:text="@string/brand"
+                        android:text="@string/group"
                         android:textSize="@dimen/textsize_16sp"
                         android:textColor="@color/black" />
                     <!-- <RelativeLayout
@@ -144,7 +144,7 @@
                          </Spinner>
                      </RelativeLayout>-->
                     <TextView
-                        android:id="@+id/product_brand"
+                        android:id="@+id/product_group"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dimen_10dp"

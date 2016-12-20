@@ -39,7 +39,7 @@ public class Admin_View_Order_Adapter extends RecyclerView.Adapter<Admin_View_Or
 
     @Override
     public void onBindViewHolder(Admin_View_Order_Adapter.ViewHolder holder, int position) {
-        holder.category.setText(data.get(position).getName());
+        holder.category.setText(data.get(position).getCatagoryName());
         holder.description.setText(data.get(position).getDescription());
         holder.quantity.setText(data.get(position).getQuantity()+"");
         holder.unit.setText(data.get(position).getUnits());

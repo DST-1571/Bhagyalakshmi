@@ -59,13 +59,12 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
                         if(Class_Static.OrdredProducts.getProducts().get(i).getProductId().matches(Class_ModelDB.getProductList().get(j).getId())){
                             prod=new Product();
                             prod.setId(Class_ModelDB.getProductList().get(j).getId());
-                            prod.setName(Class_ModelDB.getProductList().get(j).getName());
                             prod.setQuantity(new Double(Class_Static.OrdredProducts.getProducts().get(i).getQuantity()).intValue());
                             prod.setPrice(Class_Static.OrdredProducts.getProducts().get(i).getPrice());
                             prod.setAmount(prod.getQuantity()*prod.getPrice());
-                            prod.setCategory(Class_ModelDB.getProductList().get(j).getCategory());
+                            prod.setCatagoryName(Class_ModelDB.getProductList().get(j).getCatagoryName());
                             prod.setDescription(Class_ModelDB.getProductList().get(j).getDescription());
-                            prod.setBrand(Class_ModelDB.getProductList().get(j).getBrand());
+                            prod.setSectionName(Class_ModelDB.getProductList().get(j).getSectionName());
                             prod.setUnits(Class_Static.OrdredProducts.getProducts().get(i).getUnit());
                             Class_Static.tempOrderingProduct.add(prod);
                         }
