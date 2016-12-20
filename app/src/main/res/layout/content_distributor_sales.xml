@@ -137,6 +137,7 @@
                         android:src="@drawable/ic_magnify_grey600_24dp" />
                 </RelativeLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/search_pane"
                 android:layout_width="match_parent"
