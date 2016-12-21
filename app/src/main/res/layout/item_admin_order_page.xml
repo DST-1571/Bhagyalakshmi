@@ -24,6 +24,7 @@
                 android:text=""
                 android:maxLines="1" />
             <LinearLayout
+                android:padding="@dimen/dimen_2dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -37,7 +38,7 @@
                     android:maxLines="1"
                     android:padding="@dimen/dimen_5dp" />
                 <TextView
-                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="5dp"
                     android:textSize="@dimen/textsize_10sp"
                     android:id="@+id/client_address"
                     android:layout_width="match_parent"
@@ -49,6 +50,7 @@
 
 
             <LinearLayout
+                android:padding="@dimen/dimen_2dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -64,7 +66,7 @@
                     android:padding="@dimen/dimen_5dp" />
 
                 <TextView
-                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="@dimen/dimen_5dp"
                     android:textSize="@dimen/textsize_10sp"
                     android:id="@+id/user_type"
                     android:layout_width="match_parent"

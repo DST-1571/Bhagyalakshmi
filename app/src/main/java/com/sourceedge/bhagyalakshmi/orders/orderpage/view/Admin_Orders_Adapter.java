@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Admin_View_Order;
@@ -60,10 +61,14 @@ public class Admin_Orders_Adapter extends RecyclerView.Adapter<Admin_Orders_Adap
                             prod.setQuantity(new Double(Class_Static.OrdredProducts.getProducts().get(i).getQuantity()).intValue());
                             prod.setPrice(Class_Static.OrdredProducts.getProducts().get(i).getPrice());
                             prod.setAmount(prod.getQuantity()*prod.getPrice());
-                            prod.setCatagoryName(Class_ModelDB.getProductList().get(j).getCatagoryName());
                             prod.setDescription(Class_ModelDB.getProductList().get(j).getDescription());
                             prod.setSectionName(Class_ModelDB.getProductList().get(j).getSectionName());
                             prod.setUnits(Class_Static.OrdredProducts.getProducts().get(i).getUnit());
+                            prod.setCategoryId(Class_ModelDB.getProductList().get(j).getCategoryId());
+                            prod.setSectionId(Class_ModelDB.getProductList().get(j).getSectionId());for (Catagories catagories:Class_ModelDB.getCatagoryList()) {
+                                if(prod.getCategoryId().matches(catagories.getId()))
+                                    prod.setCatagoryName(catagories.getName());
+                            }
                             Class_Static.tempOrderingProduct.add(prod);
                         }
                     }

@@ -3,7 +3,9 @@ package com.sourceedge.bhagyalakshmi.orders.orderproduct.controller;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,8 +52,9 @@ public class Product_Order_Lookup extends AppCompatActivity {
     public static RecyclerView orderProductRecyclerview, retailerList;
     public static LinearLayout scrollView, order_header2, order_header1;
     public static Button submitButton;
-    static LinearLayout orderProductListLayout, emptyProducts;//search_pane
+    static LinearLayout orderProductListLayout, emptyProducts,orderDetailsHeader;//search_pane
     static TextView customername, orderdate, ordernumber, customerlable;
+    CoordinatorLayout coordinator;
     TextView placedby;
     int viewHeight;
 
@@ -67,6 +70,8 @@ public class Product_Order_Lookup extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         grandTotal = (TextView) findViewById(R.id.grand_total_amount123);
         action_text_pane = (TextView) findViewById(R.id.action_text_pane);
+        coordinator= (CoordinatorLayout) findViewById(R.id.coordinator);
+        orderDetailsHeader= (LinearLayout) findViewById(R.id.orderdetailsheader);
         //retailerSearch = (EditText) findViewById(R.id.retailer_search);
         action_text_pane = (TextView) findViewById(R.id.action_text_pane);
         //retailerSearch = (EditText) findViewById(R.id.retailer_search);
@@ -128,6 +133,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     orderProductRecyclerview.setVisibility(View.VISIBLE);
                     submitButton.setVisibility(View.VISIBLE);
                     if (Class_Static.viewOrderedProducts) {
+                        orderDetailsHeader.setVisibility(View.VISIBLE);
                         orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
                         ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
                         customername.setText(Class_Static.OrdredProducts.getClient().getName());
@@ -140,6 +146,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                         order_header2.setVisibility(View.VISIBLE);
                         orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
                     } else {
+                        orderDetailsHeader.setVisibility(View.GONE);
                         orderdate.setText(Class_Genric.getDate());
                         orderdate.setText("-");
                         fab.setVisibility(View.VISIBLE);
@@ -169,6 +176,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     setMargins(fab, 60, context);
                     emptyProducts.setVisibility(View.GONE);
                     if (Class_Static.viewOrderedProducts) {
+                        orderDetailsHeader.setVisibility(View.VISIBLE);
                         orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
                         ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
                         fab.setVisibility(View.GONE);
@@ -179,6 +187,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                         order_header2.setVisibility(View.VISIBLE);
                         orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
                     } else {
+                        orderDetailsHeader.setVisibility(View.GONE);
                         orderdate.setText(Class_Genric.getDate());
                         orderdate.setText("-");
                         fab.setVisibility(View.VISIBLE);
@@ -263,8 +272,15 @@ public class Product_Order_Lookup extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        Snackbar snackbar = Snackbar
+                .make(coordinator, "Changes Will be Discarded", Snackbar.LENGTH_LONG)
+                .setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                    }
+                });
+        snackbar.show();
     }
 
     @Override

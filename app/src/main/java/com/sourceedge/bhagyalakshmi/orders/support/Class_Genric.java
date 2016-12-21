@@ -276,8 +276,8 @@ public class Class_Genric {
                 location.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //a.startActivity(new Intent(a, MapsActivity.class));
-                        //drawer.closeDrawer(Gravity.LEFT);
+                        a.startActivity(new Intent(a, MapsActivity.class));
+                        drawer.closeDrawer(Gravity.LEFT);
                     }
                 });
 

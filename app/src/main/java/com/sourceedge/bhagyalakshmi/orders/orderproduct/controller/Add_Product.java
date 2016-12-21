@@ -3,6 +3,8 @@ package com.sourceedge.bhagyalakshmi.orders.orderproduct.controller;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,11 +41,12 @@ public class Add_Product extends AppCompatActivity {
     public static TextView productSearch;
     public static TextView retailerName, productGroup, productCategory;
     public static EditText productUnit, productQuantity, productPrice;
-    ImageView searchGroupIcon,searchCategoryIcon;
+    ImageView searchGroupIcon,searchCategoryIcon,searchIcon;
     ImageButton incrementQuantity, decrementQuantity;
     Button buttonAdd, buttonReset, buttonAddNew;
     LinearLayout retailerLayout, searchPane;
     ScrollView scrollview;
+    CoordinatorLayout coordinator;
     int viewHeight;
 
     @Override
@@ -56,12 +59,14 @@ public class Add_Product extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Bhagyalakshmi Traders");
         setSupportActionBar(toolbar);
+        coordinator= (CoordinatorLayout) findViewById(R.id.coordinator);
         scrollview = (ScrollView) findViewById(R.id.scrollview);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //distributorSalesManName = (TextView) findViewById(R.id.user_name);
         retailerName = (TextView) findViewById(R.id.retailer_name);
         searchGroupIcon=(ImageView)findViewById(R.id.search_group_icon);
         searchCategoryIcon=(ImageView) findViewById(R.id.search_category_icon);
+        searchIcon= (ImageView) findViewById(R.id.search_icon);
         productSearch = (TextView) findViewById(R.id.product_search);
         productGroup = (TextView) findViewById(R.id.product_group);
         productCategory = (TextView) findViewById(R.id.product_category);
@@ -114,6 +119,7 @@ public class Add_Product extends AppCompatActivity {
             productPrice.setText(Class_Static.tempProduct.getPrice() + "");
             productSearch.setEnabled(false);
             searchCategoryIcon.setVisibility(View.INVISIBLE);
+            searchIcon.setVisibility(View.INVISIBLE);
             searchGroupIcon.setVisibility(View.INVISIBLE);
             productGroup.setEnabled(false);
             productCategory.setEnabled(false);
@@ -123,6 +129,7 @@ public class Add_Product extends AppCompatActivity {
         } else{
             Class_Static.tempProduct= new Product();
             searchCategoryIcon.setVisibility(View.VISIBLE);
+            searchIcon.setVisibility(View.VISIBLE);
             searchGroupIcon.setVisibility(View.VISIBLE);
             buttonAddNew.setText("SAVE AND NEW");
         }
@@ -335,13 +342,17 @@ public class Add_Product extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        if (Class_Static.tempOrderingProduct.size() != 0) {
-            //Product_Order_Lookup.retailerSearch.setEnabled(false);
-        } else {
-            //Product_Order_Lookup.retailerSearch.setEnabled(true);
-        }
-        finish();
+        Snackbar snackbar = Snackbar
+                .make(coordinator, "Changes Will be Discarded", Snackbar.LENGTH_LONG)
+                .setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
+                        finish();
+                    }
+                });
+        snackbar.show();
+
     }
 
     private void cleanScreen(){
