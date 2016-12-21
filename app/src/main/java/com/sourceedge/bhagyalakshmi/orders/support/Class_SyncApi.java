@@ -224,7 +224,9 @@ public class Class_SyncApi {
                             for (int k = 0; k < Class_Static.timestamplist.size(); k++) {
                                 set.add(Class_Static.timestamplist.get(k));
                             }
-                            Date max = set.last();
+                            Date max = new Date();
+                            if (set.size() > 0)
+                                max = set.last();
                             Class_Static.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").format(max);
                             break;
                         } catch (JSONException e) {
