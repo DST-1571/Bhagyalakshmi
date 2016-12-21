@@ -1,7 +1,9 @@
 package com.sourceedge.bhagyalakshmi.orders.orderproduct.controller;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -25,10 +27,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.models.Order;
+import com.sourceedge.bhagyalakshmi.orders.models.OrderProduct;
+import com.sourceedge.bhagyalakshmi.orders.models.Product;
+import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Success;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Order_Product_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Role_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.View_Product_List_Adapter;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_DBHelper;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
@@ -52,7 +59,8 @@ public class Product_Order_Lookup extends AppCompatActivity {
     public static RecyclerView orderProductRecyclerview, retailerList;
     public static LinearLayout scrollView, order_header2, order_header1;
     public static Button submitButton;
-    static LinearLayout orderProductListLayout, emptyProducts,orderDetailsHeader;//search_pane
+    SharedPreferences sharedPreferences;
+    static LinearLayout orderProductListLayout, emptyProducts, orderDetailsHeader;//search_pane
     static TextView customername, orderdate, ordernumber, customerlable;
     CoordinatorLayout coordinator;
     TextView placedby;
@@ -70,8 +78,9 @@ public class Product_Order_Lookup extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         grandTotal = (TextView) findViewById(R.id.grand_total_amount123);
         action_text_pane = (TextView) findViewById(R.id.action_text_pane);
-        coordinator= (CoordinatorLayout) findViewById(R.id.coordinator);
-        orderDetailsHeader= (LinearLayout) findViewById(R.id.orderdetailsheader);
+        coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
+        orderDetailsHeader = (LinearLayout) findViewById(R.id.orderdetailsheader);
+        sharedPreferences = this.getSharedPreferences(Class_Genric.MyPref, this.MODE_PRIVATE);
         //retailerSearch = (EditText) findViewById(R.id.retailer_search);
         action_text_pane = (TextView) findViewById(R.id.action_text_pane);
         //retailerSearch = (EditText) findViewById(R.id.retailer_search);
@@ -221,10 +230,61 @@ public class Product_Order_Lookup extends AppCompatActivity {
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
                     case Class_Genric.SALESPERSON:
-                        Class_SyncApi.PlaceOrderApi(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempRole.getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                        if (Class_Genric.NetAvailable(Product_Order_Lookup.this))
+                            Class_SyncApi.PlaceOrderApi(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempRole.getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                        else {
+                            Order tempOrder = new Order();
+                            tempOrder.setProducts(Class_Genric.getOrderProductsFromProducts(Class_Static.tempOrderingProduct));
+                            tempOrder.setId("N/A");
+                            tempOrder.setUser(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
+                            tempOrder.setClient(Class_Genric.getOrderRoleFromCurrentRole(Class_Static.tempRole));
+                            tempOrder.setOrderNumber("Offline Order");
+                            tempOrder.setStatus("Draft");
+                            if (grandTotal.getText() == null)
+                                tempOrder.setTotalAmount(0.0);
+                            else if (grandTotal.getText().toString().matches(""))
+                                tempOrder.setTotalAmount(0.0);
+                            else
+                                tempOrder.setTotalAmount(Double.valueOf(grandTotal.getText().toString().substring(8)));
+
+                            Class_ModelDB.DraftorderList.add(tempOrder);
+                            Class_DBHelper class_dbHelper = new Class_DBHelper(Product_Order_Lookup.this);
+                            class_dbHelper.saveDraftOrders();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(Class_Genric.Sp_OrderNumber, "Offline Order Placed");
+                            editor.putString(Class_Genric.Sp_Status, "Draft");
+                            editor.commit();
+                            startActivity(new Intent(Product_Order_Lookup.this, Order_Success.class));
+                            finish();
+                        }
                         break;
                     case Class_Genric.DISTRIBUTOR:
-                        Class_SyncApi.PlaceOrderApi(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                        if (Class_Genric.NetAvailable(Product_Order_Lookup.this))
+                            Class_SyncApi.PlaceOrderApi(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                        else {
+                            Order tempOrder = new Order();
+                            tempOrder.setProducts(Class_Genric.getOrderProductsFromProducts(Class_Static.tempOrderingProduct));
+                            tempOrder.setId("N/A");
+                            tempOrder.setUser(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
+                            tempOrder.setClient(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
+                            tempOrder.setOrderNumber("Offline Order");
+                            tempOrder.setStatus("Draft");
+                            if (grandTotal.getText() == null)
+                                tempOrder.setTotalAmount(0.0);
+                            else if (grandTotal.getText().toString().matches(""))
+                                tempOrder.setTotalAmount(0.0);
+                            else
+                                tempOrder.setTotalAmount(Double.valueOf(grandTotal.getText().toString().substring(8)));
+                            Class_ModelDB.DraftorderList.add(tempOrder);
+                            Class_DBHelper class_dbHelper = new Class_DBHelper(Product_Order_Lookup.this);
+                            class_dbHelper.saveDraftOrders();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(Class_Genric.Sp_OrderNumber, "Offline Order Placed");
+                            editor.putString(Class_Genric.Sp_Status, "Draft");
+                            editor.commit();
+                            startActivity(new Intent(Product_Order_Lookup.this, Order_Success.class));
+                            finish();
+                        }
                         break;
                 }
 
@@ -256,6 +316,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
         });
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -272,15 +333,23 @@ public class Product_Order_Lookup extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Snackbar snackbar = Snackbar
-                .make(coordinator, "Changes Will be Discarded", Snackbar.LENGTH_LONG)
-                .setAction("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        finish();
-                    }
-                });
-        snackbar.show();
+        /*if (Class_Static.viewOrderedProducts) {
+         finish();
+        }
+        else {
+            Snackbar snackbar = Snackbar
+                    .make(coordinator, "Changes Will be Discarded", Snackbar.LENGTH_LONG)
+                    .setAction("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    });
+            snackbar.show();
+        }*/
+
+        finish();
+
     }
 
     @Override

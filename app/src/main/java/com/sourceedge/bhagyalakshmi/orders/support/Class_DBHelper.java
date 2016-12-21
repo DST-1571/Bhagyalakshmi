@@ -38,6 +38,7 @@ public class Class_DBHelper extends SQLiteOpenHelper {
 
     public static String DataTableCurrentUser = "CurrentUser";
     public static String DataTableRole = "Role";
+    public static String DataTableDratfOrders = "Orders";
     public static String DataTableOrders = "Orders";
     public static String DataTableProduct = "Product";
     public static String DataTableGroup = "Group";
@@ -174,6 +175,38 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void saveDraftOrders() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(this.InitialData, "TableName=?", new String[]{DataTableDratfOrders});
+        CheckData(DataTableDratfOrders, false);
+        contentValues = new ContentValues();
+        contentValues.put(this.TableName, DataTableDratfOrders);
+        contentValues.put(this.Data, gson.toJsonTree(Class_ModelDB.DraftorderList).getAsJsonArray().toString());
+        db.insert(this.InitialData, null, contentValues);
+        CheckData(DataTableDratfOrders, true);
+        db.close();
+        loadOrders();
+    }
+
+
+    public void loadDraftOrders() {
+        SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{DataTableDratfOrders});
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            //initialModel.setSections(gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), ArrayList.class));
+            Type listType = new TypeToken<ArrayList<Order>>() {
+            }.getType();
+            ArrayList<Order> orderlist = new ArrayList<Order>();
+            orderlist = gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), listType);
+            Class_ModelDB.DraftorderList=new ArrayList<Order>();
+            Class_ModelDB.DraftorderList= (ArrayList<Order>) orderlist.clone();
+            res.moveToNext();
+        }
+        db.close();
+    }
+
+
     public void saveOrders() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(this.InitialData, "TableName=?", new String[]{DataTableOrders});
@@ -185,6 +218,7 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         CheckData(DataTableOrders, true);
         db.close();
     }
+
 
     public void loadCurrentUser() {
         SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
@@ -253,7 +287,7 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         res.moveToFirst();
         while (res.isAfterLast() == false) {
             //initialModel.setSections(gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), ArrayList.class));
-            Type listType = new TypeToken<ArrayList<Product>>() {
+            Type listType = new TypeToken<ArrayList<Catagories>>() {
             }.getType();
             ArrayList<Catagories> catagorylist = new ArrayList<Catagories>();
             catagorylist = gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), listType);
@@ -267,15 +301,18 @@ public class Class_DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = Class_DBHelper.this.getReadableDatabase();
         Cursor res = db.rawQuery("select * from InitialData where " + this.TableName + "=?", new String[]{DataTableOrders});
         res.moveToFirst();
+        ArrayList<Order> orderlist = new ArrayList<Order>();
         while (res.isAfterLast() == false) {
             //initialModel.setSections(gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), ArrayList.class));
             Type listType = new TypeToken<ArrayList<Order>>() {
             }.getType();
-            ArrayList<Order> orderlist = new ArrayList<Order>();
             orderlist = gson.fromJson(res.getString(res.getColumnIndex("Data")).toString(), listType);
-            Class_ModelDB.setOrderList(orderlist);
             res.moveToNext();
         }
+        for (Order Draftorder : Class_ModelDB.DraftorderList) {
+            orderlist.add(Draftorder);
+        }
+        Class_ModelDB.setOrderList(orderlist);
         db.close();
     }
 

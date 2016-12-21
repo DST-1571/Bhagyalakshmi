@@ -65,9 +65,11 @@ public class Admin_Orders_Adapter extends RecyclerView.Adapter<Admin_Orders_Adap
                             prod.setSectionName(Class_ModelDB.getProductList().get(j).getSectionName());
                             prod.setUnits(Class_Static.OrdredProducts.getProducts().get(i).getUnit());
                             prod.setCategoryId(Class_ModelDB.getProductList().get(j).getCategoryId());
-                            prod.setSectionId(Class_ModelDB.getProductList().get(j).getSectionId());for (Catagories catagories:Class_ModelDB.getCatagoryList()) {
-                                if(prod.getCategoryId().matches(catagories.getId()))
-                                    prod.setCatagoryName(catagories.getName());
+                            prod.setSectionId(Class_ModelDB.getProductList().get(j).getSectionId());
+                            for (int x=0 ;x<Class_ModelDB.getCatagoryList().size();x++) {
+
+                                if(prod.getCategoryId().matches(Class_ModelDB.getCatagoryList().get(x).getId()))
+                                    prod.setCatagoryName(Class_ModelDB.getCatagoryList().get(x).getName());
                             }
                             Class_Static.tempOrderingProduct.add(prod);
                         }

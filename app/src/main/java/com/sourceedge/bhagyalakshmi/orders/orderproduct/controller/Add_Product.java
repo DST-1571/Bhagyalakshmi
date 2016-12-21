@@ -342,16 +342,8 @@ public class Add_Product extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Snackbar snackbar = Snackbar
-                .make(coordinator, "Changes Will be Discarded", Snackbar.LENGTH_LONG)
-                .setAction("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
-                        finish();
-                    }
-                });
-        snackbar.show();
+        startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
+        finish();
 
     }
 

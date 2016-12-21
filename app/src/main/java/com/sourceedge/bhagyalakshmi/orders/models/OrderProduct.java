@@ -8,28 +8,28 @@ public class OrderProduct {
 
     private String Id;
     private String ProductId;
-    private Double Quantity;
+    private int Quantity;
     private Double Price;
     private String Unit;
-    private String SectionId;
-    private String CategoryId;
-    private String SectionName;
-    private String CatagoryName;
-    private String Description;
-    private String Code;
+   // private String SectionId;
+    //private String CategoryId;
+   // private String SectionName;
+   // private String CatagoryName;
+    //private String Description;
+   // private String Code;
 
     public OrderProduct(){
         Id="";
         ProductId="";
-        Quantity=0.0;
+        Quantity=0;
         Price=0.0;
         Unit="";
-        Description="";
-        SectionId="";
-        CategoryId="";
-        Code="";
-        SectionName="";
-        CatagoryName="";
+       // Description="";
+       // SectionId="";
+       // CategoryId="";
+       // Code="";
+      //  SectionName="";
+      //  CatagoryName="";
     }
 
     public String getId() {
@@ -48,11 +48,11 @@ public class OrderProduct {
         ProductId = productId;
     }
 
-    public Double getQuantity() {
+    public int getQuantity() {
         return Quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(int quantity) {
         Quantity = quantity;
     }
 
@@ -72,51 +72,5 @@ public class OrderProduct {
         Unit = unit;
     }
 
-    public String getSectionId() {
-        return SectionId;
-    }
 
-    public void setSectionId(String sectionId) {
-        SectionId = sectionId;
-    }
-
-    public String getCategoryId() {
-        return CategoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        CategoryId = categoryId;
-    }
-
-    public String getSectionName() {
-        return SectionName;
-    }
-
-    public void setSectionName(String sectionName) {
-        SectionName = sectionName;
-    }
-
-    public String getCatagoryName() {
-        return CatagoryName;
-    }
-
-    public void setCatagoryName(String catagoryName) {
-        CatagoryName = catagoryName;
-    }
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
-
-    public String getCode() {
-        return Code;
-    }
-
-    public void setCode(String code) {
-        Code = code;
-    }
 }

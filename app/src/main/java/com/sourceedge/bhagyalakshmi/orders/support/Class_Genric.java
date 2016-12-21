@@ -32,6 +32,12 @@ import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.changepassword.Change_Password;
 import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
 import com.sourceedge.bhagyalakshmi.orders.location.MapsActivity;
+import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
+import com.sourceedge.bhagyalakshmi.orders.models.Order;
+import com.sourceedge.bhagyalakshmi.orders.models.OrderProduct;
+import com.sourceedge.bhagyalakshmi.orders.models.OrderRole;
+import com.sourceedge.bhagyalakshmi.orders.models.Product;
+import com.sourceedge.bhagyalakshmi.orders.models.Role;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Admin_Orders;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.location.Location;
@@ -181,6 +187,42 @@ public class Class_Genric {
             }
         }
         return true;
+    }
+
+    public static boolean NetAvailable(final Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        final boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        return isConnected;
+    }
+
+    public static ArrayList<OrderProduct> getOrderProductsFromProducts(ArrayList<Product> Products) {
+        ArrayList<OrderProduct> tempOrderProducts= new ArrayList<OrderProduct>();
+        for (Product product:Products) {
+            OrderProduct tempOP= new OrderProduct();
+            tempOP.setId("N/A");
+            tempOP.setProductId(product.getId());
+            tempOP.setUnit(product.getUnits());
+            tempOP.setQuantity(product.getQuantity());
+            tempOP.setPrice(product.getPrice());
+            tempOrderProducts.add(tempOP);
+        }
+        return tempOrderProducts;
+    }
+
+    public static OrderRole getOrderRoleFromCurrentUser(CurrentUser User) {
+        OrderRole orderRole= new OrderRole();
+        orderRole.setId(User.getId());
+        orderRole.setName(User.getName());
+        orderRole.setUserType(User.getUserType());
+        return orderRole;
+    }
+
+    public static OrderRole getOrderRoleFromCurrentRole(Role role) {
+        OrderRole orderRole= new OrderRole();
+        orderRole.setId(role.getId());
+        orderRole.setName(role.getName());
+        return orderRole;
     }
 
     public static int convertDpToPixels(float dp, Context context) {

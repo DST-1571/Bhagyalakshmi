@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Application;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_DBHelper;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
@@ -30,6 +31,7 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         dbHelper=new Class_DBHelper(Splash.this);
+        dbHelper.loadDraftOrders();
         sharedPreferences = this.getSharedPreferences(Class_Genric.MyPref, this.MODE_PRIVATE);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         new Handler().postDelayed(new Runnable() {

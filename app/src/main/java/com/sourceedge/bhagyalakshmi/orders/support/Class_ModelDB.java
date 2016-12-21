@@ -19,6 +19,16 @@ public class Class_ModelDB {
 
     private static Order orderModel=new Order();
     private static ArrayList<Order> orderList=new ArrayList<Order>();
+    public static ArrayList<Order> DraftorderList=new ArrayList<Order>();
+    private static ArrayList<Catagories> catagoryList=new ArrayList<Catagories>();
+
+    private static Role roleModel=new Role();
+    private static ArrayList<Role> roleList=new ArrayList<Role>();
+
+    private static User userModel=new User();
+    private static ArrayList<User> userList=new ArrayList<User>();
+
+    private static CurrentUser currentuserModel=new CurrentUser();
 
     private static OrderProduct orderProductModel=new OrderProduct();
     private static ArrayList<OrderProduct> orderProductList=new ArrayList<OrderProduct>();
@@ -63,15 +73,7 @@ public class Class_ModelDB {
         Class_ModelDB.catagoryList = catagoryList;
     }
 
-    private static ArrayList<Catagories> catagoryList=new ArrayList<Catagories>();
 
-    private static Role roleModel=new Role();
-    private static ArrayList<Role> roleList=new ArrayList<Role>();
-
-    private static User userModel=new User();
-    private static ArrayList<User> userList=new ArrayList<User>();
-
-    private static CurrentUser currentuserModel=new CurrentUser();
 
     //Getter and Setter of all above models
 

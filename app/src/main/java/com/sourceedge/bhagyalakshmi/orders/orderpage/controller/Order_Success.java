@@ -30,7 +30,7 @@ public class Order_Success extends AppCompatActivity {
         orderNumber=(TextView)findViewById(R.id.order_number);
         order_Placedby=(TextView)findViewById(R.id.order_placedby);
         Class_SyncApi.OrderApi(Order_Success.this);
-        orderNumber.setText("Your Order Id is "+sharedPreferences.getString(Class_Genric.Sp_OrderNumber,""));
+        orderNumber.setText(sharedPreferences.getString(Class_Genric.Sp_OrderNumber,""));
         order_Placedby.setText("Order Placed By "+ Class_ModelDB.getCurrentuserModel().getName()+"("+Class_ModelDB.getCurrentuserModel().getUserType()+")");
     }
 

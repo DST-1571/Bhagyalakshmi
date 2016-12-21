@@ -589,8 +589,8 @@ public class Class_SyncApi {
                             JSONArray jsonArray = new JSONArray(response);
                             model = gson.fromJson(jsonArray.toString(), listType);
                             Class_ModelDB.setSectionList(model);
-                            dbHelper.saveProduct();
-                            dbHelper.loadProduct();
+                            dbHelper.saveSections();
+                            dbHelper.loadSections();
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -603,8 +603,8 @@ public class Class_SyncApi {
                 Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError)
                     if (error instanceof NoConnectionError) {
-                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
-                            dbHelper.loadProduct();
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableGroup)) {
+                            dbHelper.loadSections();
                         } else {
                             Class_Genric.NetCheck(context);
                         }
@@ -658,8 +658,8 @@ public class Class_SyncApi {
                             JSONArray jsonArray = new JSONArray(response);
                             model = gson.fromJson(jsonArray.toString(), listType);
                             Class_ModelDB.setCatagoryList(model);
-                            dbHelper.saveProduct();
-                            dbHelper.loadProduct();
+                            dbHelper.saveCatagories();
+                            dbHelper.loadcatagory();
 
                             break;
                         } catch (JSONException e) {
@@ -673,8 +673,8 @@ public class Class_SyncApi {
                 Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError)
                     if (error instanceof NoConnectionError) {
-                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
-                            dbHelper.loadProduct();
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
+                            dbHelper.loadcatagory();
                         } else {
                             Class_Genric.NetCheck(context);
                         }
@@ -782,14 +782,14 @@ public class Class_SyncApi {
             OrderProduct obj = new OrderProduct();
             obj.setProductId(orderedProduct.get(i).getId());
             obj.setPrice(orderedProduct.get(i).getPrice());
-            obj.setQuantity(Double.valueOf(orderedProduct.get(i).getQuantity()));
+            obj.setQuantity(orderedProduct.get(i).getQuantity());
             obj.setUnit(orderedProduct.get(i).getUnits());
             products.add(obj);
         }
         PlaceOrder placeorder = new PlaceOrder();
         placeorder.setUserId(UserId);
         placeorder.setClientId(ClientId);
-        placeorder.setTotalAmount(Double.valueOf(total.substring(8, 12)));
+        placeorder.setTotalAmount(Double.valueOf(total.substring(8)));
         placeorder.setProducts(products);
         JSONObject jsonObject = new JSONObject();
         try {
@@ -805,7 +805,7 @@ public class Class_SyncApi {
                 switch (mStatusCode) {
                     case 200:
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(Class_Genric.Sp_OrderNumber, response.optString("OrderNumber"));
+                        editor.putString(Class_Genric.Sp_OrderNumber, "Your Order Id is "+response.optString("OrderNumber"));
                         editor.putString(Class_Genric.Sp_Status, response.optString("Status"));
                         editor.commit();
                         ((Activity) context).startActivity(new Intent(context, Order_Success.class));
