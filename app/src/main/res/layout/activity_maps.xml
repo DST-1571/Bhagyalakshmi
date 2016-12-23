@@ -1,8 +1,116 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.location.MapsActivity" />
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:context="com.sourceedge.bhagyalakshmi.orders.login.Splash">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/map"
+            android:layout_below="@+id/header"
+            android:layout_above="@+id/footer"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.sourceedge.bhagyalakshmi.orders.location.MapsActivity" />
+        <RelativeLayout
+            android:id="@+id/header"
+            android:gravity="center"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/searchbar_round"
+            android:layout_height="wrap_content" >
+            <ImageView
+                android:layout_width="@dimen/dimen_20dp"
+                android:src="@drawable/ic_account_grey600_24dp"
+                android:layout_height="@dimen/dimen_20dp" />
+            <TextView
+                android:layout_marginLeft="@dimen/dimen_30dp"
+                android:layout_marginRight="@dimen/dimen_30dp"
+                android:padding="@dimen/dimen_4dp"
+                android:textColor="@color/black"
+                android:text="Users"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_alignParentRight="true"
+                android:layout_width="@dimen/dimen_20dp"
+                android:src="@drawable/down_arrow"
+                android:layout_height="@dimen/dimen_20dp" />
+            </RelativeLayout>
+        <RelativeLayout
+            android:id="@id/footer"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:background="@drawable/grey_square_border"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <LinearLayout
+                    android:padding="@dimen/dimen_10dp"
+                    android:background="@color/colorAccent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="@dimen/dimen_20dp"
+                        android:src="@drawable/ic_account_white_24dp"
+                        android:layout_height="@dimen/dimen_20dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:hint="User Name"
+                        android:padding="@dimen/dimen_4dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="@dimen/textsize_18sp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <RelativeLayout
+                    android:padding="@dimen/dimen_20dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:hint="User Adress"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:hint="User phone"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <ImageView
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="@dimen/dimen_20dp"
+                        android:src="@drawable/ic_phone_grey600_24dp"
+                        android:layout_height="@dimen/dimen_20dp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
+

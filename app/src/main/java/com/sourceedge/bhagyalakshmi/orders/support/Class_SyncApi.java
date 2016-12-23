@@ -806,7 +806,7 @@ public class Class_SyncApi {
                     case 200:
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(Class_Genric.Sp_OrderNumber, "Your Order Id is "+response.optString("OrderNumber"));
-                        editor.putString(Class_Genric.Sp_Status, response.optString("Status"));
+                        editor.putString(Class_Genric.Sp_OrderStatus, response.optString("Status"));
                         editor.commit();
                         ((Activity) context).startActivity(new Intent(context, Order_Success.class));
                         ((Activity) context).finish();

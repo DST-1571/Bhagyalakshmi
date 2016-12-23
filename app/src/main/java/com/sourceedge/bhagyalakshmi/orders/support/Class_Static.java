@@ -50,5 +50,9 @@ public class Class_Static {
         tempProduct=new Product();
         tempOrderingProduct=new ArrayList<Product>();
         OrdredProducts=new Order();
+        tempCategotyList=new ArrayList<Catagories>();
+        tempOrder=new ArrayList<Order>();
+        tempGroupList=new ArrayList<Sections>();
+        tempRoleList=new ArrayList<Role>();
     }
 }

@@ -69,6 +69,7 @@ public class Order_Product_List_Adapter extends RecyclerView.Adapter<Order_Produ
                 Class_Static.editProductOrder=true;
                 Class_Static.tempProduct=data.get(pos);
                 ((Activity)mContext).startActivity(new Intent(mContext,Add_Product.class));
+                ((Activity)mContext).finish();
             }
         });
 

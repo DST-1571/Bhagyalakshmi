@@ -68,6 +68,7 @@ public class Class_Genric {
     public static final int SALESPERSON = 4;
     public static final String Sp_Status = "Status";
     public static final String Sp_OrderNumber = "OrderNumber";
+    public static final String Sp_OrderStatus = "OrderNumber";
     public static boolean progressAlive = false;
     static ProgressDialog pDialog;
     public static final String rupee = "\u20B9 ";
@@ -502,6 +503,7 @@ public class Class_Genric {
                 dbHelper.ClearAllData();
                 Class_ModelDB.ClearDB();
                 Class_Static.ClearStaticData();
+
                 a.startActivity(new Intent(a, Login.class));
                 a.finish();
             }

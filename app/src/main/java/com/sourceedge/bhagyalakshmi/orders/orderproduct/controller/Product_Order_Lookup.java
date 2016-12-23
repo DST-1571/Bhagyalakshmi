@@ -252,7 +252,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                             class_dbHelper.saveDraftOrders();
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString(Class_Genric.Sp_OrderNumber, "Offline Order Placed");
-                            editor.putString(Class_Genric.Sp_Status, "Draft");
+                            editor.putString(Class_Genric.Sp_OrderStatus, "Draft");
                             editor.commit();
                             startActivity(new Intent(Product_Order_Lookup.this, Order_Success.class));
                             finish();
@@ -280,7 +280,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                             class_dbHelper.saveDraftOrders();
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString(Class_Genric.Sp_OrderNumber, "Offline Order Placed");
-                            editor.putString(Class_Genric.Sp_Status, "Draft");
+                            editor.putString(Class_Genric.Sp_OrderStatus, "Draft");
                             editor.commit();
                             startActivity(new Intent(Product_Order_Lookup.this, Order_Success.class));
                             finish();

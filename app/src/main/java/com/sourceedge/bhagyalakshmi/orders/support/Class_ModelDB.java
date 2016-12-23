@@ -16,30 +16,52 @@ import java.util.ArrayList;
  */
 
 public class Class_ModelDB {
+    private static int APPVERSION = 0;
+    private static Order orderModel = new Order();
+    private static ArrayList<Order> orderList = new ArrayList<Order>();
+    public static ArrayList<Order> DraftorderList = new ArrayList<Order>();
+    private static ArrayList<Catagories> catagoryList = new ArrayList<Catagories>();
 
-    private static Order orderModel=new Order();
-    private static ArrayList<Order> orderList=new ArrayList<Order>();
-    public static ArrayList<Order> DraftorderList=new ArrayList<Order>();
-    private static ArrayList<Catagories> catagoryList=new ArrayList<Catagories>();
+    private static Role roleModel = new Role();
+    private static ArrayList<Role> roleList = new ArrayList<Role>();
 
-    private static Role roleModel=new Role();
-    private static ArrayList<Role> roleList=new ArrayList<Role>();
+    private static User userModel = new User();
+    private static ArrayList<User> userList = new ArrayList<User>();
 
-    private static User userModel=new User();
-    private static ArrayList<User> userList=new ArrayList<User>();
+    private static CurrentUser currentuserModel = new CurrentUser();
 
-    private static CurrentUser currentuserModel=new CurrentUser();
+    private static OrderProduct orderProductModel = new OrderProduct();
+    private static ArrayList<OrderProduct> orderProductList = new ArrayList<OrderProduct>();
 
-    private static OrderProduct orderProductModel=new OrderProduct();
-    private static ArrayList<OrderProduct> orderProductList=new ArrayList<OrderProduct>();
-
-    private static Product productModel=new Product();
-    private static ArrayList<Product> productList=new ArrayList<Product>();
+    private static Product productModel = new Product();
+    private static ArrayList<Product> productList = new ArrayList<Product>();
 
     private static Sections sectionsModel = new Sections();
-    private static ArrayList<Sections> sectionList=new ArrayList<Sections>();
+    private static ArrayList<Sections> sectionList = new ArrayList<Sections>();
 
-    private static Catagories CatagoryModel=new Catagories();
+    private static Catagories CatagoryModel = new Catagories();
+
+
+    public static void ClearDB() {
+        orderModel = new Order();
+        orderList = new ArrayList<Order>();
+        DraftorderList = new ArrayList<Order>();
+        orderProductModel = new OrderProduct();
+        orderProductList = new ArrayList<OrderProduct>();
+        catagoryList = new ArrayList<Catagories>();
+        productModel = new Product();
+        productList = new ArrayList<Product>();
+        currentuserModel = new CurrentUser();
+        roleModel = new Role();
+        roleList = new ArrayList<Role>();
+        sectionsModel = new Sections();
+        userModel = new User();
+        userList = new ArrayList<User>();
+        sectionList = new ArrayList<Sections>();
+    }
+
+
+    //Getter and Setter of all above models
 
     public static Sections getSectionsModel() {
         return sectionsModel;
@@ -72,10 +94,6 @@ public class Class_ModelDB {
     public static void setCatagoryList(ArrayList<Catagories> catagoryList) {
         Class_ModelDB.catagoryList = catagoryList;
     }
-
-
-
-    //Getter and Setter of all above models
 
     public static Order getOrderModel() {
         return orderModel;
@@ -165,20 +183,5 @@ public class Class_ModelDB {
         Class_ModelDB.currentuserModel = currentuserModel;
     }
 
-    public static void ClearDB(){
-        orderModel=new Order();
-        orderList=new ArrayList<Order>();
 
-        orderProductModel=new OrderProduct();
-        orderProductList=new ArrayList<OrderProduct>();
-
-        productModel=new Product();
-        productList=new ArrayList<Product>();
-
-        roleModel=new Role();
-        roleList=new ArrayList<Role>();
-
-        userModel=new User();
-        userList=new ArrayList<User>();
-    }
 }
