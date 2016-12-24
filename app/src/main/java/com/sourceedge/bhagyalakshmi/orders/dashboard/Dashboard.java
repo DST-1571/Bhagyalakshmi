@@ -36,7 +36,7 @@ public class Dashboard extends AppCompatActivity {
         Class_Genric.setOrientation(Dashboard.this);
         sharedPreferences = getSharedPreferences(Class_Genric.MyPref, Dashboard.MODE_PRIVATE);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bhagyalakshmi Traders");
+        toolbar.setTitle(Class_ModelDB.AppTitle);
         setSupportActionBar(toolbar);
         Class_Genric.applyFontForToolbarTitle(toolbar,Dashboard.this);
         drawer = (DrawerLayout) findViewById(R.id.navigation_drawer);

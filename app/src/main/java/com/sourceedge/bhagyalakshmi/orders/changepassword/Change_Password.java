@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.login.Login;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
 public class Change_Password extends AppCompatActivity {
@@ -30,7 +31,7 @@ public class Change_Password extends AppCompatActivity {
         setContentView(R.layout.activity_change_password);
         Class_Genric.setOrientation(Change_Password.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bhagyalakshmi Traders");
+        toolbar.setTitle(Class_ModelDB.AppTitle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Class_Genric.applyFontForToolbarTitle(toolbar, Change_Password.this);

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class Class_ModelDB {
     private static int APPVERSION = 0;
+    public static String AppTitle="Bhagyalakshmi Enterprises";
     private static Order orderModel = new Order();
     private static ArrayList<Order> orderList = new ArrayList<Order>();
     public static ArrayList<Order> DraftorderList = new ArrayList<Order>();

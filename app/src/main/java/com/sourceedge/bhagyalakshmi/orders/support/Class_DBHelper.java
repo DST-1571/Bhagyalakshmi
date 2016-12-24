@@ -35,10 +35,9 @@ public class Class_DBHelper extends SQLiteOpenHelper {
     public static String TableName = "TableName";
     public static String Data = "Data";
     public static String IsPresent = "IsPresent";
-
     public static String DataTableCurrentUser = "CurrentUser";
     public static String DataTableRole = "Role";
-    public static String DataTableDratfOrders = "Orders";
+    public static String DataTableDratfOrders = "DraftOrders";
     public static String DataTableOrders = "Orders";
     public static String DataTableProduct = "Product";
     public static String DataTableGroup = "Group";

@@ -57,7 +57,7 @@ public class Add_Product extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Class_Genric.setOrientation(Add_Product.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bhagyalakshmi Traders");
+        toolbar.setTitle(Class_ModelDB.AppTitle);
         setSupportActionBar(toolbar);
         coordinator= (CoordinatorLayout) findViewById(R.id.coordinator);
         scrollview = (ScrollView) findViewById(R.id.scrollview);

@@ -71,7 +71,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retailer_look_up);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bhagyalakshmi Traders");
+        toolbar.setTitle(Class_ModelDB.AppTitle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Class_Genric.setOrientation(Product_Order_Lookup.this);
