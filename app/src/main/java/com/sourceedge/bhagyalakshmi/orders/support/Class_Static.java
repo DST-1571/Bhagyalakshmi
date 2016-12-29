@@ -17,6 +17,8 @@ import java.util.Date;
 public class Class_Static {
 
     public static String timestamp="";
+    public static int Stock=0;
+    public static int AvailableStock=0;
     public static ArrayList<Date> timestamplist=new ArrayList<Date>();
     public static boolean editProductOrder=false;
     public static boolean viewOrderedProducts=false;

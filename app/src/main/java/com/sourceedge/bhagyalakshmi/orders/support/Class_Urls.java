@@ -13,6 +13,7 @@ public class Class_Urls {
     public static final String Retailer=Parent+"retailer";
     public static final String RetailerId=Parent+"retailer/id";
     public static final String Product=Parent+"product";
+    public static final String Stock=Parent+"stock";
     public static final String Catagory=Parent+"Category";
     public static final String Section=Parent+"Section";
     public static final String ProductId=Parent+"product/id";

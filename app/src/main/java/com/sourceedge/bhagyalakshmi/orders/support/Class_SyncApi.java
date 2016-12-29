@@ -32,6 +32,7 @@ import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 import com.sourceedge.bhagyalakshmi.orders.models.Sections;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Success;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Add_Product;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -569,6 +570,75 @@ public class Class_SyncApi {
         queue.add(postRequest);
     }
 
+    public static void StockApi(final Context context, String id, final int currentQty) {
+        /*String s = "2016-12-06T11:29:26";
+        if (s.contains("T")) {
+            s = s.replace("T", "");
+        }*/
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("Id", id));
+        Class_Genric.ShowDialog(context,"Loading...",true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Stock, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            Double d= Double.valueOf(jsonObject.optString("Stock"));
+                            Class_Static.Stock= d.intValue();
+                            Class_Static.AvailableStock=Class_Static.Stock-currentQty;
+                            if(Class_Static.AvailableStock>0){
+                                Class_Static.tempProduct.setQuantity(1);
+                            }else {
+                                Class_Static.tempProduct.setQuantity(0);
+                            }
+                            Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
+                            Add_Product.productStock.setText("Stocks Available : "+Class_Static.AvailableStock);
+                            ((Activity) context).finish();
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context,"Loading...",false);
+                if (error instanceof TimeoutError)
+                    if (error instanceof NoConnectionError) {
+                        Class_Genric.NetCheck(context);
+                    } else {
+                        if (error != null && error.networkResponse != null) {
+                            mStatusCode = error.networkResponse.statusCode;
+                            switch (mStatusCode) {
+                                case 400:
+                                    Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                    }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(postRequest);
+    }
+
     public static void GroupsApi(final Context context) {
         dbHelper = new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -805,7 +875,7 @@ public class Class_SyncApi {
                 switch (mStatusCode) {
                     case 200:
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(Class_Genric.Sp_OrderNumber, "Your Order Id is "+response.optString("OrderNumber"));
+                        editor.putString(Class_Genric.Sp_OrderNumber, "Your Order Id is " + response.optString("OrderNumber"));
                         editor.putString(Class_Genric.Sp_OrderStatus, response.optString("Status"));
                         editor.commit();
                         ((Activity) context).startActivity(new Intent(context, Order_Success.class));

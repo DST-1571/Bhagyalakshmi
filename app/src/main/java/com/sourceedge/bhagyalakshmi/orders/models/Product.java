@@ -14,6 +14,7 @@ public class Product {
     private String Units;
     private Double Price;
     private int Quantity;
+    private int Stock;
     private Double Amount;
     private String Description;
     private String Code;
@@ -23,6 +24,7 @@ public class Product {
         Units="";
         Price=0.0;
         Quantity=0;
+        Stock=0;
         Amount=0.0;
         Description="";
         SectionId="";
@@ -37,6 +39,7 @@ public class Product {
         Units=tempPtoduct.getUnits();
         Price=tempPtoduct.getPrice();
         Quantity=tempPtoduct.getQuantity();
+        Stock=tempPtoduct.getStock();
         Amount=tempPtoduct.getAmount();
         Description=tempPtoduct.getDescription();
         SectionId=tempPtoduct.getSectionId();
@@ -81,6 +84,7 @@ public class Product {
         Units=tempProduct.getUnits();
         Price=tempProduct.getPrice();
         Quantity=tempProduct.getQuantity();
+        Stock=tempProduct.getStock();
         Amount=tempProduct.getAmount();
         Description=tempProduct.getDescription();
         CatagoryName= tempProduct.getCatagoryName();
@@ -144,5 +148,13 @@ public class Product {
 
     public void setDescription(String description) {
         Description = description;
+    }
+
+    public int getStock() {
+        return Stock;
+    }
+
+    public void setStock(int stock) {
+        Stock = stock;
     }
 }

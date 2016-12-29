@@ -32,16 +32,17 @@ import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Add_Product extends AppCompatActivity {
     Toolbar toolbar;
-    public static TextView productSearch;
+    public static TextView productSearch, productStock;
     public static TextView retailerName, productGroup, productCategory;
     public static EditText productUnit, productQuantity, productPrice;
-    ImageView searchGroupIcon,searchCategoryIcon,searchIcon;
+    ImageView searchGroupIcon, searchCategoryIcon, searchIcon;
     ImageButton incrementQuantity, decrementQuantity;
     Button buttonAdd, buttonReset, buttonAddNew;
     LinearLayout retailerLayout, searchPane;
@@ -59,15 +60,16 @@ public class Add_Product extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(Class_ModelDB.AppTitle);
         setSupportActionBar(toolbar);
-        coordinator= (CoordinatorLayout) findViewById(R.id.coordinator);
+        coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
         scrollview = (ScrollView) findViewById(R.id.scrollview);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //distributorSalesManName = (TextView) findViewById(R.id.user_name);
         retailerName = (TextView) findViewById(R.id.retailer_name);
-        searchGroupIcon=(ImageView)findViewById(R.id.search_group_icon);
-        searchCategoryIcon=(ImageView) findViewById(R.id.search_category_icon);
-        searchIcon= (ImageView) findViewById(R.id.search_icon);
+        searchGroupIcon = (ImageView) findViewById(R.id.search_group_icon);
+        searchCategoryIcon = (ImageView) findViewById(R.id.search_category_icon);
+        searchIcon = (ImageView) findViewById(R.id.search_icon);
         productSearch = (TextView) findViewById(R.id.product_search);
+        productStock = (TextView) findViewById(R.id.product_stock);
         productGroup = (TextView) findViewById(R.id.product_group);
         productCategory = (TextView) findViewById(R.id.product_category);
         productUnit = (EditText) findViewById(R.id.product_unit);
@@ -86,31 +88,47 @@ public class Add_Product extends AppCompatActivity {
             case Class_Genric.DISTRIBUTORSALES:
                 if (Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")) {
                     productPrice.setEnabled(true);
-                }else{
+                } else {
                     productPrice.setEnabled(false);
                 }
-                //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor(DSP)");
+               /* Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+                Product prod = new Product();
+                while (iter.hasNext()) {
+                    prod = iter.next();
+                    if (prod.getId().matches(Class_Static.tempProduct.getId())){
+                        productStock.setText("Stock Available : "+Class_Static.AvailableStock);
+                        productStock.setVisibility(View.GONE);
+                    }
+                }*/
                 break;
             case Class_Genric.DISTRIBUTOR:
                 if (Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")) {
                     productPrice.setEnabled(true);
-                }else{
+                } else {
                     productPrice.setEnabled(false);
                 }
                 retailerLayout.setVisibility(View.GONE);
-                //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Distributor");
+                productStock.setVisibility(View.GONE);
                 break;
             case Class_Genric.SALESPERSON:
                 if (Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")) {
                     productPrice.setEnabled(true);
-                }else{
+                } else {
                     productPrice.setEnabled(false);
                 }
+                productStock.setVisibility(View.GONE);
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
                 break;
         }
         retailerName.setText(Class_Static.tempRole.getName().toString());
+
         if (Class_Static.editProductOrder) {
+            switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                case Class_Genric.DISTRIBUTORSALES:
+                    productStock.setText("Stock Available : " + Class_Static.AvailableStock);
+                    productStock.setVisibility(View.VISIBLE);
+                    break;
+            }
             productSearch.setText(Class_Static.tempProduct.getDescription());
             productGroup.setText(Class_Static.tempProduct.getSectionName());
             productCategory.setText(Class_Static.tempProduct.getCatagoryName());
@@ -126,8 +144,8 @@ public class Add_Product extends AppCompatActivity {
             buttonAdd.setText("SAVE");
             buttonAddNew.setText("CANCEL");
 
-        } else{
-            Class_Static.tempProduct= new Product();
+        } else {
+            Class_Static.tempProduct = new Product();
             searchCategoryIcon.setVisibility(View.VISIBLE);
             searchIcon.setVisibility(View.VISIBLE);
             searchGroupIcon.setVisibility(View.VISIBLE);
@@ -144,124 +162,322 @@ public class Add_Product extends AppCompatActivity {
         incrementQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("".equals(productQuantity.getText().toString().trim())) {
-                    productQuantity.setText("0");
+                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                    case Class_Genric.DISTRIBUTORSALES:
+                        if ("".equals(productQuantity.getText().toString().trim())) {
+                            productQuantity.setText("0");
+                        }
+                        Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+                        Product prod = new Product();
+                        boolean found = false;
+                        while (iter.hasNext()) {
+                            prod = iter.next();
+                            if (prod.getId().matches(Class_Static.tempProduct.getId())) {
+                                found = true;
+                            }
+                        }
+                        if (!found) {
+                            if (Integer.parseInt(productQuantity.getText().toString()) >= Class_Static.AvailableStock) {
+                                productQuantity.setError("Out of Stock");
+                            } else {
+                                productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) + 1) + "");
+                                //productStock.setText("Stock Available : " + (Class_Static.Stock - Integer.parseInt(productQuantity.getText().toString())));
+                            }
+                        } else {
+                            if (Integer.parseInt(productQuantity.getText().toString()) >= Class_Static.AvailableStock) {
+                                productQuantity.setError("Out of Stock");
+                            } else {
+                                productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) + 1) + "");
+                                //productStock.setText("Stock Available : " + (Class_Static.Stock - Integer.parseInt(productQuantity.getText().toString())));
+                            }
+                        }
+                        break;
+                    case Class_Genric.DISTRIBUTOR:
+                    case Class_Genric.SALESPERSON:
+                        if ("".equals(productQuantity.getText().toString().trim())) {
+                            productQuantity.setText("0");
+                        }
+                        productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) + 1) + "");
+                        //productStock.setText("Stock Available : " + (Class_Static.Stock - Integer.parseInt(productQuantity.getText().toString())));
+                        break;
                 }
-                productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) + 1) + "");
             }
         });
 
         decrementQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("".equals(productQuantity.getText().toString().trim())) {
-                    productQuantity.setText("1");
+                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                    case Class_Genric.DISTRIBUTORSALES:
+                        if ("".equals(productQuantity.getText().toString().trim())) {
+                            productQuantity.setText("1");
+                        }
+                        if (productQuantity.getText().toString().matches("0")) {
+                            Toast.makeText(Add_Product.this, "Min Count is 0", Toast.LENGTH_SHORT).show();
+                        } else if (!productQuantity.getText().toString().matches("1")) {
+                            productQuantity.setError(null);
+                            productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) - 1) + "");
+                            //productStock.setText("Stock Available : " + ((Integer.parseInt(productStock.getText().toString().split(": ")[1]) + 1) + ""));
+                        } else
+                            Toast.makeText(Add_Product.this, "Min Count is 1", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Class_Genric.DISTRIBUTOR:
+                    case Class_Genric.SALESPERSON:
+                        if ("".equals(productQuantity.getText().toString().trim())) {
+                            productQuantity.setText("1");
+                        }
+                       if (!productQuantity.getText().toString().matches("1")) {
+                            productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) - 1) + "");
+                            //productStock.setText("Stock Available : " + ((Integer.parseInt(productStock.getText().toString().split(": ")[1]) + 1) + ""));
+                        } else Toast.makeText(Add_Product.this, "Min Count is 1", Toast.LENGTH_SHORT).show();
+                        break;
                 }
-                if (!productQuantity.getText().toString().matches("1")) {
-                    productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) - 1) + "");
-                } else
-                    Toast.makeText(Add_Product.this, "Min Count is 1", Toast.LENGTH_SHORT).show();
+
             }
 
         });
 
 
-        buttonAdd.setOnClickListener(new View.OnClickListener()
-
-                                     {
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
                                              if (Class_Static.editProductOrder) {
-                                                 Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
-                                                 Class_Static.tempProduct.setDescription(productSearch.getText().toString());
-                                                 Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
-                                                 Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
-                                                 Class_Static.tempProduct.setUnits(productUnit.getText().toString());
-                                                 Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
-                                                 Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                                                 Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
-                                                 Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
-                                                 while (iter.hasNext()) {
-                                                     Product prod = iter.next();
+                                                 switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                                                     case Class_Genric.DISTRIBUTORSALES:
+                                                         if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
+                                                             productQuantity.setError("Out of Stock");
+                                                         } else {
+                                                             Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                             Class_Static.tempProduct.setDescription(productSearch.getText().toString());
+                                                             Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
+                                                             Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
+                                                             Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                             Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                                                             Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
+                                                             Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
 
-                                                     if (prod.getId().matches(Class_Static.tempProduct.getId()))
-                                                         iter.remove();
-                                                 }
-                                                 Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
-                                                 Class_Static.editProductOrder = false;
-                                             } else {
-                                                 if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
-                                                     //Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
-                                                 } else {
-                                                     Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
-                                                     boolean found = false;
-                                                     while (iter.hasNext()) {
-                                                         Product prod = iter.next();
-                                                         if (prod.getId().matches(Class_Static.tempProduct.getId())) {
-                                                             int qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
-                                                             prod.setQuantity(qty);
-                                                             prod.setAmount(prod.getQuantity() * prod.getPrice());
-                                                             found = true;
-                                                             break;
+                                                             Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+                                                             Product prod = new Product();
+                                                             while (iter.hasNext()) {
+                                                                 prod = iter.next();
+                                                                 if (prod.getId().matches(Class_Static.tempProduct.getId()))
+                                                                     iter.remove();
+                                                             }
+                                                             if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
+                                                                 productQuantity.setError("Out of Stock");
+                                                             } else {
+                                                                 Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
+                                                                 Class_Static.AvailableStock = (Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString()));
+                                                                 Class_Static.editProductOrder = false;
+                                                                 startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
+                                                                 finish();
+                                                             }
                                                          }
-                                                     }
-                                                     if (!found) {
-                                                         Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                                                         break;
+                                                     case Class_Genric.DISTRIBUTOR:
+                                                     case Class_Genric.SALESPERSON:
                                                          Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
                                                          Class_Static.tempProduct.setDescription(productSearch.getText().toString());
                                                          Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                          Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
                                                          Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                         Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                                                          Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
                                                          Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
-                                                         Product tempProd = new Product(Class_Static.tempProduct);
-                                                         Class_Static.tempOrderingProduct.add(tempProd);
-                                                     }
+                                                         Iterator<Product> iter1 = Class_Static.tempOrderingProduct.iterator();
+                                                         while (iter1.hasNext()) {
+                                                             Product prod = iter1.next();
+                                                             if (prod.getId().matches(Class_Static.tempProduct.getId()))
+                                                                 iter1.remove();
+                                                         }
+                                                         Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
+                                                         Class_Static.editProductOrder = false;
+                                                         startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
+                                                         finish();
+                                                         break;
+                                                 }
+
+                                             } else {
+                                                 switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                                                     case Class_Genric.DISTRIBUTORSALES:
+                                                         if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
+                                                             startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
+                                                             finish();
+                                                             //Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
+                                                         } else if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
+                                                             productQuantity.setError("Out of Stock");
+                                                         } else {
+                                                             Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+                                                             boolean found = false;
+                                                             int qty = 0;
+                                                             Product prod = new Product();
+                                                             while (iter.hasNext()) {
+                                                                 prod = iter.next();
+                                                                 if (prod.getId().matches(Class_Static.tempProduct.getId())) {
+                                                                     qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
+                                                                     prod.setQuantity(qty);
+                                                                     Class_Static.AvailableStock = Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString());
+                                                                     prod.setAmount(prod.getQuantity() * prod.getPrice());
+                                                                     found = true;
+                                                                     break;
+                                                                 }
+                                                             }
+                                                             if (!found) {
+                                                                 if (qty > Class_Static.AvailableStock) {
+                                                                     Toast.makeText(Add_Product.this, "Product is Already Added with Stock " + prod.getStock(), Toast.LENGTH_SHORT).show();
+                                                                 } else {
+                                                                     Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                                                                     Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                                     Class_Static.tempProduct.setDescription(productSearch.getText().toString());
+                                                                     Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
+                                                                     Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
+                                                                     Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                                     Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
+                                                                     Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                                                                     Product tempProd = new Product(Class_Static.tempProduct);
+                                                                     Class_Static.AvailableStock = Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString());
+                                                                     Class_Static.tempOrderingProduct.add(tempProd);
+
+                                                                 }
+                                                             }
+                                                             startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
+                                                             finish();
+                                                         }
+                                                         break;
+                                                     case Class_Genric.DISTRIBUTOR:
+                                                     case Class_Genric.SALESPERSON:
+                                                         if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
+                                                             //Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
+                                                         } else {
+                                                             Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+                                                             boolean found = false;
+                                                             while (iter.hasNext()) {
+                                                                 Product prod = iter.next();
+                                                                 if (prod.getId().matches(Class_Static.tempProduct.getId())) {
+                                                                     int qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
+                                                                     prod.setQuantity(qty);
+                                                                     prod.setAmount(prod.getQuantity() * prod.getPrice());
+                                                                     found = true;
+                                                                     break;
+                                                                 }
+                                                             }
+                                                             if (!found) {
+                                                                 Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                                                                 Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                                 Class_Static.tempProduct.setDescription(productSearch.getText().toString());
+                                                                 Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
+                                                                 Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
+                                                                 Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                                 Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
+                                                                 Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                                                                 Product tempProd = new Product(Class_Static.tempProduct);
+                                                                 Class_Static.tempOrderingProduct.add(tempProd);
+                                                             }
+                                                         }
+                                                         startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
+                                                         finish();
+                                                         break;
                                                  }
                                              }
-                                             startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
-                                             finish();
+
                                          }
                                      }
 
         );
 
-        buttonAddNew.setOnClickListener(new View.OnClickListener()
-                                        {
+        buttonAddNew.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                if(buttonAddNew.getText().toString().toLowerCase().matches(("CANCEL").toLowerCase()))
+                                                if (buttonAddNew.getText().toString().toLowerCase().matches(("CANCEL").toLowerCase()))
                                                     finish();
                                                 else {
                                                     if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
                                                         Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
                                                     } else {
-                                                        Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
-                                                        boolean found = false;
-                                                        while (iter.hasNext()) {
-                                                            Product prod = iter.next();
-                                                            if (prod.getId().matches(Class_Static.tempProduct.getId())) {
-                                                                int qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
-                                                                prod.setQuantity(qty);
-                                                                prod.setAmount(prod.getQuantity() * prod.getPrice());
-                                                                found = true;
+                                                        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                                                            case Class_Genric.DISTRIBUTORSALES:
+                                                                 if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
+                                                                    productQuantity.setError("Out of Stock");
+                                                                } else {
+                                                                    Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+                                                                    boolean found = false;
+                                                                    int qty = 0;
+                                                                    Product prod = new Product();
+                                                                    while (iter.hasNext()) {
+                                                                        prod = iter.next();
+                                                                        if (prod.getId().matches(Class_Static.tempProduct.getId())) {
+                                                                            qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
+                                                                            prod.setQuantity(qty);
+                                                                            Class_Static.AvailableStock = Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString());
+                                                                            prod.setAmount(prod.getQuantity() * prod.getPrice());
+                                                                            found = true;
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    if (!found) {
+                                                                        if (qty > Class_Static.AvailableStock) {
+                                                                            Toast.makeText(Add_Product.this, "Product is Already Added with Stock " + prod.getStock(), Toast.LENGTH_SHORT).show();
+                                                                        } else {
+                                                                            Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                                                                            Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                                            Class_Static.tempProduct.setDescription(productSearch.getText().toString());
+                                                                            Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
+                                                                            Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
+                                                                            Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                                            Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
+                                                                            Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                                                                            Product tempProd = new Product(Class_Static.tempProduct);
+                                                                            Class_Static.AvailableStock = Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString());
+                                                                            Class_Static.tempOrderingProduct.add(tempProd);
+                                                                            cleanScreen();
+                                                                        }
+                                                                    }
+                                                                }
+
+
+                                                                      /*  Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                                        Class_Static.tempProduct.setDescription(productSearch.getText().toString());
+                                                                        Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
+                                                                        Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
+                                                                        Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                                        Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                                                                        Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
+                                                                        Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                                                                        Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);*/
+
+
                                                                 break;
-                                                            }
+                                                            case Class_Genric.DISTRIBUTOR:
+                                                            case Class_Genric.SALESPERSON:
+                                                                Iterator<Product> iter1 = Class_Static.tempOrderingProduct.iterator();
+                                                                boolean found1 = false;
+                                                                while (iter1.hasNext()) {
+                                                                    Product prod = iter1.next();
+                                                                    if (prod.getId().matches(Class_Static.tempProduct.getId())) {
+                                                                        int qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
+                                                                        prod.setQuantity(qty);
+                                                                        prod.setAmount(prod.getQuantity() * prod.getPrice());
+                                                                        found1 = true;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                if (!found1) {
+                                                                    Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                                    Class_Static.tempProduct.setDescription(productSearch.getText().toString());
+                                                                    Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
+                                                                    Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
+                                                                    Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                                    Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                                                                    Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
+                                                                    Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                                                                    Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
+                                                                    cleanScreen();
+                                                                }
+                                                                break;
                                                         }
-                                                        if (!found) {
-                                                            Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
-                                                            Class_Static.tempProduct.setDescription(productSearch.getText().toString());
-                                                            Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
-                                                            Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
-                                                            Class_Static.tempProduct.setUnits(productUnit.getText().toString());
-                                                            Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
-                                                            Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                                                            Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
-                                                            Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
-                                                            cleanScreen();
-                                                        }
+
                                                         scrollview.fullScroll(ScrollView.FOCUS_UP);
-                                                        Class_Static.tempProduct= new Product();
+                                                        Class_Static.tempProduct = new Product();
                                                     }
                                                 }
                                             }
@@ -318,9 +534,9 @@ public class Add_Product extends AppCompatActivity {
                         Class_Static.Flag_SEARCH = Class_Static.SEARCHPRODUCT;
                         startActivity(new Intent(Add_Product.this, Search_Customer.class));
                     } else
-                        Toast.makeText(context, "Please Select A Catagory", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Please Select a Catagory", Toast.LENGTH_SHORT).show();
                 } else
-                    Toast.makeText(context, "Please Select A Group", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Please Select a Group", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -347,12 +563,13 @@ public class Add_Product extends AppCompatActivity {
 
     }
 
-    private void cleanScreen(){
+    private void cleanScreen() {
         productSearch.setText("");
         productGroup.setText("");
         productCategory.setText("");
         productUnit.setText("");
         productPrice.setText("");
         productQuantity.setText("");
+        productStock.setText("");
     }
 }

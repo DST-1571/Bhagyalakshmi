@@ -244,6 +244,16 @@
                     android:src="@drawable/ic_plus_white_24dp"/>
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/product_stock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_15dp"
+                android:text=""
+                android:gravity="right"
+                android:textSize="@dimen/textsize_16sp"
+                android:textColor="@color/black" />
+
 
             <TextView
                 android:layout_width="match_parent"
