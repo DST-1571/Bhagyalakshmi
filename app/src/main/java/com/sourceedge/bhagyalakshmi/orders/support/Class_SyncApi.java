@@ -239,7 +239,7 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof NoConnectionError) {
+                if (error instanceof NoConnectionError || error instanceof TimeoutError) {
                     if (dbHelper.CheckDataExists(Class_DBHelper.DataTableRole)) {
                         dbHelper.loadRole();
                     } else {
@@ -393,28 +393,34 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError)
-                    if (error instanceof NoConnectionError) {
-                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
-                            dbHelper.loadProduct();
-                        } else {
-                            Class_Genric.NetCheck(context);
-                        }
+                if (error instanceof TimeoutError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableRole)) {
+                        dbHelper.loadRole();
                     } else {
-                        if (error != null && error.networkResponse != null) {
-                            mStatusCode = error.networkResponse.statusCode;
-                            switch (mStatusCode) {
-                                case 400:
-                                    Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case 404:
-                                    Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
-
-
+                        Class_Genric.NetCheck(context);
                     }
+                    Toast.makeText(context, "TimeOut!", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof NoConnectionError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableRole)) {
+                        dbHelper.loadRole();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token or Invalid Id", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 404:
+                                Toast.makeText(context, "Distributor not Found", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+
+                }
             }
         }) {
             @Override
@@ -535,23 +541,28 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError)
-                    if (error instanceof NoConnectionError) {
-                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
-                            dbHelper.loadProduct();
-                        } else {
-                            Class_Genric.NetCheck(context);
-                        }
+                if (error instanceof TimeoutError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
+                        dbHelper.loadProduct();
                     } else {
-                        if (error != null && error.networkResponse != null) {
-                            mStatusCode = error.networkResponse.statusCode;
-                            switch (mStatusCode) {
-                                case 400:
-                                    Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                        Class_Genric.NetCheck(context);
                     }
+                } else if (error instanceof NoConnectionError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
+                        dbHelper.loadProduct();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                }
             }
         }) {
             @Override
@@ -575,68 +586,86 @@ public class Class_SyncApi {
         if (s.contains("T")) {
             s = s.replace("T", "");
         }*/
-        RequestQueue queue = Volley.newRequestQueue(context);
-        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("Id", id));
-        Class_Genric.ShowDialog(context,"Loading...",true);
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Stock, params), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
-                switch (mStatusCode) {
-                    case 200:
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            Double d= Double.valueOf(jsonObject.optString("Stock"));
-                            Class_Static.Stock= d.intValue();
-                            Class_Static.AvailableStock=Class_Static.Stock-currentQty;
-                            if(Class_Static.AvailableStock>0){
-                                Class_Static.tempProduct.setQuantity(1);
-                            }else {
-                                Class_Static.tempProduct.setQuantity(0);
+
+
+        if (Class_Genric.NetAvailable(context)) {
+            RequestQueue queue = Volley.newRequestQueue(context);
+            ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+            params.add(new KeyValuePair("Id", id));
+            Class_Genric.ShowDialog(context, "Loading...", true);
+            StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Stock, params), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Class_Genric.ShowDialog(context, "Loading...", false);
+                    switch (mStatusCode) {
+                        case 200:
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                Double d = Double.valueOf(jsonObject.optString("Stock"));
+                                Class_Static.Stock = d.intValue();
+                                Class_Static.AvailableStock = Class_Static.Stock - currentQty;
+                                if (Class_Static.AvailableStock > 0) {
+                                    Class_Static.tempProduct.setQuantity(1);
+                                } else {
+                                    Class_Static.tempProduct.setQuantity(0);
+                                }
+                                Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
+                                Add_Product.productStock.setText("Stocks Available : " + Class_Static.AvailableStock);
+                                ((Activity) context).finish();
+                                break;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
-                            Add_Product.productStock.setText("Stocks Available : "+Class_Static.AvailableStock);
-                            ((Activity) context).finish();
-                            break;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Class_Genric.ShowDialog(context, "Loading...", false);
+                    if (error instanceof TimeoutError)
+                        if (error instanceof NoConnectionError) {
+                            Class_Genric.NetCheck(context);
+                        } else {
+                            if (error != null && error.networkResponse != null) {
+                                mStatusCode = error.networkResponse.statusCode;
+                                switch (mStatusCode) {
+                                    case 400:
+                                        Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
+                            } else
+                                Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
                         }
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context,"Loading...",false);
-                if (error instanceof TimeoutError)
-                    if (error instanceof NoConnectionError) {
-                        Class_Genric.NetCheck(context);
-                    } else {
-                        if (error != null && error.networkResponse != null) {
-                            mStatusCode = error.networkResponse.statusCode;
-                            switch (mStatusCode) {
-                                case 400:
-                                    Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
-                    }
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
-                return params;
-            }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                    return params;
+                }
 
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                mStatusCode = response.statusCode;
-                return super.parseNetworkResponse(response);
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    mStatusCode = response.statusCode;
+                    return super.parseNetworkResponse(response);
+                }
+            };
+            queue.add(postRequest);
+        } else {
+            int d = (Class_ModelDB.getSingleProduct(id)).getStock();
+            Class_Static.Stock = d;
+            Class_Static.AvailableStock = Class_Static.Stock - currentQty;
+            if (Class_Static.AvailableStock > 0) {
+                Class_Static.tempProduct.setQuantity(1);
+            } else {
+                Class_Static.tempProduct.setQuantity(0);
             }
-        };
-        queue.add(postRequest);
+            Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
+            Add_Product.productStock.setText("Stocks Available : " + Class_Static.AvailableStock);
+            ((Activity) context).finish();
+        }
+
     }
 
     public static void GroupsApi(final Context context) {
@@ -671,23 +700,28 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError)
-                    if (error instanceof NoConnectionError) {
-                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableGroup)) {
-                            dbHelper.loadSections();
-                        } else {
-                            Class_Genric.NetCheck(context);
-                        }
+                if (error instanceof TimeoutError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableGroup)) {
+                        dbHelper.loadSections();
                     } else {
-                        if (error != null && error.networkResponse != null) {
-                            mStatusCode = error.networkResponse.statusCode;
-                            switch (mStatusCode) {
-                                case 400:
-                                    Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                        Class_Genric.NetCheck(context);
                     }
+                } else if (error instanceof NoConnectionError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableGroup)) {
+                        dbHelper.loadSections();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                }
             }
         }) {
             @Override
@@ -741,24 +775,29 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError)
-                    if (error instanceof NoConnectionError) {
-                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
-                            dbHelper.loadcatagory();
-                        } else {
-                            Class_Genric.NetCheck(context);
-                        }
+                if (error instanceof TimeoutError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
+                        dbHelper.loadcatagory();
                     } else {
-                        if (error != null && error.networkResponse != null) {
-                            mStatusCode = error.networkResponse.statusCode;
-                            switch (mStatusCode) {
-                                case 400:
-                                    Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
-
+                        Class_Genric.NetCheck(context);
                     }
+                } else if (error instanceof NoConnectionError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
+                        dbHelper.loadcatagory();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+                }
             }
         }) {
             @Override
@@ -956,7 +995,12 @@ public class Class_SyncApi {
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
                 if (error instanceof TimeoutError) {
-
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableOrders)) {
+                        dbHelper.loadOrders();
+                        Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
                 } else if (error instanceof NoConnectionError) {
                     if (dbHelper.CheckDataExists(Class_DBHelper.DataTableOrders)) {
                         dbHelper.loadOrders();

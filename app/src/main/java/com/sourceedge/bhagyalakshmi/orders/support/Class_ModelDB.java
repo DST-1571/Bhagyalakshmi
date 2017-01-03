@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class Class_ModelDB {
     private static int APPVERSION = 0;
-    public static String AppTitle="Bhagyalakshmi Enterprises";
+    public static String AppTitle = "Bhagyalakshmi Enterprises";
     private static Order orderModel = new Order();
     private static ArrayList<Order> orderList = new ArrayList<Order>();
     public static ArrayList<Order> DraftorderList = new ArrayList<Order>();
@@ -138,6 +138,15 @@ public class Class_ModelDB {
 
     public static ArrayList<Product> getProductList() {
         return productList;
+    }
+
+    public static Product getSingleProduct(String Id) {
+        Product product = new Product();
+        for (Product tempProduct : productList) {
+            if (tempProduct.getId().matches(Id))
+                product = tempProduct;
+        }
+        return product;
     }
 
     public static void setProductList(ArrayList<Product> productList) {

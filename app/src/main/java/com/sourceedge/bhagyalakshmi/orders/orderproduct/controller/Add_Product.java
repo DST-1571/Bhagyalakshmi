@@ -125,7 +125,7 @@ public class Add_Product extends AppCompatActivity {
         if (Class_Static.editProductOrder) {
             switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
                 case Class_Genric.DISTRIBUTORSALES:
-                    productStock.setText("Stock Available : " + Class_Static.AvailableStock);
+                    productStock.setText("Stock Available : " + Class_Static.Stock);
                     productStock.setVisibility(View.VISIBLE);
                     break;
             }
@@ -167,30 +167,21 @@ public class Add_Product extends AppCompatActivity {
                         if ("".equals(productQuantity.getText().toString().trim())) {
                             productQuantity.setText("0");
                         }
-                        Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
-                        Product prod = new Product();
-                        boolean found = false;
-                        while (iter.hasNext()) {
-                            prod = iter.next();
-                            if (prod.getId().matches(Class_Static.tempProduct.getId())) {
-                                found = true;
-                            }
-                        }
-                        if (!found) {
-                            if (Integer.parseInt(productQuantity.getText().toString()) >= Class_Static.AvailableStock) {
+                        if (Class_Static.editProductOrder) {
+
+                            if (Integer.parseInt(productQuantity.getText().toString()) >= Class_Static.Stock) {
                                 productQuantity.setError("Out of Stock");
                             } else {
                                 productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) + 1) + "");
-                                //productStock.setText("Stock Available : " + (Class_Static.Stock - Integer.parseInt(productQuantity.getText().toString())));
                             }
                         } else {
                             if (Integer.parseInt(productQuantity.getText().toString()) >= Class_Static.AvailableStock) {
                                 productQuantity.setError("Out of Stock");
                             } else {
                                 productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) + 1) + "");
-                                //productStock.setText("Stock Available : " + (Class_Static.Stock - Integer.parseInt(productQuantity.getText().toString())));
                             }
                         }
+
                         break;
                     case Class_Genric.DISTRIBUTOR:
                     case Class_Genric.SALESPERSON:
@@ -226,10 +217,11 @@ public class Add_Product extends AppCompatActivity {
                         if ("".equals(productQuantity.getText().toString().trim())) {
                             productQuantity.setText("1");
                         }
-                       if (!productQuantity.getText().toString().matches("1")) {
+                        if (!productQuantity.getText().toString().matches("1")) {
                             productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) - 1) + "");
                             //productStock.setText("Stock Available : " + ((Integer.parseInt(productStock.getText().toString().split(": ")[1]) + 1) + ""));
-                        } else Toast.makeText(Add_Product.this, "Min Count is 1", Toast.LENGTH_SHORT).show();
+                        } else
+                            Toast.makeText(Add_Product.this, "Min Count is 1", Toast.LENGTH_SHORT).show();
                         break;
                 }
 
@@ -244,7 +236,7 @@ public class Add_Product extends AppCompatActivity {
                                              if (Class_Static.editProductOrder) {
                                                  switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
                                                      case Class_Genric.DISTRIBUTORSALES:
-                                                         if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
+                                                         if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.Stock) {
                                                              productQuantity.setError("Out of Stock");
                                                          } else {
                                                              Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
@@ -263,11 +255,11 @@ public class Add_Product extends AppCompatActivity {
                                                                  if (prod.getId().matches(Class_Static.tempProduct.getId()))
                                                                      iter.remove();
                                                              }
-                                                             if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
+                                                             if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.Stock) {
                                                                  productQuantity.setError("Out of Stock");
                                                              } else {
                                                                  Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
-                                                                 Class_Static.AvailableStock = (Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString()));
+                                                                 Class_Static.AvailableStock = (Class_Static.Stock - Integer.parseInt(productQuantity.getText().toString()));
                                                                  Class_Static.editProductOrder = false;
                                                                  startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
                                                                  finish();
@@ -300,7 +292,11 @@ public class Add_Product extends AppCompatActivity {
                                              } else {
                                                  switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
                                                      case Class_Genric.DISTRIBUTORSALES:
-                                                         if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
+                                                         if (productSearch.getText().toString().isEmpty() ||
+                                                                 productSearch.getText().toString().length() == 0 ||
+                                                                 productSearch.getText().toString().equals("") ||
+                                                                 productSearch.getText().toString() == null ||
+                                                                 Integer.parseInt(productQuantity.getText().toString()) == 0) {
                                                              startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
                                                              finish();
                                                              //Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
@@ -346,8 +342,13 @@ public class Add_Product extends AppCompatActivity {
                                                          break;
                                                      case Class_Genric.DISTRIBUTOR:
                                                      case Class_Genric.SALESPERSON:
-                                                         if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
-                                                             //Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
+                                                         if (productSearch.getText().toString().isEmpty() ||
+                                                                 productSearch.getText().toString().length() == 0 ||
+                                                                 productSearch.getText().toString().equals("") ||
+                                                                 productSearch.getText().toString() == null ||
+                                                                 Integer.parseInt(productQuantity.getText().toString()) == 0) {
+                                                             startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
+                                                             finish();
                                                          } else {
                                                              Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
                                                              boolean found = false;
@@ -388,15 +389,18 @@ public class Add_Product extends AppCompatActivity {
         buttonAddNew.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                if (buttonAddNew.getText().toString().toLowerCase().matches(("CANCEL").toLowerCase()))
+                                                if (buttonAddNew.getText().toString().toLowerCase().matches(("CANCEL").toLowerCase())) {
+                                                    startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
                                                     finish();
-                                                else {
+                                                } else {
                                                     if (productSearch.getText().toString().isEmpty() || productSearch.getText().toString().length() == 0 || productSearch.getText().toString().equals("") || productSearch.getText().toString() == null) {
                                                         Toast.makeText(Add_Product.this, "Select Product", Toast.LENGTH_SHORT).show();
+                                                    } else if (Integer.parseInt(productQuantity.getText().toString()) == 0) {
+                                                        cleanScreen();
                                                     } else {
                                                         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
                                                             case Class_Genric.DISTRIBUTORSALES:
-                                                                 if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
+                                                                if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
                                                                     productQuantity.setError("Out of Stock");
                                                                 } else {
                                                                     Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
@@ -408,7 +412,7 @@ public class Add_Product extends AppCompatActivity {
                                                                         if (prod.getId().matches(Class_Static.tempProduct.getId())) {
                                                                             qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
                                                                             prod.setQuantity(qty);
-                                                                            Class_Static.AvailableStock = Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString());
+                                                                            Class_Static.AvailableStock = Class_Static.AvailableStock - qty;
                                                                             prod.setAmount(prod.getQuantity() * prod.getPrice());
                                                                             found = true;
                                                                             break;
@@ -429,9 +433,10 @@ public class Add_Product extends AppCompatActivity {
                                                                             Product tempProd = new Product(Class_Static.tempProduct);
                                                                             Class_Static.AvailableStock = Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString());
                                                                             Class_Static.tempOrderingProduct.add(tempProd);
-                                                                            cleanScreen();
+
                                                                         }
                                                                     }
+                                                                    cleanScreen();
                                                                 }
 
 
