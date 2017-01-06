@@ -238,6 +238,7 @@ public class Class_Genric {
         return px;*/
     }
 
+
     public static boolean success(JSONObject result) {
         if (result.optString("IsSuccess").matches("true"))
             return true;
