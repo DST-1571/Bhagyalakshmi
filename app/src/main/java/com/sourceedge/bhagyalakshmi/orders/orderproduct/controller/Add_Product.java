@@ -54,6 +54,7 @@ public class Add_Product extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_distributor_sales);
+        Class_Genric.setOrientation(Add_Product.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Class_Genric.setOrientation(Add_Product.this);
@@ -82,7 +83,7 @@ public class Add_Product extends AppCompatActivity {
         buttonAddNew = (Button) findViewById(R.id.button_add_new);
         retailerLayout = (LinearLayout) findViewById(R.id.retailer_layout);
 
-        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
             case Class_Genric.ADMIN:
                 break;
             case Class_Genric.DISTRIBUTORSALES:
@@ -110,7 +111,7 @@ public class Add_Product extends AppCompatActivity {
                 retailerLayout.setVisibility(View.GONE);
                 productStock.setVisibility(View.GONE);
                 break;
-            case Class_Genric.SALESPERSON:
+            case Class_Genric.SALESMAN:
                 if (Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")) {
                     productPrice.setEnabled(true);
                 } else {
@@ -123,7 +124,7 @@ public class Add_Product extends AppCompatActivity {
         retailerName.setText(Class_Static.tempRole.getName().toString());
 
         if (Class_Static.editProductOrder) {
-            switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+            switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                 case Class_Genric.DISTRIBUTORSALES:
                     productStock.setText("Stock Available : " + Class_Static.Stock);
                     productStock.setVisibility(View.VISIBLE);
@@ -162,7 +163,7 @@ public class Add_Product extends AppCompatActivity {
         incrementQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                     case Class_Genric.DISTRIBUTORSALES:
                         if ("".equals(productQuantity.getText().toString().trim())) {
                             productQuantity.setText("0");
@@ -184,7 +185,7 @@ public class Add_Product extends AppCompatActivity {
 
                         break;
                     case Class_Genric.DISTRIBUTOR:
-                    case Class_Genric.SALESPERSON:
+                    case Class_Genric.SALESMAN:
                         if ("".equals(productQuantity.getText().toString().trim())) {
                             productQuantity.setText("0");
                         }
@@ -198,7 +199,7 @@ public class Add_Product extends AppCompatActivity {
         decrementQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                     case Class_Genric.DISTRIBUTORSALES:
                         if ("".equals(productQuantity.getText().toString().trim())) {
                             productQuantity.setText("1");
@@ -213,7 +214,7 @@ public class Add_Product extends AppCompatActivity {
                             Toast.makeText(Add_Product.this, "Min Count is 1", Toast.LENGTH_SHORT).show();
                         break;
                     case Class_Genric.DISTRIBUTOR:
-                    case Class_Genric.SALESPERSON:
+                    case Class_Genric.SALESMAN:
                         if ("".equals(productQuantity.getText().toString().trim())) {
                             productQuantity.setText("1");
                         }
@@ -234,12 +235,12 @@ public class Add_Product extends AppCompatActivity {
                                          @Override
                                          public void onClick(View v) {
                                              if (Class_Static.editProductOrder) {
-                                                 switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                                                 switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                                                      case Class_Genric.DISTRIBUTORSALES:
                                                          if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.Stock) {
                                                              productQuantity.setError("Out of Stock");
                                                          } else {
-                                                             Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                             Class_Static.tempProduct.setCode(Class_Static.tempProduct.getCode());
                                                              Class_Static.tempProduct.setDescription(productSearch.getText().toString());
                                                              Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                              Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
@@ -252,7 +253,7 @@ public class Add_Product extends AppCompatActivity {
                                                              Product prod = new Product();
                                                              while (iter.hasNext()) {
                                                                  prod = iter.next();
-                                                                 if (prod.getId().matches(Class_Static.tempProduct.getId()))
+                                                                 if (prod.getCode().matches(Class_Static.tempProduct.getCode()))
                                                                      iter.remove();
                                                              }
                                                              if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.Stock) {
@@ -267,8 +268,8 @@ public class Add_Product extends AppCompatActivity {
                                                          }
                                                          break;
                                                      case Class_Genric.DISTRIBUTOR:
-                                                     case Class_Genric.SALESPERSON:
-                                                         Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                     case Class_Genric.SALESMAN:
+                                                         Class_Static.tempProduct.setCode(Class_Static.tempProduct.getCode());
                                                          Class_Static.tempProduct.setDescription(productSearch.getText().toString());
                                                          Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                          Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
@@ -279,7 +280,7 @@ public class Add_Product extends AppCompatActivity {
                                                          Iterator<Product> iter1 = Class_Static.tempOrderingProduct.iterator();
                                                          while (iter1.hasNext()) {
                                                              Product prod = iter1.next();
-                                                             if (prod.getId().matches(Class_Static.tempProduct.getId()))
+                                                             if (prod.getCode().matches(Class_Static.tempProduct.getCode()))
                                                                  iter1.remove();
                                                          }
                                                          Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
@@ -290,7 +291,7 @@ public class Add_Product extends AppCompatActivity {
                                                  }
 
                                              } else {
-                                                 switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                                                 switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                                                      case Class_Genric.DISTRIBUTORSALES:
                                                          if (productSearch.getText().toString().isEmpty() ||
                                                                  productSearch.getText().toString().length() == 0 ||
@@ -309,7 +310,7 @@ public class Add_Product extends AppCompatActivity {
                                                              Product prod = new Product();
                                                              while (iter.hasNext()) {
                                                                  prod = iter.next();
-                                                                 if (prod.getId().matches(Class_Static.tempProduct.getId())) {
+                                                                 if (prod.getCode().matches(Class_Static.tempProduct.getCode())) {
                                                                      qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
                                                                      prod.setQuantity(qty);
                                                                      Class_Static.AvailableStock = Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString());
@@ -323,7 +324,7 @@ public class Add_Product extends AppCompatActivity {
                                                                      Toast.makeText(Add_Product.this, "Product is Already Added with Stock " + prod.getStock(), Toast.LENGTH_SHORT).show();
                                                                  } else {
                                                                      Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
-                                                                     Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                                     Class_Static.tempProduct.setCode(Class_Static.tempProduct.getCode());
                                                                      Class_Static.tempProduct.setDescription(productSearch.getText().toString());
                                                                      Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                                      Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
@@ -341,7 +342,7 @@ public class Add_Product extends AppCompatActivity {
                                                          }
                                                          break;
                                                      case Class_Genric.DISTRIBUTOR:
-                                                     case Class_Genric.SALESPERSON:
+                                                     case Class_Genric.SALESMAN:
                                                          if (productSearch.getText().toString().isEmpty() ||
                                                                  productSearch.getText().toString().length() == 0 ||
                                                                  productSearch.getText().toString().equals("") ||
@@ -354,7 +355,7 @@ public class Add_Product extends AppCompatActivity {
                                                              boolean found = false;
                                                              while (iter.hasNext()) {
                                                                  Product prod = iter.next();
-                                                                 if (prod.getId().matches(Class_Static.tempProduct.getId())) {
+                                                                 if (prod.getCode().matches(Class_Static.tempProduct.getCode())) {
                                                                      int qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
                                                                      prod.setQuantity(qty);
                                                                      prod.setAmount(prod.getQuantity() * prod.getPrice());
@@ -364,7 +365,7 @@ public class Add_Product extends AppCompatActivity {
                                                              }
                                                              if (!found) {
                                                                  Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
-                                                                 Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                                 Class_Static.tempProduct.setCode(Class_Static.tempProduct.getCode());
                                                                  Class_Static.tempProduct.setDescription(productSearch.getText().toString());
                                                                  Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                                  Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
@@ -398,7 +399,7 @@ public class Add_Product extends AppCompatActivity {
                                                     } else if (Integer.parseInt(productQuantity.getText().toString()) == 0) {
                                                         cleanScreen();
                                                     } else {
-                                                        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                                                        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                                                             case Class_Genric.DISTRIBUTORSALES:
                                                                 if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
                                                                     productQuantity.setError("Out of Stock");
@@ -409,7 +410,7 @@ public class Add_Product extends AppCompatActivity {
                                                                     Product prod = new Product();
                                                                     while (iter.hasNext()) {
                                                                         prod = iter.next();
-                                                                        if (prod.getId().matches(Class_Static.tempProduct.getId())) {
+                                                                        if (prod.getCode().matches(Class_Static.tempProduct.getCode())) {
                                                                             qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
                                                                             prod.setQuantity(qty);
                                                                             Class_Static.AvailableStock = Class_Static.AvailableStock - qty;
@@ -423,7 +424,7 @@ public class Add_Product extends AppCompatActivity {
                                                                             Toast.makeText(Add_Product.this, "Product is Already Added with Stock " + prod.getStock(), Toast.LENGTH_SHORT).show();
                                                                         } else {
                                                                             Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
-                                                                            Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                                            Class_Static.tempProduct.setCode(Class_Static.tempProduct.getCode());
                                                                             Class_Static.tempProduct.setDescription(productSearch.getText().toString());
                                                                             Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                                             Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
@@ -453,12 +454,12 @@ public class Add_Product extends AppCompatActivity {
 
                                                                 break;
                                                             case Class_Genric.DISTRIBUTOR:
-                                                            case Class_Genric.SALESPERSON:
+                                                            case Class_Genric.SALESMAN:
                                                                 Iterator<Product> iter1 = Class_Static.tempOrderingProduct.iterator();
                                                                 boolean found1 = false;
                                                                 while (iter1.hasNext()) {
                                                                     Product prod = iter1.next();
-                                                                    if (prod.getId().matches(Class_Static.tempProduct.getId())) {
+                                                                    if (prod.getCode().matches(Class_Static.tempProduct.getCode())) {
                                                                         int qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
                                                                         prod.setQuantity(qty);
                                                                         prod.setAmount(prod.getQuantity() * prod.getPrice());
@@ -467,7 +468,7 @@ public class Add_Product extends AppCompatActivity {
                                                                     }
                                                                 }
                                                                 if (!found1) {
-                                                                    Class_Static.tempProduct.setId(Class_Static.tempProduct.getId());
+                                                                    Class_Static.tempProduct.setCode(Class_Static.tempProduct.getCode());
                                                                     Class_Static.tempProduct.setDescription(productSearch.getText().toString());
                                                                     Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                                     Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
@@ -523,10 +524,10 @@ public class Add_Product extends AppCompatActivity {
         productCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!Class_Static.tempProduct.getSectionId().matches("")) {
+                //if (!Class_Static.tempProduct.getSectionId().matches("")) {
                     Class_Static.Flag_SEARCH = Class_Static.SEARCHCATAGORY;
                     startActivity(new Intent(Add_Product.this, Search_Customer.class));
-                } else Toast.makeText(context, "Please Select A Group", Toast.LENGTH_SHORT).show();
+               // } else Toast.makeText(context, "Please Select A Group", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -534,14 +535,14 @@ public class Add_Product extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (!Class_Static.tempProduct.getSectionId().matches("")) {
-                    if (!Class_Static.tempProduct.getCategoryId().matches("")) {
+                //if (!Class_Static.tempProduct.getSectionId().matches("")) {
+                  //  if (!Class_Static.tempProduct.getCategoryId().matches("")) {
                         Class_Static.Flag_SEARCH = Class_Static.SEARCHPRODUCT;
                         startActivity(new Intent(Add_Product.this, Search_Customer.class));
-                    } else
-                        Toast.makeText(context, "Please Select a Catagory", Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(context, "Please Select a Group", Toast.LENGTH_SHORT).show();
+                    //} else
+                      //  Toast.makeText(context, "Please Select a Catagory", Toast.LENGTH_SHORT).show();
+                //} else
+                  //  Toast.makeText(context, "Please Select a Group", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -563,6 +564,17 @@ public class Add_Product extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+   /*     Snackbar snackbar = Snackbar
+                .make(coordinator, "Changes Will be Discarded", Snackbar.LENGTH_LONG)
+                .setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
+
+                    }
+                });
+        snackbar.show();*/
+        finish();
         startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
         finish();
 

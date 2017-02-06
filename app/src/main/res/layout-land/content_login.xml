@@ -12,86 +12,80 @@
     tools:showIn="@layout/activity_login"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
-    <ScrollView
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+        <ImageView
+            android:src="@drawable/bhagyalaksmi"
+            android:layout_width="100dp"
             android:layout_gravity="center"
-            android:orientation="vertical"
+            android:layout_height="100dp"
+            android:layout_marginBottom="@dimen/dimen_40dp"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ImageView
-                android:src="@drawable/bhagyalaksmi"
-                android:layout_width="100dp"
-                android:layout_gravity="center"
-                android:layout_height="100dp"
-                android:layout_marginBottom="@dimen/dimen_40dp"/>
-            <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_20dp"
+            android:orientation="vertical">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:textColorHint="@color/black"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <LinearLayout
-                    android:layout_width="@dimen/dimen_400dp"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:fontFamily="fonts/Roboto-Bold.ttf"
+                    android:padding="@dimen/dimen_10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_20dp"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
+                    android:hint="@string/username_hint"
+                    android:textColorHint="@color/black"
+                    android:inputType="text"
+                    android:gravity="center_vertical"
+                    android:id="@+id/username" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:textColorHint="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/password"
+                    android:fontFamily="fonts/Roboto-Bold.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_hint"
+                    android:padding="@dimen/dimen_10dp"
+                    android:inputType="textPassword"
+                    android:gravity="center_vertical"
+                    android:textColorHint="@color/black"/>
+            </android.support.design.widget.TextInputLayout>
 
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_marginBottom="@dimen/dimen_20dp"
-                        android:textColorHint="@color/black"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:fontFamily="fonts/Roboto-Bold.ttf"
-                            android:padding="@dimen/dimen_10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/username_hint"
-                            android:textColorHint="@color/black"
-                            android:inputType="text"
-                            android:gravity="center_vertical"
-                            android:id="@+id/username" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_marginBottom="@dimen/dimen_20dp"
-                        android:textColorHint="@color/black"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <EditText
-                            android:id="@+id/password"
-                            android:fontFamily="fonts/Roboto-Bold.ttf"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/password_hint"
-                            android:padding="@dimen/dimen_10dp"
-                            android:inputType="textPassword"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/black"/>
-                    </android.support.design.widget.TextInputLayout>
-
-
-                    <Button
-                        android:id="@+id/login_button"
-                        android:fontFamily="monospace"
-                        android:textStyle="bold"
-                        android:textAllCaps="false"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_solid"
-                        android:textColor="@color/white"
-                        android:text="@string/login_button_title"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:layout_marginBottom="@dimen/dimen_30dp"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
+            <Button
+                android:id="@+id/login_button"
+                android:fontFamily="monospace"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_solid"
+                android:textColor="@color/white"
+                android:text="@string/login_button_title"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_30dp"/>
 
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+</ScrollView>
 
 </LinearLayout>

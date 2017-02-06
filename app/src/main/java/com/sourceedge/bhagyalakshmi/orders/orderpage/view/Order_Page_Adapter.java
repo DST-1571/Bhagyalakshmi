@@ -45,7 +45,18 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
     @Override
     public void onBindViewHolder(Order_Page_Adapter.ViewHolder holder, final int position) {
         holder.orderId.setText(data.get(position).getOrderNumber());
-        holder.clientName.setText(data.get(position).getClient().getName());
+        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
+            case Class_Genric.ADMIN:
+                break;
+            case Class_Genric.DISTRIBUTORSALES:
+                break;
+            case Class_Genric.SALESMAN:
+                holder.clientName.setText(data.get(position).getClient().getName());
+                break;
+            case Class_Genric.DISTRIBUTOR:
+                holder.clientName.setText(data.get(position).getUser().getName());
+                break;
+        }
         holder.totalAmount.setText(Class_Genric.rupee+data.get(position).getTotalAmount().toString());
         holder.orderStatus.setText(data.get(position).getStatus());
         holder.orderedPane.setOnClickListener(new View.OnClickListener() {
@@ -56,25 +67,13 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
                 Class_Static.tempOrderingProduct=new ArrayList<Product>();
                 Class_Static.OrdredProducts=data.get(position);
                 for(int i=0;i<Class_Static.OrdredProducts.getProducts().size();i++){
-                    for(int j=0;j<Class_ModelDB.getProductList().size();j++){
-                        if(Class_Static.OrdredProducts.getProducts().get(i).getProductId().matches(Class_ModelDB.getProductList().get(j).getId())){
                             prod=new Product();
-                            prod.setId(Class_ModelDB.getProductList().get(j).getId());
                             prod.setQuantity(new Double(Class_Static.OrdredProducts.getProducts().get(i).getQuantity()).intValue());
                             prod.setPrice(Class_Static.OrdredProducts.getProducts().get(i).getPrice());
                             prod.setAmount(prod.getQuantity()*prod.getPrice());
-                            prod.setDescription(Class_ModelDB.getProductList().get(j).getDescription());
-                            prod.setSectionName(Class_ModelDB.getProductList().get(j).getSectionName());
+                            prod.setDescription(Class_Static.OrdredProducts.getProducts().get(i).getDescription());
                             prod.setUnits(Class_Static.OrdredProducts.getProducts().get(i).getUnit());
-                            prod.setCategoryId(Class_ModelDB.getProductList().get(j).getCategoryId());
-                            prod.setSectionId(Class_ModelDB.getProductList().get(j).getSectionId());
-                            for (Catagories catagories:Class_ModelDB.getCatagoryList()) {
-                                if(prod.getCategoryId().matches(catagories.getId()))
-                                    prod.setCatagoryName(catagories.getName());
-                            }
                             Class_Static.tempOrderingProduct.add(prod);
-                        }
-                    }
                 }
                 ((Activity)mcontext).startActivity(new Intent(mcontext, Product_Order_Lookup.class));
             }
@@ -89,7 +88,6 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView orderId, clientName, totalAmount,orderStatus;
         LinearLayout orderedPane;
-
         public ViewHolder(View v) {
             super(v);
             orderId = (TextView) v.findViewById(R.id.order_id);

@@ -15,7 +15,9 @@ import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Search_Customer;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
 import java.util.ArrayList;
 
@@ -30,6 +32,7 @@ public class Role_List_Adapter extends RecyclerView.Adapter<Role_List_Adapter.Vi
     public Role_List_Adapter(Context context,ArrayList<Role> model){
         this.mContext=context;
         this.data=model;
+        Class_Static.CURRENTPAGE=Class_Static.DISTRIBUTORLIST;
     }
 
     @Override
@@ -47,9 +50,14 @@ public class Role_List_Adapter extends RecyclerView.Adapter<Role_List_Adapter.Vi
             public void onClick(View v) {
                 Class_Static.tempRole=new Role();
                 Class_Static.tempRole = data.get(position);
+                if (Class_Genric.NetAvailable(mContext)) {
+                    Class_SyncApi.CatagoryApi(mContext,data.get(position).getId());
+                }
+                else {
+                    Class_SyncApi.LoadOfflineCatagories(mContext,data.get(position).getId());
+                }
                 Class_Static.editProductOrder = false;
-                ((Activity)mContext).startActivity(new Intent(mContext, Add_Product.class));
-                ((Activity)mContext).finish();
+
             }
         });
     }

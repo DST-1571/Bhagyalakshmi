@@ -18,6 +18,7 @@ import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.view.Admin_Orders_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.view.Order_Page_Adapter;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 
@@ -36,8 +37,10 @@ public class Admin_Orders extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_orders);
+        Class_Genric.setOrientation(Admin_Orders.this);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bhagyalakshmi Traders");
+        toolbar.setTitle(Class_ModelDB.AppTitle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         orderedLayout=(LinearLayout)findViewById(R.id.active_ordered_layout);
@@ -53,7 +56,7 @@ public class Admin_Orders extends AppCompatActivity {
     private void Functionality(final Context context) {
         orderSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after){
 
             }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class View_Product_List_Adapter extends RecyclerView.Adapter<View_Product
         for (Product product : data) {
             amount += product.getAmount();
         }
-        Product_Order_Lookup.grandTotal.setText("Total : " + amount + "");
+        Product_Order_Lookup.grandTotal.setText("Total : " + String.format("%.2f", amount) + "");
 
 
     }
@@ -50,10 +51,14 @@ public class View_Product_List_Adapter extends RecyclerView.Adapter<View_Product
     @Override
     public void onBindViewHolder(View_Product_List_Adapter.ViewHolder holder, int position) {
         holder.category.setText(data.get(position).getCatagoryName());
+        holder.category.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        holder.category.setSelected(true);
+        holder.category.setSingleLine(true);
         holder.description.setText(data.get(position).getDescription());
         holder.quantity.setText(data.get(position).getQuantity() + "");
         holder.unit.setText(data.get(position).getUnits());
-        holder.price.setText(Class_Genric.rupee + data.get(position).getPrice());
+        holder.price.setText(Class_Genric.rupee +  String.format("%.2f", data.get(position).getPrice())
+        );
     }
 
     @Override

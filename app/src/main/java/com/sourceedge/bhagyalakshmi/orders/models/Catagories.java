@@ -1,5 +1,7 @@
 package com.sourceedge.bhagyalakshmi.orders.models;
 
+import java.math.BigInteger;
+
 /**
  * Created by Centura User1 on 20-12-2016.
  */
@@ -7,14 +9,14 @@ package com.sourceedge.bhagyalakshmi.orders.models;
 public class Catagories {
     public String Id;
     public String SectionId;
-    public String Name;
-    public String TimeStamp;
+    public String Category;
+    public BigInteger TimeStamp;
 
     public void Catagories(){
         Id="";
         SectionId="";
-        Name="";
-        TimeStamp="";
+        Category="";
+        TimeStamp= BigInteger.valueOf(0);
     }
 
     public String getId() {
@@ -34,18 +36,18 @@ public class Catagories {
     }
 
     public String getName() {
-        return Name;
+        return Category;
     }
 
     public void setName(String name) {
-        Name = name;
+        Category = name;
     }
 
-    public String getTimeStamp() {
+    public BigInteger getTimeStamp() {
         return TimeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(BigInteger timeStamp) {
         TimeStamp = timeStamp;
     }
 }

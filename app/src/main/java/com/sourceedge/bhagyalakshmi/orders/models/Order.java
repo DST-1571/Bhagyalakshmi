@@ -1,5 +1,11 @@
 package com.sourceedge.bhagyalakshmi.orders.models;
 
+import android.app.Activity;
+
+import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,7 +21,11 @@ public class Order {
     private Double TotalAmount;
     private String Status;
     private String OrderNumber;
-    private String TimeStamp;
+    private String OrderDate;
+    private BigInteger TimeStamp;
+
+
+    public static boolean LoadOrders=true;
 
     public Order(){
         Id="";
@@ -25,7 +35,8 @@ public class Order {
         TotalAmount=0.0;
         Status="";
         OrderNumber="";
-        TimeStamp="";
+        TimeStamp= BigInteger.valueOf(0);
+        OrderDate="";
     }
 
     public String getId() {
@@ -38,6 +49,10 @@ public class Order {
 
     public ArrayList<OrderProduct> getProducts() {
         return Products;
+    }
+
+    public ArrayList<Product> getProductsforDraft() {
+        return Class_Genric.getProductsFromOrderProducts(Products);
     }
 
     public void setProducts(ArrayList<OrderProduct> products) {
@@ -84,11 +99,19 @@ public class Order {
         OrderNumber = orderNumber;
     }
 
-    public String getTimeStamp() {
+    public BigInteger getTimeStamp() {
         return TimeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(BigInteger timeStamp) {
         TimeStamp = timeStamp;
+    }
+
+    public String getOrderDate() {
+        return OrderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        OrderDate = orderDate;
     }
 }

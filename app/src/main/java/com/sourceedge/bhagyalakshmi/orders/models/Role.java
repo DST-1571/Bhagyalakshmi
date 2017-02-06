@@ -1,18 +1,20 @@
 package com.sourceedge.bhagyalakshmi.orders.models;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Role {
     private String Id;
     private String Name;
-    private String TimeStamp;
+    private BigInteger TimeStamp;
 
     public Role(){
         Id="";
         Name="";
-        TimeStamp="";
+        TimeStamp= BigInteger.valueOf(0);
     }
+
 
     public String getId() {
         return Id;
@@ -30,11 +32,11 @@ public class Role {
         Name = name;
     }
 
-    public String getTimeStamp() {
+    public BigInteger getTimeStamp() {
         return TimeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(BigInteger timeStamp) {
         TimeStamp = timeStamp;
     }
 }

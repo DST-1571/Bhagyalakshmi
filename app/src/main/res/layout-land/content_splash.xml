@@ -10,8 +10,9 @@
     tools:showIn="@layout/activity_splash">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:paddingBottom="100dp"
         android:layout_centerInParent="true"
         android:src="@drawable/bhagyalaksmi"/>
     <ProgressBar
@@ -21,6 +22,6 @@
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/dimen_50dp" />
+        android:layout_margin="50dp" />
 
 </RelativeLayout>

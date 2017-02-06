@@ -32,7 +32,6 @@ import com.sourceedge.bhagyalakshmi.orders.models.OrderProduct;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Success;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Order_Product_List_Adapter;
-import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Role_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.View_Product_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_DBHelper;
@@ -44,6 +43,7 @@ import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Centura User1 on 13-12-2016.
@@ -101,8 +101,9 @@ public class Product_Order_Lookup extends AppCompatActivity {
         order_header1 = (LinearLayout) findViewById(R.id.order_header1);
         order_header2 = (LinearLayout) findViewById(R.id.order_header2);
         scrollView = (LinearLayout) findViewById(R.id.orderitemlist);
+
         placedby.setText(Class_ModelDB.getCurrentuserModel().getName());
-        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
             case Class_Genric.ADMIN:
                 customerlable.setText("");
                 break;
@@ -114,7 +115,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
             case Class_Genric.DISTRIBUTOR:
                 //searchPane.setVisibility(View.GONE);
                 break;
-            case Class_Genric.SALESPERSON:
+            case Class_Genric.SALESMAN:
                 //searchPane.setVisibility(View.VISIBLE);
                 // retailerSearch.setHint("Select Distributor");
                 customerlable.setText("Distributor :");
@@ -132,18 +133,18 @@ public class Product_Order_Lookup extends AppCompatActivity {
     }
 
     public static void InitializeAdapter(Context context) {
-        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
             case Class_Genric.ADMIN:
                 break;
             case Class_Genric.DISTRIBUTORSALES:
-            case Class_Genric.SALESPERSON:
+            case Class_Genric.SALESMAN:
                 if (Class_Static.tempOrderingProduct.size() != 0) {
                     orderProductListLayout.setVisibility(View.VISIBLE);
                     orderProductRecyclerview.setVisibility(View.VISIBLE);
                     submitButton.setVisibility(View.VISIBLE);
                     if (Class_Static.viewOrderedProducts) {
                         orderDetailsHeader.setVisibility(View.VISIBLE);
-                        orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
+                        orderdate.setText(Class_Genric.getDateTime(Class_Static.OrdredProducts));
                         ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
                         customername.setText(Class_Static.OrdredProducts.getClient().getName());
                         fab.setVisibility(View.GONE);
@@ -172,6 +173,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     submitButton.setVisibility(View.GONE);
                     grandTotal.setText("");
                     setMargins(fab, 16, context);
+                    ((Activity)context).finish();
                 }
 
 
@@ -186,7 +188,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     emptyProducts.setVisibility(View.GONE);
                     if (Class_Static.viewOrderedProducts) {
                         orderDetailsHeader.setVisibility(View.VISIBLE);
-                        orderdate.setText(Class_Genric.getDate(Class_Static.OrdredProducts.getTimeStamp()));
+                        orderdate.setText(Class_Genric.getDateTime(Class_Static.OrdredProducts));
                         ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
                         fab.setVisibility(View.GONE);
                         //searchPane.setVisibility(View.GONE);
@@ -225,13 +227,13 @@ public class Product_Order_Lookup extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                     case Class_Genric.ADMIN:
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
-                    case Class_Genric.SALESPERSON:
+                    case Class_Genric.SALESMAN:
                         if (Class_Genric.NetAvailable(Product_Order_Lookup.this))
-                            Class_SyncApi.PlaceOrderApi(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempRole.getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                            Class_SyncApi.PlaceOrderApiTemp(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getName(), Class_Static.tempRole.getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
                         else {
                             Order tempOrder = new Order();
                             tempOrder.setProducts(Class_Genric.getOrderProductsFromProducts(Class_Static.tempOrderingProduct));
@@ -239,6 +241,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                             tempOrder.setUser(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
                             tempOrder.setClient(Class_Genric.getOrderRoleFromCurrentRole(Class_Static.tempRole));
                             tempOrder.setOrderNumber("Offline Order");
+                            tempOrder.setOrderDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
                             tempOrder.setStatus("Draft");
                             if (grandTotal.getText() == null)
                                 tempOrder.setTotalAmount(0.0);
@@ -250,17 +253,15 @@ public class Product_Order_Lookup extends AppCompatActivity {
                             Class_ModelDB.DraftorderList.add(tempOrder);
                             Class_DBHelper class_dbHelper = new Class_DBHelper(Product_Order_Lookup.this);
                             class_dbHelper.saveDraftOrders();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(Class_Genric.Sp_OrderNumber, "Offline Order Placed");
-                            editor.putString(Class_Genric.Sp_OrderStatus, "Draft");
-                            editor.commit();
-                            startActivity(new Intent(Product_Order_Lookup.this, Order_Success.class));
+                            Intent intent= new Intent(Product_Order_Lookup.this, Order_Success.class);
+                            intent.putExtra("OrderNumber",("Offline Order"));
+                            startActivity(intent);
                             finish();
                         }
                         break;
                     case Class_Genric.DISTRIBUTOR:
                         if (Class_Genric.NetAvailable(Product_Order_Lookup.this))
-                            Class_SyncApi.PlaceOrderApi(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getId(), Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
+                            Class_SyncApi.PlaceOrderApiTemp(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getName(), Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
                         else {
                             Order tempOrder = new Order();
                             tempOrder.setProducts(Class_Genric.getOrderProductsFromProducts(Class_Static.tempOrderingProduct));
@@ -268,6 +269,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                             tempOrder.setUser(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
                             tempOrder.setClient(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
                             tempOrder.setOrderNumber("Offline Order");
+                            tempOrder.setOrderDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
                             tempOrder.setStatus("Draft");
                             if (grandTotal.getText() == null)
                                 tempOrder.setTotalAmount(0.0);
@@ -278,11 +280,9 @@ public class Product_Order_Lookup extends AppCompatActivity {
                             Class_ModelDB.DraftorderList.add(tempOrder);
                             Class_DBHelper class_dbHelper = new Class_DBHelper(Product_Order_Lookup.this);
                             class_dbHelper.saveDraftOrders();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(Class_Genric.Sp_OrderNumber, "Offline Order Placed");
-                            editor.putString(Class_Genric.Sp_OrderStatus, "Draft");
-                            editor.commit();
-                            startActivity(new Intent(Product_Order_Lookup.this, Order_Success.class));
+                            Intent intent= new Intent(Product_Order_Lookup.this, Order_Success.class);
+                            intent.putExtra("OrderNumber",("Offline Order"));
+                            startActivity(intent);
                             finish();
                         }
                         break;
@@ -295,7 +295,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                     case Class_Genric.ADMIN:
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
@@ -306,7 +306,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                         Class_Static.editProductOrder = false;
                         startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
                         break;
-                    case Class_Genric.SALESPERSON:
+                    case Class_Genric.SALESMAN:
                         Class_Static.editProductOrder = false;
                         startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
                         break;

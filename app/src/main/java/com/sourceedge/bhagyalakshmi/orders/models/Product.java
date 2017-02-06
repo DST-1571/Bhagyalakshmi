@@ -1,5 +1,8 @@
 package com.sourceedge.bhagyalakshmi.orders.models;
 
+import java.math.BigInteger;
+import java.sql.Time;
+
 /**
  * Created by Centura User1 on 07-12-2016.
  */
@@ -8,7 +11,7 @@ public class Product {
 
     private String Id;
     private String SectionId;
-    private String CategoryId;
+    private String Category;
     private String SectionName;
     private String CatagoryName;
     private String Units;
@@ -18,6 +21,7 @@ public class Product {
     private Double Amount;
     private String Description;
     private String Code;
+    private BigInteger TimeStamp;
 
     public Product(){
         Id="";
@@ -28,22 +32,32 @@ public class Product {
         Amount=0.0;
         Description="";
         SectionId="";
-        CategoryId="";
+        Category="";
         Code="";
         SectionName="";
         CatagoryName="";
+        TimeStamp= BigInteger.valueOf(0);
+    }
+
+    public BigInteger getTimeStamp() {
+        return TimeStamp;
+    }
+
+    public void setTimeStamp(BigInteger timeStamp) {
+        TimeStamp = timeStamp;
     }
 
     public void setProductDetais(Product tempPtoduct){
-        Id=tempPtoduct.getId();
+       // Id=tempPtoduct.getId();
         Units=tempPtoduct.getUnits();
         Price=tempPtoduct.getPrice();
         Quantity=tempPtoduct.getQuantity();
         Stock=tempPtoduct.getStock();
+
         Amount=tempPtoduct.getAmount();
         Description=tempPtoduct.getDescription();
         SectionId=tempPtoduct.getSectionId();
-        CategoryId=tempPtoduct.getCategoryId();
+        Category=tempPtoduct.getCategoryId();
         Code=tempPtoduct.getCode();
     }
 
@@ -56,11 +70,11 @@ public class Product {
     }
 
     public String getCategoryId() {
-        return CategoryId;
+        return Category;
     }
 
     public void setCategoryId(String categoryId) {
-        CategoryId = categoryId;
+        Category = categoryId;
     }
 
     public String getSectionName() {
@@ -80,7 +94,7 @@ public class Product {
     }
 
     public Product(Product tempProduct) {
-        Id=tempProduct.getId();
+       // Id=tempProduct.getId();
         Units=tempProduct.getUnits();
         Price=tempProduct.getPrice();
         Quantity=tempProduct.getQuantity();
@@ -88,7 +102,7 @@ public class Product {
         Amount=tempProduct.getAmount();
         Description=tempProduct.getDescription();
         CatagoryName= tempProduct.getCatagoryName();
-        CategoryId= tempProduct.getCategoryId();
+        Category= tempProduct.getCategoryId();
         SectionName= tempProduct.getSectionName();
         SectionId= tempProduct.getSectionId();
         Code=tempProduct.getCode();
@@ -102,13 +116,13 @@ public class Product {
         Code = code;
     }
 
-    public String getId() {
+   /* public String getId() {
         return Id;
     }
 
     public void setId(String id) {
         Id = id;
-    }
+    }*/
 
     public String getUnits() {
         return Units;

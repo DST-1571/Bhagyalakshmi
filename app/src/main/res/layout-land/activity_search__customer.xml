@@ -11,7 +11,6 @@
 
 
     <LinearLayout
-
         android:id="@+id/search_pane"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,7 +37,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <RelativeLayout
-                        android:padding="@dimen/dimen_10dp"
                         android:id="@+id/search_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -53,7 +51,7 @@
                             android:background="@android:color/transparent"
                             android:hint="Select Retailer"
                             android:textColorHint="@color/cardview_dark_background"
-                            android:textSize="@dimen/textsize_18sp"
+                            android:textSize="16sp"
                             android:textColor="@color/cardview_dark_background"
                             android:inputType="text"
                             android:maxLines="1" />
@@ -73,13 +71,14 @@
         </android.support.design.widget.AppBarLayout>
 
 
+
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="@dimen/dimen_10dp"
             android:id="@+id/retailer_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            android:padding="@dimen/dimen_15dp"
+            android:padding="@dimen/dimen_5dp"
             />
 
     </LinearLayout>

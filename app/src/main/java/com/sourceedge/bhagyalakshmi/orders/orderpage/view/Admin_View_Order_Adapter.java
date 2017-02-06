@@ -30,7 +30,8 @@ public class Admin_View_Order_Adapter extends RecyclerView.Adapter<Admin_View_Or
         for (Product prod : data) {
             amount += prod.getAmount();
         }
-        Admin_View_Order.total.setText("Total : " + amount + "");
+        Admin_View_Order.total.setText("Total : " +String.format("%.2f", amount)+ "");
+
     }
 
     @Override

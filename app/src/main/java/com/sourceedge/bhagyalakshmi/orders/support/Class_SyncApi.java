@@ -1,9 +1,12 @@
 package com.sourceedge.bhagyalakshmi.orders.support;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,36 +22,44 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.sourceedge.bhagyalakshmi.orders.changepassword.Change_Password;
+import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
+import com.sourceedge.bhagyalakshmi.orders.location.MapsActivity;
 import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
 import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
 import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
+import com.sourceedge.bhagyalakshmi.orders.models.LocationModel;
+import com.sourceedge.bhagyalakshmi.orders.models.OffineModel_Category;
+import com.sourceedge.bhagyalakshmi.orders.models.OfflineModel_Distributor;
+import com.sourceedge.bhagyalakshmi.orders.models.TrackModel;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
 import com.sourceedge.bhagyalakshmi.orders.models.OrderProduct;
 import com.sourceedge.bhagyalakshmi.orders.models.PlaceOrder;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 import com.sourceedge.bhagyalakshmi.orders.models.Sections;
+import com.sourceedge.bhagyalakshmi.orders.models.tempjson;
+import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Success;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Add_Product;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Search_Customer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import static com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard.total_order_count;
 import static com.sourceedge.bhagyalakshmi.orders.support.Class_Genric.MyPref;
@@ -62,16 +73,19 @@ public class Class_SyncApi {
     static int mStatusCode = 0;
     static Gson gson;
     static Class_DBHelper dbHelper;
+    ArrayList<TrackModel> model;
+    public static OfflineModel_Distributor tempOfflineDistributor;
 
+    //Note API Calls
     public static void LoginApi(final Context context, final EditText username, final EditText password) {
         sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
         dbHelper = new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("UserName", username.getText().toString()));
-        params.add(new KeyValuePair("Password", password.getText().toString()));
+        params.add(new KeyValuePair("username", username.getText().toString().trim()));
+        params.add(new KeyValuePair("password", password.getText().toString().trim()));
         Class_Genric.ShowDialog(context, "Loading...", true);
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Login, params), new Response.Listener<String>() {
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl1(Class_Urls.Login, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
@@ -86,7 +100,6 @@ public class Class_SyncApi {
                             editor.commit();
                             dbHelper.saveCurrentUser();
                             dbHelper.loadCurrentUser();
-                            String s = Class_ModelDB.getCurrentuserModel().getUserType();
                             Toast.makeText(context, "Successfully Logged In", Toast.LENGTH_SHORT).show();
                             Class_Static.home = true;
                             ((Activity) context).startActivity(new Intent(context, Dashboard.class));
@@ -127,6 +140,953 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+    public static void DistributorApi(final Context context) {
+        dbHelper = new Class_DBHelper(context);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+    /*    params.add(new KeyValuePair("TimeStamp", Class_Genric.getTimeStamp(Class_Genric.Sp_RolesTS, context)));*/
+        params.add(new KeyValuePair("name", Class_ModelDB.getCurrentuserModel().getName()));
+        Class_Genric.ShowDialog(context, "Loading Distributors.", true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl1(Class_Urls.Distributor1, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<Role> rolelist = new ArrayList<Role>();
+                            Type listType = new TypeToken<ArrayList<Role>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            rolelist = gson.fromJson(jsonArray.toString(), listType);
+                            dbHelper.loadRole();
+
+                            ArrayList<Role> NewRoleList = new ArrayList<Role>();
+                            for (Role newrole : rolelist) {
+                                boolean matched = false;
+                                for (int i = 0; i < Class_ModelDB.getRoleList().size(); i++) {
+                                    if (newrole.getId().matches(Class_ModelDB.getRoleList().get(i).getId())) {
+                                        matched = true;
+                                        Class_ModelDB.getRoleList().remove(Class_ModelDB.getRoleList().get(i));
+                                        Class_ModelDB.getRoleList().add(i, newrole);
+                                        break;
+                                    }
+                                }
+                                if (!matched)
+                                    NewRoleList.add(newrole);
+                            }
+                            ArrayList<Role> FinalRoleList = new ArrayList<Role>();
+                            FinalRoleList = (ArrayList<Role>) Class_ModelDB.getRoleList().clone();
+                            for (Role newroles : NewRoleList) {
+                                FinalRoleList.add(newroles);
+                            }
+
+                            Class_ModelDB.setRoleList(rolelist);
+
+                            dbHelper.saveRole();
+                            dbHelper.loadRole();
+
+                            Class_Static.viewOrderedProducts=false;
+                            Class_Static.tempOrderingProduct = new ArrayList<Product>();
+                            Class_Static.Flag_SEARCH = Class_Static.SEARCHCUSTOMER;
+                            ((Activity)context).startActivity(new Intent(context, Search_Customer.class));
+
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof NoConnectionError || error instanceof TimeoutError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableRole)) {
+                        dbHelper.loadRole();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+
+
+        queue.add(Class_Genric.VolleyTime(postRequest));
+    }
+    public static void CatagoryApi(final Context context, String Distributorid) {
+        dbHelper = new Class_DBHelper(context);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        //params.add(new KeyValuePair("TimeStamp", Class_Genric.getTimeStamp(Class_Genric.Sp_CatagoriesTS, context)));
+        params.add(new KeyValuePair("Distributorid", Distributorid));
+        Class_Genric.ShowDialog(context, "Loading Catagories.", true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl1(Class_Urls.Category, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<Catagories> model = new ArrayList<Catagories>();
+                            Type listType = new TypeToken<ArrayList<Catagories>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            model = gson.fromJson(jsonArray.toString(), listType);
+                            /*dbHelper.loadcatagory();
+
+                            ArrayList<Catagories> NewCategoriesList = new ArrayList<Catagories>();
+                            for (Catagories newcategory : model) {
+                                boolean matched = false;
+                                for (int i = 0; i < Class_ModelDB.getCatagoryList().size(); i++) {
+                                    if (newcategory.getName().matches(Class_ModelDB.getCatagoryList().get(i).getName())) {
+                                        matched = true;
+                                        Class_ModelDB.getCatagoryList().remove(Class_ModelDB.getCatagoryList().get(i));
+                                        Class_ModelDB.getCatagoryList().add(i, newcategory);
+                                        break;
+                                    }
+                                }
+                                if (!matched)
+                                    NewCategoriesList.add(newcategory);
+                            }
+                            ArrayList<Catagories> FinalCategoryList = new ArrayList<Catagories>();
+                            FinalCategoryList = (ArrayList<Catagories>) Class_ModelDB.getCatagoryList().clone();
+                            for (Catagories newcat : NewCategoriesList) {
+                                FinalCategoryList.add(newcat);
+                            }*/
+                            Class_ModelDB.setCatagoryList(model);
+                            dbHelper.saveCatagories();
+                            dbHelper.loadcatagory();
+                            if (Class_Static.CURRENTPAGE == Class_Static.DISTRIBUTORLIST) {
+                                ((Activity) context).startActivity(new Intent(context, Add_Product.class));
+                                ((Activity) context).finish();
+                            }
+                            else if(Class_Static.CURRENTPAGE == Class_Static.ORDERS) {
+                                //Class_SyncApi.LoadOfflineCatagories(context, Class_ModelDB.getCurrentuserModel().getId());
+                                Class_Static.viewOrderedProducts=false;
+                                Class_Static.tempOrderingProduct = new ArrayList<Product>();
+                                Class_Static.editProductOrder = false;
+                                ((Activity)context).startActivity(new Intent(context, Add_Product.class));
+
+                            }
+
+                            /*Class_Static.timestamplist = new ArrayList<BigInteger>();
+                            for (int j = 0; j < Class_ModelDB.getCatagoryList().size(); j++)
+                                Class_Static.timestamplist.add(Class_ModelDB.getCatagoryList().get(j).getTimeStamp());
+                            if(Class_Static.timestamplist.size()>0)
+                            Class_Genric.setTimeStamp(Class_Genric.Sp_CatagoriesTS, Collections.max(Class_Static.timestamplist), context);*/
+
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
+                        dbHelper.loadcatagory();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else if (error instanceof NoConnectionError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
+                        dbHelper.loadcatagory();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }) {
+            /*@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }*/
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(Class_Genric.VolleyTime(postRequest));
+    }
+    public static void ProductApi(final Context context, String id, String name) {
+        //GroupsApi(context);
+        //CatagoryApi(context);
+        dbHelper = new Class_DBHelper(context);
+        /*String s = "2016-12-06T11:29:26";
+        if (s.contains("T")) {
+            s = s.replace("T", "");
+        }*/
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("Distributorid", id));
+        params.add(new KeyValuePair("Category", name));
+        Class_Genric.ShowDialog(context, "Loading Products.", true);
+
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl1(Class_Urls.Product1, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<Product> model = new ArrayList<Product>();
+                            Type listType = new TypeToken<ArrayList<Product>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            model = gson.fromJson(jsonArray.toString(), listType);
+                           /* dbHelper.loadProduct();
+
+
+                            ArrayList<Product> NewProductsList = new ArrayList<Product>();
+
+                            for (Product newprod : model) {
+                                boolean matched = false;
+                                for (int i = 0; i < Class_ModelDB.getProductList().size(); i++) {
+                                    if (newprod.getId().matches(Class_ModelDB.getProductList().get(i).getId())) {
+                                        matched = true;
+                                        Class_ModelDB.getProductList().remove(Class_ModelDB.getProductList().get(i));
+                                        Class_ModelDB.getProductList().add(i, newprod);
+                                        break;
+                                    }
+                                }
+                                if (!matched)
+                                    NewProductsList.add(newprod);
+                            }
+                            ArrayList<Product> FinalProductList = new ArrayList<Product>();
+                            FinalProductList = (ArrayList<Product>) Class_ModelDB.getProductList().clone();
+                            for (Product newproduct : NewProductsList) {
+                                FinalProductList.add(newproduct);
+                            }*/
+                            Class_ModelDB.setProductList(model);
+
+                            dbHelper.saveProduct();
+                            dbHelper.loadProduct();
+                           /* String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+                            sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(Class_Genric.Sp_SyncDate, date);
+                            editor.commit();*/
+
+
+                            /*Class_Static.timestamplist = new ArrayList<BigInteger>();
+                            for (int j = 0; j < Class_ModelDB.getProductList().size(); j++)
+                                Class_Static.timestamplist.add(Class_ModelDB.getProductList().get(j).getTimeStamp());
+                            if(Class_Static.timestamplist.size()>0)
+                            Class_Genric.setTimeStamp(Class_Genric.Sp_ProductsTS, Collections.max(Class_Static.timestamplist), context);*/
+
+                            ((Activity) context).finish();
+
+
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError) {
+                    if (loadOffileProducts_Time(context))
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
+                            dbHelper.loadProduct();
+                        } else {
+                            Class_Genric.NetCheck(context);
+                        }
+                    else SyncNow(context);
+                } else if (error instanceof NoConnectionError) {
+                    if (loadOffileProducts_Time(context))
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
+                            dbHelper.loadProduct();
+                        } else {
+                            Class_Genric.NetCheck(context);
+                        }
+                    else SyncNow(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+           /* @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }*/
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+
+        queue.add(Class_Genric.VolleyTime(postRequest));
+    }
+    public static void OrderApi(final Context context) {
+        if (Order.LoadOrders) {
+            dbHelper = new Class_DBHelper(context);
+            RequestQueue queue = Volley.newRequestQueue(context);
+            ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+            params.add(new KeyValuePair("name", Class_ModelDB.getCurrentuserModel().getName()));
+            Class_Genric.ShowDialog(context, "Loading Orders.", true);
+            StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl1(Class_Urls.Order1, params), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    if (response != null) {
+                        Class_Genric.ShowDialog(context, "Loading...", false);
+                        switch (mStatusCode) {
+                            case 200:
+                                try {
+                                    gson = new Gson();
+                                    ArrayList<Order> orders = new ArrayList<Order>();
+                                    Type listType = new TypeToken<ArrayList<Order>>() {
+                                    }.getType();
+                                    JSONArray jsonObject = new JSONArray(response);
+                                    orders = gson.fromJson(jsonObject.toString(), listType);
+                               /* dbHelper.loadOrders();
+
+                                ArrayList<Order> NewOrdersList = new ArrayList<Order>();
+
+                                for (Order neworder : orders) {
+                                    boolean matched = false;
+                                    for (int i = 0; i < Class_ModelDB.getOrderList().size(); i++) {
+                                        if (neworder.getId().matches(Class_ModelDB.getOrderList().get(i).getId())) {
+                                            matched = true;
+                                            Class_ModelDB.getOrderList().remove(Class_ModelDB.getOrderList().get(i));
+                                            Class_ModelDB.getOrderList().add(i, neworder);
+                                            break;
+                                        }
+                                    }
+                                    if (!matched)
+                                        NewOrdersList.add(neworder);
+                                }
+                                ArrayList<Order> FinalOrderList = new ArrayList<Order>();
+                                FinalOrderList = (ArrayList<Order>) Class_ModelDB.getOrderList().clone();
+                                for (Order neworders : NewOrdersList) {
+                                    FinalOrderList.add(neworders);
+                                }*/
+                                    Class_ModelDB.setOrderList(orders);
+                                    dbHelper.saveOrders();
+                                    dbHelper.loadOrders();
+                                    Order.LoadOrders = false;
+                                    //int s= Class_ModelDB.getOrderList().size();
+                                    DashboardAPI(context);
+                                /*Class_Static.timestamplist = new ArrayList<BigInteger>();
+                                for (int j = 0; j < Class_ModelDB.getOrderList().size(); j++)
+                                    Class_Static.timestamplist.add(Class_ModelDB.getOrderList().get(j).getTimeStamp());
+                                if(Class_Static.timestamplist.size()>0)
+                                Class_Genric.setTimeStamp(Class_Genric.Sp_OrdersTS, Collections.max(Class_Static.timestamplist), context);
+*/
+                                    break;
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                        }
+                    }
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Class_Genric.ShowDialog(context, "Loading...", false);
+                    DashboardAPI(context);
+                    if (error instanceof TimeoutError) {
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableOrders)) {
+                            dbHelper.loadOrders();
+                            Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
+                        } else {
+                            Class_Genric.NetCheck(context);
+                        }
+                    } else if (error instanceof NoConnectionError) {
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableOrders)) {
+                            dbHelper.loadOrders();
+                            Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
+                        } else {
+                            Class_Genric.NetCheck(context);
+                        }
+                    } else {
+                        if (error != null && error.networkResponse != null) {
+                            mStatusCode = error.networkResponse.statusCode;
+                            switch (mStatusCode) {
+                                case 400:
+                                    Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }) {
+           /* @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }*/
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    mStatusCode = response.statusCode;
+                    return super.parseNetworkResponse(response);
+                }
+            };
+            queue.add(Class_Genric.VolleyTime(postRequest));
+        } else
+            Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
+    }
+    public static void ProductPriceApi(final Context context, final Product data, String Distributorid) {
+        //GroupsApi(context);
+        //CatagoryApi(context);
+        dbHelper = new Class_DBHelper(context);
+        /*String s = "2016-12-06T11:29:26";
+        if (s.contains("T")) {
+            s = s.replace("T", "");
+        }*/
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("Distributorid", Distributorid));
+        params.add(new KeyValuePair("Code", data.getCode()));
+        Class_Genric.ShowDialog(context, "Loading Price.", true);
+
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl1(Class_Urls.ProductPrice, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            /*ArrayList<Product> model = new ArrayList<Product>();
+                            Type listType = new TypeToken<ArrayList<Product>>() {
+                            }.getType();*/
+                            String code = new JSONObject(response).optString("Code");
+                            String price = new JSONObject(response).optString("Price");
+
+                            Class_Static.tempProduct.setProductDetais(data);
+                            Class_Static.tempProduct.setQuantity(1);
+                            Add_Product.productSearch.setText(Class_Static.tempProduct.getDescription());
+                            Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
+                            Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
+                            Add_Product.productPrice.setText(price + "");
+                            ((Activity) context).finish();
+                            /*JSONObject jsonArray = new JSONObject(response);
+                            String s = gson.fromJson(jsonArray.toString(), String.class);*/
+                            // dbHelper.loadProduct();
+
+
+                           /* ArrayList<Product> NewProductsList = new ArrayList<Product>();
+
+                            for (Product newprod : model) {
+                                boolean matched = false;
+                                for (int i = 0; i < Class_ModelDB.getProductList().size(); i++) {
+                                    if (newprod.getId().matches(Class_ModelDB.getProductList().get(i).getId())) {
+                                        matched = true;
+                                        Class_ModelDB.getProductList().remove(Class_ModelDB.getProductList().get(i));
+                                        Class_ModelDB.getProductList().add(i, newprod);
+                                        break;
+                                    }
+                                }
+                                if (!matched)
+                                    NewProductsList.add(newprod);
+                            }
+                            ArrayList<Product> FinalProductList = new ArrayList<Product>();
+                            FinalProductList = (ArrayList<Product>) Class_ModelDB.getProductList().clone();
+                            for (Product newproduct : NewProductsList) {
+                                FinalProductList.add(newproduct);
+                            }
+                            Class_ModelDB.setProductList(FinalProductList);
+
+                            dbHelper.saveProduct();
+                            dbHelper.loadProduct();
+                           *//* String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+                            sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(Class_Genric.Sp_SyncDate, date);
+                            editor.commit();*//*
+
+
+                            *//*Class_Static.timestamplist = new ArrayList<BigInteger>();
+                            for (int j = 0; j < Class_ModelDB.getProductList().size(); j++)
+                                Class_Static.timestamplist.add(Class_ModelDB.getProductList().get(j).getTimeStamp());
+                            if(Class_Static.timestamplist.size()>0)
+                            Class_Genric.setTimeStamp(Class_Genric.Sp_ProductsTS, Collections.max(Class_Static.timestamplist), context);*//*
+
+                            ((Activity)context).finish();*/
+
+
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "This Product is UnAvailable", Toast.LENGTH_SHORT).show();
+                Class_Genric.ShowDialog(context, "Loading...", false);
+               /* if (error instanceof TimeoutError) {
+                    if (loadOffileProducts_Time(context))
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
+                            dbHelper.loadProduct();
+                        } else {
+                            Class_Genric.NetCheck(context);
+                        }
+                    else SyncNow(context);
+                } else if (error instanceof NoConnectionError) {
+                    if (loadOffileProducts_Time(context))
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
+                            dbHelper.loadProduct();
+                        } else {
+                            Class_Genric.NetCheck(context);
+                        }
+                    else SyncNow(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();*/
+                //  }
+            }
+        }) {
+           /* @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }*/
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(Class_Genric.VolleyTime(postRequest));
+    }
+    public static void PlaceOrderApiTemp(final Context context, String UserId, String ClientId, ArrayList<Product> orderedProduct, String total) {
+        ArrayList<OrderProduct> products = new ArrayList<OrderProduct>();
+       /* String s = Class_Static.tempRole.getTimeStamp()+"";
+        if (s.contains("T")) {
+            s = s.replace("T", "");
+        }*/
+        sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        for (int i = 0; i < orderedProduct.size(); i++) {
+            OrderProduct obj = new OrderProduct();
+            obj.setProductId(orderedProduct.get(i).getCode());
+            obj.setPrice(orderedProduct.get(i).getPrice());
+            obj.setQuantity(orderedProduct.get(i).getQuantity());
+            obj.setUnit(orderedProduct.get(i).getUnits());
+            products.add(obj);
+        }
+        PlaceOrder placeorder = new PlaceOrder();
+        placeorder.setUserId(UserId);
+        placeorder.setClientId(ClientId);
+        placeorder.setTotalAmount(Double.valueOf(total.substring(8)));
+        placeorder.setProducts(products);
+        placeorder.setOrderDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject = new JSONObject(gson.toJson(placeorder));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Class_Genric.ShowDialog(context, "Placing Order .", true);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,Class_Urls.PlaceOrder1, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                switch (mStatusCode) {
+                    case 200:
+                        //Class_SyncApi.OrderApi(context);
+                        Order.LoadOrders = true;
+                        Intent intent = new Intent(context, Order_Success.class);
+                        intent.putExtra("OrderNumber", response.optString("OrderNumber"));
+                        ((Activity) context).startActivity(intent);
+                        ((Activity) context).finish();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                try {
+                                String ErrorMessage= (String) (new JSONObject(new String(error.networkResponse.data))).get("Status");
+                                    Toast.makeText(context, ErrorMessage, Toast.LENGTH_SHORT).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                                }
+
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(jsonObjectRequest);
+    }
+    public static void PlaceDraftOrderApi(final Context context, final int pos, final int OrdersCount) {
+        if (pos >= OrdersCount) {
+            for (Order order : Class_ModelDB.DraftorderList) {
+                if (order.getStatus().matches("Pending."))
+                    Class_ModelDB.DraftorderList.remove(order);
+            }
+            dbHelper = new Class_DBHelper(context);
+            if (Class_ModelDB.DraftorderList.size() > 0)
+                dbHelper.saveDraftOrders();
+            else
+                dbHelper.DeleteDraftOrders();
+            Order.LoadOrders=true;
+            Class_SyncApi.OrderApi(context);
+            return;
+        }
+        String UserId = Class_ModelDB.DraftorderList.get(pos).getUser().getName();
+        String ClientId = Class_ModelDB.DraftorderList.get(pos).getClient().getId();
+        ArrayList<OrderProduct> orderedProduct = Class_ModelDB.DraftorderList.get(pos).getProducts();
+        String total = Class_ModelDB.DraftorderList.get(pos).getTotalAmount() + "";
+        ArrayList<OrderProduct> products = new ArrayList<OrderProduct>();
+        sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        PlaceOrder placeorder = new PlaceOrder();
+        placeorder.setUserId(UserId);
+        placeorder.setClientId(ClientId);
+        placeorder.setOrderDate(Class_ModelDB.DraftorderList.get(pos).getOrderDate());
+        placeorder.setTotalAmount(Double.valueOf(total));
+        placeorder.setProducts(orderedProduct);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            gson = new Gson();
+            jsonObject = new JSONObject(gson.toJson(placeorder));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Class_Genric.ShowDialog(context, "Placing Offline Orders...", true);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Class_Urls.PlaceOrder1, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                switch (mStatusCode) {
+                    case 200:
+                        Class_ModelDB.DraftorderList.get(pos).setStatus("Pending.");
+                        PlaceDraftOrderApi(context, pos + 1, OrdersCount);
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                String ErrorMessage= null;
+                try {
+                    ErrorMessage = (String) (new JSONObject(new String(error.networkResponse.data))).get("Status");
+                    Class_ModelDB.DraftorderList.get(pos).setStatus("Draft - "+ErrorMessage);
+                    PlaceDraftOrderApi(context, pos + 1, OrdersCount);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(context, ErrorMessage, Toast.LENGTH_SHORT).show();
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                }
+            }
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(jsonObjectRequest);
+    }
+
+    // Note : Experiment
+    public static void PlaceOrderApi(final Context context, String UserId, String ClientId, ArrayList<Product> orderedProduct, String total) {
+        ArrayList<OrderProduct> products = new ArrayList<OrderProduct>();
+       /* String s = Class_Static.tempRole.getTimeStamp()+"";
+        if (s.contains("T")) {
+            s = s.replace("T", "");
+        }*/
+        sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        for (int i = 0; i < orderedProduct.size(); i++) {
+            OrderProduct obj = new OrderProduct();
+            obj.setProductId(orderedProduct.get(i).getCode());
+            obj.setPrice(orderedProduct.get(i).getPrice());
+            obj.setQuantity(orderedProduct.get(i).getQuantity());
+            obj.setUnit(orderedProduct.get(i).getUnits());
+            products.add(obj);
+        }
+        PlaceOrder placeorder = new PlaceOrder();
+        placeorder.setUserId(UserId);
+        placeorder.setClientId(ClientId);
+        placeorder.setTotalAmount(Double.valueOf(total.substring(8)));
+        placeorder.setProducts(products);
+        placeorder.setOrderDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        JSONObject jsonObject = new JSONObject();
+        try {
+            //jsonObject = new JSONObject(gson.toJson(new tempjson(placeorder)));
+            jsonObject = new JSONObject(gson.toJson(placeorder));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Class_Genric.ShowDialog(context, "Placing Order .", true);
+        final JSONObject finalJsonObject = jsonObject;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Class_Urls.PlaceOrder1, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                JSONObject jsonObject1 = null;
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            jsonObject1 = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //Class_SyncApi.OrderApi(context);
+                        Order.LoadOrders = true;
+                        Intent intent = new Intent(context, Order_Success.class);
+                        intent.putExtra("OrderNumber", jsonObject1.optString("OrderNumber"));
+                        ((Activity) context).startActivity(intent);
+                        ((Activity) context).finish();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("json", finalJsonObject.toString());
+                return params;
+            }
+
+            @Override
+            public byte[] getBody() {
+                String data = "json=" + finalJsonObject.toString();
+                try {
+                    return data.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(stringRequest);
+    }
+    public static void PlaceOrderApiTemp2(final Context context, String UserId, String ClientId, ArrayList<Product> orderedProduct, String total) {
+        ArrayList<OrderProduct> products = new ArrayList<OrderProduct>();
+       /* String s = Class_Static.tempRole.getTimeStamp()+"";
+        if (s.contains("T")) {
+            s = s.replace("T", "");
+        }*/
+        sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        for (int i = 0; i < orderedProduct.size(); i++) {
+            OrderProduct obj = new OrderProduct();
+            obj.setProductId(orderedProduct.get(i).getCode());
+            obj.setPrice(orderedProduct.get(i).getPrice());
+            obj.setQuantity(orderedProduct.get(i).getQuantity());
+            obj.setUnit(orderedProduct.get(i).getUnits());
+            products.add(obj);
+        }
+        PlaceOrder placeorder = new PlaceOrder();
+        placeorder.setUserId(UserId);
+        placeorder.setClientId(ClientId);
+        placeorder.setTotalAmount(Double.valueOf(total.substring(8)));
+        placeorder.setProducts(products);
+        placeorder.setOrderDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        JSONObject jsonObject = new JSONObject();
+        try {
+            //jsonObject = new JSONObject(gson.toJson(new tempjson(placeorder)));
+            jsonObject = new JSONObject(gson.toJson(placeorder));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Class_Genric.ShowDialog(context, "Placing Order .", true);
+        final JSONObject finalJsonObject = jsonObject;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Class_Urls.PlaceOrder1, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                JSONObject jsonObject1 = null;
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            jsonObject1 = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //Class_SyncApi.OrderApi(context);
+                        Order.LoadOrders = true;
+                        Intent intent = new Intent(context, Order_Success.class);
+                        intent.putExtra("OrderNumber", jsonObject1.optString("OrderNumber"));
+                        ((Activity) context).startActivity(intent);
+                        ((Activity) context).finish();
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("json", finalJsonObject.toString());
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(stringRequest);
+    }
+
+    //Note : Support
+    private static void DashboardAPI(Context context) {
+        Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
+        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
+            case Class_Genric.ADMIN:
+                //Class_SyncApi.SalesPersonListApi(context);
+                /*   Class_Static.Flag_SEARCH = Class_Static.SEARCHSALESPERSON;
+                startActivity(new Intent(Dashboard.this, Search_Customer.class));*/
+                break;
+            case Class_Genric.DISTRIBUTORSALES:
+                Class_SyncApi.RetailerApi(context);
+                break;
+            case Class_Genric.DISTRIBUTOR:
+
+                break;
+            case Class_Genric.SALESMAN:
+
+                break;
+        }
+    }
+
 
     public static void ChangePasswordApi(final Context context, EditText oldPassword, EditText newPassword) {
 
@@ -181,98 +1141,6 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
-
-    public static void DistributorApi(final Context context) {
-        dbHelper = new Class_DBHelper(context);
-        RequestQueue queue = Volley.newRequestQueue(context);
-        /*ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));*/
-        Class_Genric.ShowDialog(context, "Loading...", true);
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Distributor/*Class_Genric.generateUrl(Class_Urls.Distributor, params)*/, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Class_Genric.ShowDialog(context, "Loading...", false);
-
-                switch (mStatusCode) {
-                    case 200:
-                        try {
-                            gson = new Gson();
-                            ArrayList<Role> rolelist = new ArrayList<Role>();
-                            Type listType = new TypeToken<ArrayList<Role>>() {
-                            }.getType();
-                            JSONArray jsonArray = new JSONArray(response);
-                            rolelist = gson.fromJson(jsonArray.toString(), listType);
-                            for (int i = 0; i < rolelist.size(); i++) {
-                                if (rolelist.get(i).getTimeStamp().contains("T")) {
-                                    rolelist.get(i).setTimeStamp(rolelist.get(i).getTimeStamp().replace("T", ""));
-                                }
-                            }
-                            Class_ModelDB.setRoleList(rolelist);
-                            dbHelper.saveRole();
-                            dbHelper.loadRole();
-
-                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-ddHH:mm:SS");
-
-                            for (int j = 0; j < Class_ModelDB.getRoleList().size(); j++) {
-                                try {
-                                    Date date = format.parse(Class_ModelDB.getRoleList().get(j).getTimeStamp());
-                                    Class_Static.timestamplist.add(date);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            SortedSet<Date> set = new TreeSet<Date>();
-                            for (int k = 0; k < Class_Static.timestamplist.size(); k++) {
-                                set.add(Class_Static.timestamplist.get(k));
-                            }
-                            Date max = new Date();
-                            if (set.size() > 0)
-                                max = set.last();
-                            Class_Static.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").format(max);
-                            break;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof NoConnectionError || error instanceof TimeoutError) {
-                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableRole)) {
-                        dbHelper.loadRole();
-                    } else {
-                        Class_Genric.NetCheck(context);
-                    }
-                } else {
-                    if (error != null && error.networkResponse != null) {
-                        mStatusCode = error.networkResponse.statusCode;
-                        switch (mStatusCode) {
-                            case 400:
-                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
-                return params;
-            }
-
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                mStatusCode = response.statusCode;
-                return super.parseNetworkResponse(response);
-            }
-        };
-        queue.add(postRequest);
-    }
-
     public static void DistributorIdApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
@@ -333,18 +1201,17 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
-
     public static void RetailerApi(final Context context) {
         dbHelper = new Class_DBHelper(context);
-        /*String s = "2016-12-06T11:29:26";
+        String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
             s = s.replace("T", "");
-        }*/
+        }
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
+        params.add(new KeyValuePair("TimeStamp", Class_Genric.getTimeStamp(Class_Genric.Sp_RolesTS, context)));
         Class_Genric.ShowDialog(context, "Loading...", true);
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Retailer/*Class_Genric.generateUrl(Class_Urls.Retailer, params)*/, new Response.Listener<String>() {
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Retailer, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
@@ -357,32 +1224,39 @@ public class Class_SyncApi {
                             }.getType();
                             JSONArray jsonArray = new JSONArray(response);
                             model = gson.fromJson(jsonArray.toString(), listType);
-                            for (int i = 0; i < model.size(); i++) {
-                                if (model.get(i).getTimeStamp().contains("T")) {
-                                    model.get(i).setTimeStamp(model.get(i).getTimeStamp().replace("T", ""));
+                            dbHelper.loadRole();
+
+                            ArrayList<Role> NewRoleList = new ArrayList<Role>();
+                            for (Role newrole : model) {
+                                boolean matched = false;
+                                for (int i = 0; i < Class_ModelDB.getRoleList().size(); i++) {
+                                    if (newrole.getId().matches(Class_ModelDB.getRoleList().get(i).getId())) {
+                                        matched = true;
+                                        Class_ModelDB.getRoleList().remove(Class_ModelDB.getRoleList().get(i));
+                                        Class_ModelDB.getRoleList().add(i, newrole);
+                                        break;
+                                    }
                                 }
+                                if (!matched)
+                                    NewRoleList.add(newrole);
                             }
-                            Class_ModelDB.setRoleList(model);
+                            ArrayList<Role> FinalRoleList = new ArrayList<Role>();
+                            FinalRoleList = (ArrayList<Role>) Class_ModelDB.getRoleList().clone();
+                            for (Role newroles : NewRoleList) {
+                                FinalRoleList.add(newroles);
+                            }
+                            Class_ModelDB.setRoleList(FinalRoleList);
+
                             dbHelper.saveRole();
                             dbHelper.loadRole();
                             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-ddHH:mm:SS");
-                            for (int j = 0; j < Class_ModelDB.getRoleList().size(); j++) {
-                                try {
-                                    Date date = format.parse(Class_ModelDB.getRoleList().get(j).getTimeStamp());
-                                    Class_Static.timestamplist.add(date);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            SortedSet<Date> set = new TreeSet<Date>();
-                            for (int k = 0; k < Class_Static.timestamplist.size(); k++) {
-                                set.add(Class_Static.timestamplist.get(k));
-                            }
 
-                            Date max = new Date();
-                            if (set.size() > 0)
-                                max = set.last();
-                            Class_Static.timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").format(max);
+                            Class_Static.timestamplist = new ArrayList<BigInteger>();
+                            for (int j = 0; j < Class_ModelDB.getRoleList().size(); j++)
+                                Class_Static.timestamplist.add(Class_ModelDB.getRoleList().get(j).getTimeStamp());
+                            if (Class_Static.timestamplist.size() > 0)
+                                Class_Genric.setTimeStamp(Class_Genric.Sp_RolesTS, Collections.max(Class_Static.timestamplist), context);
+
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -438,7 +1312,6 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
-
     public static void RetailerIdApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
@@ -499,93 +1372,51 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
-
-    public static void ProductApi(final Context context) {
-        GroupsApi(context);
-        CatagoryApi(context);
-        dbHelper = new Class_DBHelper(context);
-        /*String s = "2016-12-06T11:29:26";
-        if (s.contains("T")) {
-            s = s.replace("T", "");
-        }*/
-        RequestQueue queue = Volley.newRequestQueue(context);
-        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
-        Class_Genric.ShowDialog(context, "Loading...", true);
-
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Product/*Class_Genric.generateUrl(Class_Urls.Product, params)*/, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Class_Genric.ShowDialog(context, "Loading...", false);
-
-                switch (mStatusCode) {
-                    case 200:
-                        try {
-                            gson = new Gson();
-                            ArrayList<Product> model = new ArrayList<Product>();
-                            Type listType = new TypeToken<ArrayList<Product>>() {
-                            }.getType();
-                            JSONArray jsonArray = new JSONArray(response);
-                            model = gson.fromJson(jsonArray.toString(), listType);
-                            Class_ModelDB.setProductList(model);
-                            dbHelper.saveProduct();
-                            dbHelper.loadProduct();
-
-                            break;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError) {
-                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
-                        dbHelper.loadProduct();
-                    } else {
-                        Class_Genric.NetCheck(context);
+    private static void SyncNow(final Context context) {
+        new AlertDialog.Builder(context)
+                .setTitle("OutDated Data")
+                .setMessage("Please Connect to a network and Synchronize with the Server")
+                .setCancelable(false)
+                .setPositiveButton(R.string.Sync_now, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //ProductApi(context);
                     }
-                } else if (error instanceof NoConnectionError) {
-                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
-                        dbHelper.loadProduct();
-                    } else {
-                        Class_Genric.NetCheck(context);
+                })
+                .setNegativeButton(R.string.Exit, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((Activity) context).finish();
                     }
-                } else {
-                    if (error != null && error.networkResponse != null) {
-                        mStatusCode = error.networkResponse.statusCode;
-                        switch (mStatusCode) {
-                            case 400:
-                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
-                return params;
-            }
-
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                mStatusCode = response.statusCode;
-                return super.parseNetworkResponse(response);
-            }
-        };
-        queue.add(postRequest);
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
-
-    public static void StockApi(final Context context, String id, final int currentQty) {
-        /*String s = "2016-12-06T11:29:26";
+    private static boolean loadOffileProducts_Time(Context context) {
+        if (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype()) == Class_Genric.DISTRIBUTORSALES) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+                String SyncDateStr = sharedPreferences.getString(Class_Genric.Sp_SyncDate, "");
+                String todayStr = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+                Date SyncDate = null;
+                Date Today = null;
+                SyncDate = sdf.parse(SyncDateStr);
+                Today = sdf.parse(todayStr);
+                if (Today.equals(SyncDate)) {
+                    return true;
+                } else
+                    return false;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else
+            return true;
+    }
+    public static void StockApi(final Context context, final String id, final int currentQty) {
+        String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
             s = s.replace("T", "");
-        }*/
+        }
 
 
         if (Class_Genric.NetAvailable(context)) {
@@ -603,6 +1434,20 @@ public class Class_SyncApi {
                                 JSONObject jsonObject = new JSONObject(response);
                                 Double d = Double.valueOf(jsonObject.optString("Stock"));
                                 Class_Static.Stock = d.intValue();
+                                for (int i = 0; i < Class_ModelDB.getProductList().size(); i++) {
+                                    if (Class_ModelDB.getProductList().get(i).getCode().matches(id)) {
+                                        Class_ModelDB.getProductList().get(i).setStock(d.intValue());
+                                        break;
+                                    }
+                                }
+                                Class_DBHelper class_dbHelper = new Class_DBHelper(context);
+                                class_dbHelper.saveProduct();
+
+                                for (Product product : Class_ModelDB.getProductList()) {
+                                    if (product.getCategoryId().toString().toLowerCase().matches(Class_Static.tempProduct.getCategoryId().toString().toLowerCase())) {
+                                        Class_Static.tempProductList.add(product);
+                                    }
+                                }
                                 Class_Static.AvailableStock = Class_Static.Stock - currentQty;
                                 if (Class_Static.AvailableStock > 0) {
                                     Class_Static.tempProduct.setQuantity(1);
@@ -667,14 +1512,13 @@ public class Class_SyncApi {
         }
 
     }
-
     public static void GroupsApi(final Context context) {
         dbHelper = new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
+        params.add(new KeyValuePair("TimeStamp", Class_Genric.getTimeStamp(Class_Genric.Sp_GroupsTS, context)));
         Class_Genric.ShowDialog(context, "Loading...", true);
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Section/*Class_Genric.generateUrl(Class_Urls.Product, params)*/, new Response.Listener<String>() {
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.Section, params), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
@@ -687,9 +1531,39 @@ public class Class_SyncApi {
                             }.getType();
                             JSONArray jsonArray = new JSONArray(response);
                             model = gson.fromJson(jsonArray.toString(), listType);
-                            Class_ModelDB.setSectionList(model);
+                            dbHelper.loadSections();
+
+                            ArrayList<Sections> NewSectionsList = new ArrayList<Sections>();
+
+                            for (Sections newsec : model) {
+                                boolean matched = false;
+                                for (int i = 0; i < Class_ModelDB.getSectionList().size(); i++) {
+                                    if (newsec.getId().matches(Class_ModelDB.getSectionList().get(i).getId())) {
+                                        matched = true;
+                                        Class_ModelDB.getSectionList().remove(Class_ModelDB.getSectionList().get(i));
+                                        Class_ModelDB.getSectionList().add(i, newsec);
+                                        break;
+                                    }
+                                }
+                                if (!matched)
+                                    NewSectionsList.add(newsec);
+                            }
+                            ArrayList<Sections> FinalSectionList = new ArrayList<Sections>();
+                            FinalSectionList = (ArrayList<Sections>) Class_ModelDB.getSectionList().clone();
+                            for (Sections newsection : NewSectionsList) {
+                                FinalSectionList.add(newsection);
+                            }
+                            Class_ModelDB.setSectionList(FinalSectionList);
+
                             dbHelper.saveSections();
                             dbHelper.loadSections();
+
+                            Class_Static.timestamplist = new ArrayList<BigInteger>();
+                            for (int j = 0; j < Class_ModelDB.getSectionList().size(); j++)
+                                Class_Static.timestamplist.add(Class_ModelDB.getSectionList().get(j).getTimeStamp());
+                            if (Class_Static.timestamplist.size() > 0)
+                                Class_Genric.setTimeStamp(Class_Genric.Sp_GroupsTS, Collections.max(Class_Static.timestamplist), context);
+
                             break;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -739,83 +1613,6 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
-
-    public static void CatagoryApi(final Context context) {
-        dbHelper = new Class_DBHelper(context);
-        RequestQueue queue = Volley.newRequestQueue(context);
-        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
-        Class_Genric.ShowDialog(context, "Loading...", true);
-
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Catagory/*Class_Genric.generateUrl(Class_Urls.Product, params)*/, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Class_Genric.ShowDialog(context, "Loading...", false);
-
-                switch (mStatusCode) {
-                    case 200:
-                        try {
-                            gson = new Gson();
-                            ArrayList<Catagories> model = new ArrayList<Catagories>();
-                            Type listType = new TypeToken<ArrayList<Catagories>>() {
-                            }.getType();
-                            JSONArray jsonArray = new JSONArray(response);
-                            model = gson.fromJson(jsonArray.toString(), listType);
-                            Class_ModelDB.setCatagoryList(model);
-                            dbHelper.saveCatagories();
-                            dbHelper.loadcatagory();
-
-                            break;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError) {
-                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
-                        dbHelper.loadcatagory();
-                    } else {
-                        Class_Genric.NetCheck(context);
-                    }
-                } else if (error instanceof NoConnectionError) {
-                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
-                        dbHelper.loadcatagory();
-                    } else {
-                        Class_Genric.NetCheck(context);
-                    }
-                } else {
-                    if (error != null && error.networkResponse != null) {
-                        mStatusCode = error.networkResponse.statusCode;
-                        switch (mStatusCode) {
-                            case 400:
-                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
-                return params;
-            }
-
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                mStatusCode = response.statusCode;
-                return super.parseNetworkResponse(response);
-            }
-        };
-        queue.add(postRequest);
-    }
-
     public static void ProductIdApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
@@ -875,168 +1672,6 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
-
-    public static void PlaceOrderApi(final Context context, String UserId, String ClientId, ArrayList<Product> orderedProduct, String total) {
-        ArrayList<OrderProduct> products = new ArrayList<OrderProduct>();
-        /*String s = Class_Static.tempRole.getTimeStamp();
-        if (s.contains("T")) {
-            s = s.replace("T", "");
-        }*/
-        sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
-        RequestQueue queue = Volley.newRequestQueue(context);
-        ArrayList<KeyValuePair> params1 = new ArrayList<KeyValuePair>();
-        params1.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
-
-        for (int i = 0; i < orderedProduct.size(); i++) {
-            OrderProduct obj = new OrderProduct();
-            obj.setProductId(orderedProduct.get(i).getId());
-            obj.setPrice(orderedProduct.get(i).getPrice());
-            obj.setQuantity(orderedProduct.get(i).getQuantity());
-            obj.setUnit(orderedProduct.get(i).getUnits());
-            products.add(obj);
-        }
-        PlaceOrder placeorder = new PlaceOrder();
-        placeorder.setUserId(UserId);
-        placeorder.setClientId(ClientId);
-        placeorder.setTotalAmount(Double.valueOf(total.substring(8)));
-        placeorder.setProducts(products);
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject = new JSONObject(gson.toJson(placeorder));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Class_Genric.ShowDialog(context, "Loading...", true);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Class_Urls.PlaceOrder/*Class_Genric.generateUrl(Class_Urls.PlaceOrder, params1)*/, jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Class_Genric.ShowDialog(context, "Loading...", false);
-                switch (mStatusCode) {
-                    case 200:
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(Class_Genric.Sp_OrderNumber, "Your Order Id is " + response.optString("OrderNumber"));
-                        editor.putString(Class_Genric.Sp_OrderStatus, response.optString("Status"));
-                        editor.commit();
-                        ((Activity) context).startActivity(new Intent(context, Order_Success.class));
-                        ((Activity) context).finish();
-                        break;
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Class_Genric.NetCheck(context);
-                } else {
-                    if (error != null && error.networkResponse != null) {
-                        mStatusCode = error.networkResponse.statusCode;
-                        switch (mStatusCode) {
-                            case 400:
-                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
-                return params;
-            }
-
-            @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                mStatusCode = response.statusCode;
-                return super.parseNetworkResponse(response);
-            }
-        };
-        queue.add(jsonObjectRequest);
-    }
-
-    public static void OrderApi(final Context context) {
-        dbHelper = new Class_DBHelper(context);
-        /*String s = "2016-12-06T11:29:26";
-        if (s.contains("T")) {
-            s = s.replace("T", "");
-        }*/
-        RequestQueue queue = Volley.newRequestQueue(context);
-        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
-        params.add(new KeyValuePair("TimeStamp", Class_Static.timestamp));
-        Class_Genric.ShowDialog(context, "Loading...", true);
-        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Order/*Class_Genric.generateUrl(Class_Urls.Order, params)*/, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Class_Genric.ShowDialog(context, "Loading...", false);
-                switch (mStatusCode) {
-                    case 200:
-                        try {
-                            gson = new Gson();
-                            ArrayList<Order> orders = new ArrayList<Order>();
-                            Type listType = new TypeToken<ArrayList<Order>>() {
-                            }.getType();
-                            JSONArray jsonObject = new JSONArray(response);
-                            orders = gson.fromJson(jsonObject.toString(), listType);
-                            Class_ModelDB.setOrderList(orders);
-                            dbHelper.saveOrders();
-                            dbHelper.loadOrders();
-                            Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
-                            break;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Class_Genric.ShowDialog(context, "Loading...", false);
-                if (error instanceof TimeoutError) {
-                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableOrders)) {
-                        dbHelper.loadOrders();
-                        Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
-                    } else {
-                        Class_Genric.NetCheck(context);
-                    }
-                } else if (error instanceof NoConnectionError) {
-                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableOrders)) {
-                        dbHelper.loadOrders();
-                        Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
-                    } else {
-                        Class_Genric.NetCheck(context);
-                    }
-                } else {
-                    if (error != null && error.networkResponse != null) {
-                        mStatusCode = error.networkResponse.statusCode;
-                        switch (mStatusCode) {
-                            case 400:
-                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
-                return params;
-            }
-
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                mStatusCode = response.statusCode;
-                return super.parseNetworkResponse(response);
-            }
-        };
-        queue.add(postRequest);
-    }
-
     public static void OrderIdApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
@@ -1099,5 +1734,665 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+    public static void Location(final Context context, Double latitude, Double longitude, String date) {
 
+        RequestQueue queue = Volley.newRequestQueue(context);
+        LocationModel locationmodel = new LocationModel();
+        locationmodel.setLatitude(latitude);
+        locationmodel.setLongitude(longitude);
+        locationmodel.setDate(date);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject = new JSONObject(new Gson().toJson(locationmodel));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Class_Urls.Location, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                switch (mStatusCode) {
+                    case 200:
+                        Log.d("Success", "OK");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(jsonObjectRequest);
+    }
+    public static void SalesPersonListApi(final Context context) {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("TimeStamp", Class_Genric.getTimeStamp(Class_Genric.Sp_RolesTS, context)));
+        Class_Genric.ShowDialog(context, "Loading...", true);
+
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.SalesPerson, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<Role> rolelist = new ArrayList<Role>();
+                            Type listType = new TypeToken<ArrayList<Role>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            rolelist = gson.fromJson(jsonArray.toString(), listType);
+                            dbHelper.loadRole();
+
+                            ArrayList<Role> NewRoleList = new ArrayList<Role>();
+                            for (Role newrole : rolelist) {
+                                boolean matched = false;
+                                for (int i = 0; i < Class_ModelDB.getRoleList().size(); i++) {
+                                    if (newrole.getId().matches(Class_ModelDB.getRoleList().get(i).getId())) {
+                                        matched = true;
+                                        Class_ModelDB.getRoleList().remove(Class_ModelDB.getRoleList().get(i));
+                                        Class_ModelDB.getRoleList().add(i, newrole);
+                                        break;
+                                    }
+                                }
+                                if (!matched)
+                                    NewRoleList.add(newrole);
+                            }
+                            ArrayList<Role> FinalRoleList = new ArrayList<Role>();
+                            FinalRoleList = (ArrayList<Role>) Class_ModelDB.getRoleList().clone();
+                            for (Role newroles : NewRoleList) {
+                                FinalRoleList.add(newroles);
+                            }
+                            Class_ModelDB.setRoleList(FinalRoleList);
+
+                            dbHelper.saveRole();
+                            dbHelper.loadRole();
+                            Class_Static.timestamplist = new ArrayList<BigInteger>();
+                            for (int j = 0; j < Class_ModelDB.getRoleList().size(); j++)
+                                Class_Static.timestamplist.add(Class_ModelDB.getRoleList().get(j).getTimeStamp());
+                            if (Class_Static.timestamplist.size() > 0)
+                                Class_Genric.setTimeStamp(Class_Genric.Sp_RolesTS, Collections.max(Class_Static.timestamplist), context);
+                            Activity a = (Activity) context;
+                            Class_Static.Flag_SEARCH = Class_Static.SEARCHSALESPERSON;
+                            a.startActivity(new Intent(a, Search_Customer.class));
+                            a.startActivity(new Intent(a, MapsActivity.class));
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(postRequest);
+    }
+    public static void TrackLocationApi(final Context context, String id) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("UserId", id));
+        Class_Genric.ShowDialog(context, "Loading...", true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl(Class_Urls.TrackLocation, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<TrackModel> model = new ArrayList<TrackModel>();
+                            Type listType = new TypeToken<ArrayList<TrackModel>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            model = gson.fromJson(jsonArray.toString(), listType);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        context.startActivity(new Intent(context, MapsActivity.class));
+                        Log.d("Success", "Ok");
+                        break;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(postRequest);
+    }
+
+
+
+    //Note : Offline save Opertaions
+    public static void loadallcategories(int pos, Context context) {
+        if(Class_ModelDB.getRoleList().size()==0)
+        {
+            Class_SyncApi.DistributorApiSync(context);
+        }
+        else {
+            if (pos < Class_ModelDB.getRoleList().size()) {
+                tempOfflineDistributor = new OfflineModel_Distributor();
+                RecursiveCatagoryApi(context, pos);
+            } else {
+                loadallProducts(context, 0, 0);
+            }
+        }
+
+    }
+    public static void RecursiveCatagoryApi(final Context context, final int DistributorPos) {
+        dbHelper = new Class_DBHelper(context);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        //params.add(new KeyValuePair("TimeStamp", Class_Genric.getTimeStamp(Class_Genric.Sp_CatagoriesTS, context)));
+        params.add(new KeyValuePair("Distributorid", Class_ModelDB.getRoleList().get(DistributorPos).getId()));
+        Class_Genric.SYNCDialog(context, "Loading Category for distributor : " + DistributorPos, true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl1(Class_Urls.Category, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<OffineModel_Category> model = new ArrayList<OffineModel_Category>();
+                            Type listType = new TypeToken<ArrayList<OffineModel_Category>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            model = gson.fromJson(jsonArray.toString(), listType);
+                            tempOfflineDistributor = new OfflineModel_Distributor(Class_ModelDB.getRoleList().get(DistributorPos));
+                            tempOfflineDistributor.setCategories(model);
+                            Class_ModelDB.OfflineDistributors.add(tempOfflineDistributor);
+                            loadallcategories(DistributorPos + 1, context);
+                            /*Class_Static.timestamplist = new ArrayList<BigInteger>();
+                            for (int j = 0; j < Class_ModelDB.getCatagoryList().size(); j++)
+                                Class_Static.timestamplist.add(Class_ModelDB.getCatagoryList().get(j).getTimeStamp());
+                            if(Class_Static.timestamplist.size()>0)
+                            Class_Genric.setTimeStamp(Class_Genric.Sp_CatagoriesTS, Collections.max(Class_Static.timestamplist), context);*/
+
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadallcategories(DistributorPos, context);
+                Class_Genric.SYNCDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
+                        dbHelper.loadcatagory();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else if (error instanceof NoConnectionError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
+                        dbHelper.loadcatagory();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }) {
+            /*@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }*/
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(Class_Genric.VolleyTime(postRequest));
+    }
+    public static void DistributorRecursiveCatagoryApi(final Context context, String DistributorId) {
+        dbHelper = new Class_DBHelper(context);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        //params.add(new KeyValuePair("TimeStamp", Class_Genric.getTimeStamp(Class_Genric.Sp_CatagoriesTS, context)));
+        params.add(new KeyValuePair("Distributorid", DistributorId));
+        Class_Genric.SYNCDialog(context, "Loading Category:", true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl1(Class_Urls.Category, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<OffineModel_Category> model = new ArrayList<OffineModel_Category>();
+                            Type listType = new TypeToken<ArrayList<OffineModel_Category>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            model = gson.fromJson(jsonArray.toString(), listType);
+                            tempOfflineDistributor = new OfflineModel_Distributor(Class_ModelDB.getCurrentuserModel());
+                            tempOfflineDistributor.setCategories(model);
+                            Class_ModelDB.OfflineDistributors.add(tempOfflineDistributor);
+                            loadallProducts(context, 0, 0);
+                            /*Class_Static.timestamplist = new ArrayList<BigInteger>();
+                            for (int j = 0; j < Class_ModelDB.getCatagoryList().size(); j++)
+                                Class_Static.timestamplist.add(Class_ModelDB.getCatagoryList().get(j).getTimeStamp());
+                            if(Class_Static.timestamplist.size()>0)
+                            Class_Genric.setTimeStamp(Class_Genric.Sp_CatagoriesTS, Collections.max(Class_Static.timestamplist), context);*/
+
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.SYNCDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
+                        dbHelper.loadcatagory();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else if (error instanceof NoConnectionError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableCatagory)) {
+                        dbHelper.loadcatagory();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }) {
+            /*@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }*/
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(Class_Genric.VolleyTime(postRequest));
+    }
+
+    public static OfflineModel_Distributor OfflineDist=new OfflineModel_Distributor();
+
+    public static void loadallProducts(Context context, int Distributorpos, int Categorypos) {
+
+
+        if ((Distributorpos) < Class_ModelDB.OfflineDistributors.size()) {
+            if (Categorypos < Class_ModelDB.OfflineDistributors.get(Distributorpos).getCategories().size())
+            {
+                if(Categorypos==0)
+                {
+                    OfflineDist=new OfflineModel_Distributor();
+                    OfflineDist=Class_ModelDB.OfflineDistributors.get(Distributorpos);
+                }
+                RecursiveProductApi(context, Distributorpos, Categorypos);
+            }
+            else if (Distributorpos < Class_ModelDB.OfflineDistributors.size()) {
+                dbHelper = new Class_DBHelper(context);
+                dbHelper.saveOfflineData(OfflineDist);
+                loadallProducts(context, Distributorpos + 1, 0);
+            } else {
+                //dbHelper = new Class_DBHelper(context);
+                //dbHelper.saveOfflineData();
+                dbHelper = new Class_DBHelper(context);
+                dbHelper.saveOfflineData(OfflineDist);
+                Class_Genric.SYNCDialog(context, "Loading...", false);
+            }
+        } else {
+            dbHelper = new Class_DBHelper(context);
+            //dbHelper.saveOfflineData();
+            Class_Genric.SYNCDialog(context, "Loading...", false);
+        }
+
+    }
+    public static void RecursiveProductApi(final Context context, final int Distributorpos, final int Categorypos) {
+        //GroupsApi(context);
+        //CatagoryApi(context);
+        /*String s = "2016-12-06T11:29:26";
+        if (s.contains("T")) {
+            s = s.replace("T", "");
+        }*/
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+        params.add(new KeyValuePair("Distributorid", Class_ModelDB.OfflineDistributors.get(Distributorpos).getId()));
+        params.add(new KeyValuePair("Category", Class_ModelDB.OfflineDistributors.get(Distributorpos).getCategories().get(Categorypos).getName()));
+        Class_Genric.SYNCDialog(context, "Loading Products for Distributor : " + Distributorpos + " and Category : " + Categorypos + "/" + Class_ModelDB.OfflineDistributors.get(Distributorpos).getCategories().size(), true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl1(Class_Urls.Product1, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<Product> model = new ArrayList<Product>();
+                            Type listType = new TypeToken<ArrayList<Product>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            model = gson.fromJson(jsonArray.toString(), listType);
+                            //Class_ModelDB.OfflineDistributors.get(Distributorpos).getCategories().get(Categorypos).setProducts(model);
+                            OfflineDist.getCategories().get(Categorypos).setProducts(model);
+                            /*dbHelper = new Class_DBHelper(context);
+                            dbHelper.saveOfflineData(OfflineDist);*/
+                            //saveoffline
+                            loadallProducts(context, Distributorpos, Categorypos + 1);
+                           /* String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+                            sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(Class_Genric.Sp_SyncDate, date);
+                            editor.commit();*/
+
+
+                            /*Class_Static.timestamplist = new ArrayList<BigInteger>();
+                            for (int j = 0; j < Class_ModelDB.getProductList().size(); j++)
+                                Class_Static.timestamplist.add(Class_ModelDB.getProductList().get(j).getTimeStamp());
+                            if(Class_Static.timestamplist.size()>0)
+                            Class_Genric.setTimeStamp(Class_Genric.Sp_ProductsTS, Collections.max(Class_Static.timestamplist), context);*/
+
+
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadallProducts(context, Distributorpos, Categorypos + 1);
+                Class_Genric.SYNCDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError) {
+                    if (loadOffileProducts_Time(context))
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
+                            dbHelper.loadProduct();
+                        } else {
+                            Class_Genric.NetCheck(context);
+                        }
+                    else SyncNow(context);
+                } else if (error instanceof NoConnectionError) {
+                    if (loadOffileProducts_Time(context))
+                        if (dbHelper.CheckDataExists(Class_DBHelper.DataTableProduct)) {
+                            dbHelper.loadProduct();
+                        } else {
+                            Class_Genric.NetCheck(context);
+                        }
+                    else SyncNow(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+           /* @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Token", Class_ModelDB.getCurrentuserModel().getToken().toString());
+                return params;
+            }*/
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(Class_Genric.VolleyTime(postRequest));
+    }
+
+    //Note : Offline load Opertaions
+    public static void LoadOfflineDistributors(Context context) {
+        dbHelper= new Class_DBHelper(context);
+        dbHelper.loadOfflineDistributorList();
+    }
+    public static void LoadOfflineProducts(Context mContext, String Distributorid, String Catagoryname) {
+        dbHelper= new Class_DBHelper(mContext);
+        dbHelper.loadOfflineDistributorDataData(Distributorid);
+        ArrayList<Product> model = new ArrayList<Product>();
+        for (OffineModel_Category tempcatagories : Class_ModelDB.OfflineDistributor.getCategories()) {
+            if (Catagoryname.matches(tempcatagories.getName()))
+                model = (tempcatagories.getProducts());
+        }
+        Class_ModelDB.setProductList(model);
+        ((Activity) mContext).finish();
+    }
+    public static void LoadOfflineCatagories(Context context, String DistributorId) {
+        dbHelper= new Class_DBHelper(context);
+        dbHelper.loadOfflineDistributorDataData(DistributorId);
+        ArrayList<Catagories> catagoryList = new ArrayList<Catagories>();
+        for (OffineModel_Category tempcatagories : Class_ModelDB.OfflineDistributor.getCategories()) {
+            catagoryList.add(getcatagory(tempcatagories));
+        }
+        Class_ModelDB.setCatagoryList(catagoryList);
+        if (Class_Static.CURRENTPAGE == Class_Static.DISTRIBUTORLIST) {
+            ((Activity) context).startActivity(new Intent(context, Add_Product.class));
+            ((Activity) context).finish();
+        }
+    }
+
+
+    //Note : DTO method
+    public static Role getRole(OfflineModel_Distributor tempDitributor) {
+        Role temprole = new Role();
+        temprole.setId(tempDitributor.getId());
+        temprole.setName(tempDitributor.getName());
+        return temprole;
+    }
+    private static Catagories getcatagory(OffineModel_Category tempOfflinecatagories) {
+        Catagories temp_catagory = new Catagories();
+        temp_catagory.setName(tempOfflinecatagories.getName());
+        temp_catagory.setId(tempOfflinecatagories.getId());
+        temp_catagory.setTimeStamp(tempOfflinecatagories.getTimeStamp());
+        return temp_catagory;
+    }
+
+
+    //Note : used to load Roles if not Presernt before Sync
+    public static void DistributorApiSync(final Context context) {
+        dbHelper = new Class_DBHelper(context);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
+    /*    params.add(new KeyValuePair("TimeStamp", Class_Genric.getTimeStamp(Class_Genric.Sp_RolesTS, context)));*/
+        params.add(new KeyValuePair("name", Class_ModelDB.getCurrentuserModel().getName()));
+        Class_Genric.SYNCDialog(context, "Loading Distributors.", true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Genric.generateUrl1(Class_Urls.Distributor1, params), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            ArrayList<Role> rolelist = new ArrayList<Role>();
+                            Type listType = new TypeToken<ArrayList<Role>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            rolelist = gson.fromJson(jsonArray.toString(), listType);
+                            dbHelper.loadRole();
+
+                            ArrayList<Role> NewRoleList = new ArrayList<Role>();
+                            for (Role newrole : rolelist) {
+                                boolean matched = false;
+                                for (int i = 0; i < Class_ModelDB.getRoleList().size(); i++) {
+                                    if (newrole.getId().matches(Class_ModelDB.getRoleList().get(i).getId())) {
+                                        matched = true;
+                                        Class_ModelDB.getRoleList().remove(Class_ModelDB.getRoleList().get(i));
+                                        Class_ModelDB.getRoleList().add(i, newrole);
+                                        break;
+                                    }
+                                }
+                                if (!matched)
+                                    NewRoleList.add(newrole);
+                            }
+                            ArrayList<Role> FinalRoleList = new ArrayList<Role>();
+                            FinalRoleList = (ArrayList<Role>) Class_ModelDB.getRoleList().clone();
+                            for (Role newroles : NewRoleList) {
+                                FinalRoleList.add(newroles);
+                            }
+
+                            Class_ModelDB.setRoleList(rolelist);
+
+                            dbHelper.saveRole();
+                            dbHelper.loadRole();
+                            loadallcategories(0,context);
+
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.SYNCDialog(context, "Loading...", false);
+                if (error instanceof NoConnectionError || error instanceof TimeoutError) {
+                    if (dbHelper.CheckDataExists(Class_DBHelper.DataTableRole)) {
+                        dbHelper.loadRole();
+                    } else {
+                        Class_Genric.NetCheck(context);
+                    }
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+                            case 400:
+                                Toast.makeText(context, "Invalid Token", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+
+
+        queue.add(Class_Genric.VolleyTime(postRequest));
+    }
 }

@@ -8,15 +8,15 @@
     <LinearLayout
         android:id="@+id/ordered_pane"
         android:orientation="horizontal"
-        android:weightSum="4"
+        android:weightSum="3"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_60dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/order_id"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.3"
+            android:layout_weight="1.18"
             android:gravity="left"
             android:padding="@dimen/dimen_10dp"
             android:maxLines="1"
@@ -35,6 +35,7 @@
             />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/total_amount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -44,7 +45,9 @@
             android:maxLines="1"
             android:ellipsize="end"
             />
+
         <TextView
+            android:visibility="visible"
             android:id="@+id/order_status"
             android:layout_width="0dp"
             android:layout_height="match_parent"

@@ -2,12 +2,13 @@ package com.sourceedge.bhagyalakshmi.orders.support;
 
 import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
 import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
+import com.sourceedge.bhagyalakshmi.orders.models.LocationModel;
+import com.sourceedge.bhagyalakshmi.orders.models.OfflineModel_Distributor;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
 import com.sourceedge.bhagyalakshmi.orders.models.OrderProduct;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 import com.sourceedge.bhagyalakshmi.orders.models.Sections;
-import com.sourceedge.bhagyalakshmi.orders.models.User;
 
 import java.util.ArrayList;
 
@@ -26,8 +27,6 @@ public class Class_ModelDB {
     private static Role roleModel = new Role();
     private static ArrayList<Role> roleList = new ArrayList<Role>();
 
-    private static User userModel = new User();
-    private static ArrayList<User> userList = new ArrayList<User>();
 
     private static CurrentUser currentuserModel = new CurrentUser();
 
@@ -37,11 +36,15 @@ public class Class_ModelDB {
     private static Product productModel = new Product();
     private static ArrayList<Product> productList = new ArrayList<Product>();
 
+    private static LocationModel locationModel = new LocationModel();
+    private static ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
+
     private static Sections sectionsModel = new Sections();
     private static ArrayList<Sections> sectionList = new ArrayList<Sections>();
 
     private static Catagories CatagoryModel = new Catagories();
-
+    public static OfflineModel_Distributor OfflineDistributor= new OfflineModel_Distributor();
+    public static ArrayList<OfflineModel_Distributor> OfflineDistributors= new ArrayList<OfflineModel_Distributor>();
 
     public static void ClearDB() {
         orderModel = new Order();
@@ -56,11 +59,50 @@ public class Class_ModelDB {
         roleModel = new Role();
         roleList = new ArrayList<Role>();
         sectionsModel = new Sections();
-        userModel = new User();
-        userList = new ArrayList<User>();
         sectionList = new ArrayList<Sections>();
+        locationModel= new LocationModel();
+        locationList= new ArrayList<LocationModel>();
     }
 
+    public static int getAPPVERSION() {
+        return APPVERSION;
+    }
+
+    public static void setAPPVERSION(int APPVERSION) {
+        Class_ModelDB.APPVERSION = APPVERSION;
+    }
+
+    public static String getAppTitle() {
+        return AppTitle;
+    }
+
+    public static void setAppTitle(String appTitle) {
+        AppTitle = appTitle;
+    }
+
+    public static ArrayList<Order> getDraftorderList() {
+        return DraftorderList;
+    }
+
+    public static void setDraftorderList(ArrayList<Order> draftorderList) {
+        DraftorderList = draftorderList;
+    }
+
+    public static LocationModel getLocationModel() {
+        return locationModel;
+    }
+
+    public static void setLocationModel(LocationModel locationModel) {
+        Class_ModelDB.locationModel = locationModel;
+    }
+
+    public static ArrayList<LocationModel> getLocationList() {
+        return locationList;
+    }
+
+    public static void setLocationList(ArrayList<LocationModel> locationList) {
+        Class_ModelDB.locationList = locationList;
+    }
 
     //Getter and Setter of all above models
 
@@ -143,7 +185,7 @@ public class Class_ModelDB {
     public static Product getSingleProduct(String Id) {
         Product product = new Product();
         for (Product tempProduct : productList) {
-            if (tempProduct.getId().matches(Id))
+            if (tempProduct.getCode().matches(Id))
                 product = tempProduct;
         }
         return product;
@@ -165,24 +207,9 @@ public class Class_ModelDB {
         return roleList;
     }
 
-    public static void setRoleList(ArrayList<Role> roleList) {
+    public static void setRoleList(ArrayList<Role> roleList)
+    {
         Class_ModelDB.roleList = roleList;
-    }
-
-    public static User getUserModel() {
-        return userModel;
-    }
-
-    public static void setUserModel(User userModel) {
-        Class_ModelDB.userModel = userModel;
-    }
-
-    public static ArrayList<User> getUserList() {
-        return userList;
-    }
-
-    public static void setUserList(ArrayList<User> userList) {
-        Class_ModelDB.userList = userList;
     }
 
     public static CurrentUser getCurrentuserModel() {

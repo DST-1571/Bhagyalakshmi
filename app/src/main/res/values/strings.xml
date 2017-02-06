@@ -18,12 +18,15 @@
     <string name="drawer_sales_distributors_retailers">Sales/Distributors/Retailers</string>
     <string name="drawer_payments">Payments</string>
     <string name="drawer_messages">Messages</string>
+    <string name="drawer_sync">Sync</string>
     <string name="drawer_logout">Logout</string>
     <string name="dashboard_retailers_distributors">Retailers and Distributors</string>
     <string name="dashboard_recent_order_details">Recent Order Details</string>
     <string name="dashboard_my_sales">My Sales</string>
     <string name="dashboard_statistics">Statistics</string>
     <string name="admin_order_id">Order Id</string>
+    <string name="Sync_now">Sync Now</string>
+    <string name="Exit">Exit</string>
     <string name="admin_name">Name</string>
     <string name="admin_placed_by">Placed By</string>
     <string name="order_value">Order Value</string>
@@ -51,6 +54,7 @@
     <string name="closedrawer">close</string>
     <string name="title_activity_distributor_sales">DistributorSales</string>
     <string name="title_activity_location">Location</string>
+    <string name="title_activity_tracker">Tracker</string>
     <string name="title_activity_distributor">Distributor</string>
     <string name="title_activity_retailer_look_up">RetailerLookup</string>
     <string name="title_activity_admin_orders">AdminOrders</string>

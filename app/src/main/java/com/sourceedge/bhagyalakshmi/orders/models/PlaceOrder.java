@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class PlaceOrder {
     private String ClientId;
     private String UserId;
+    private String OrderDate;
     private ArrayList<OrderProduct> Products;
     private Double TotalAmount;
 
@@ -17,6 +18,7 @@ public class PlaceOrder {
         ClientId="";
         Products=new ArrayList<OrderProduct>();
         TotalAmount=0.0;
+        OrderDate="";
     }
 
     public String getClientId() {
@@ -49,5 +51,13 @@ public class PlaceOrder {
 
     public void setTotalAmount(Double totalAmount) {
         TotalAmount = totalAmount;
+    }
+
+    public String getOrderDate() {
+        return OrderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        OrderDate = orderDate;
     }
 }

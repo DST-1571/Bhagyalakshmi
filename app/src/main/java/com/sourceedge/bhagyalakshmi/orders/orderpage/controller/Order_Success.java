@@ -24,14 +24,14 @@ public class Order_Success extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(Class_Genric.MyPref, Order_Success.MODE_PRIVATE);
         Class_Genric.setOrientation(Order_Success.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bhagyalakshmi Traders");
+        toolbar.setTitle(Class_ModelDB.AppTitle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         orderNumber=(TextView)findViewById(R.id.order_number);
         order_Placedby=(TextView)findViewById(R.id.order_placedby);
-        Class_SyncApi.OrderApi(Order_Success.this);
-        orderNumber.setText(sharedPreferences.getString(Class_Genric.Sp_OrderNumber,""));
-        order_Placedby.setText("Order Placed By "+ Class_ModelDB.getCurrentuserModel().getName()+"("+Class_ModelDB.getCurrentuserModel().getUserType()+")");
+        /*Class_SyncApi.OrderApi(Order_Success.this);*/
+        orderNumber.setText("Order info :"+getIntent().getStringExtra("OrderNumber"));
+        order_Placedby.setText("Order Placed By "+ Class_ModelDB.getCurrentuserModel().getName()+"("+Class_ModelDB.getCurrentuserModel().getUsertype()+")");
     }
 
     @Override
@@ -53,5 +53,6 @@ public class Order_Success extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
+
 
 }

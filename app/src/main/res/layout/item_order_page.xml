@@ -16,7 +16,7 @@
             android:id="@+id/order_id"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.2"
+            android:layout_weight="1.18"
             android:gravity="left"
             android:padding="@dimen/dimen_10dp"
             android:maxLines="1"
@@ -58,7 +58,8 @@
             android:ellipsize="end"
             />
     </LinearLayout>
-<View
+
+    <View
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_1dp"
     android:background="@color/viewcolor"/>

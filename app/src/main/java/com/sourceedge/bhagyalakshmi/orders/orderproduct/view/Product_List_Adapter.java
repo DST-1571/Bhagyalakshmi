@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Add_Product;
@@ -45,12 +46,12 @@ public class Product_List_Adapter extends RecyclerView.Adapter<Product_List_Adap
             @Override
             public void onClick(View v) {
                 Class_Genric.hideKeyboard(mContext);
-                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                     case Class_Genric.DISTRIBUTORSALES:
                         boolean found=false;
                         int foundAt=-1;
                         for(int i=0;i<Class_Static.tempOrderingProduct.size();i++){
-                            if(Class_Static.tempOrderingProduct.get(i).getId().matches(data.get(position).getId())){
+                            if(Class_Static.tempOrderingProduct.get(i).getCode().matches(data.get(position).getCode())){
                                 found=true;
                                 foundAt=i;
                                 break;
@@ -62,28 +63,37 @@ public class Product_List_Adapter extends RecyclerView.Adapter<Product_List_Adap
                             Add_Product.productSearch.setText(Class_Static.tempProduct.getDescription());
                             Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
                             Add_Product.productPrice.setText(Class_Static.tempProduct.getPrice() + "");
-                            Class_SyncApi.StockApi(mContext, data.get(position).getId(),0);
+                            Class_SyncApi.StockApi(mContext, data.get(position).getCode(),0);
                         }else {
                             Class_Static.tempProduct.setProductDetais(data.get(position));
                             Add_Product.productSearch.setText(Class_Static.tempProduct.getDescription());
                             Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
                             Add_Product.productPrice.setText(Class_Static.tempProduct.getPrice() + "");
-                            Class_SyncApi.StockApi(mContext, data.get(position).getId(),Class_Static.tempOrderingProduct.get(foundAt).getQuantity());
+                            Class_SyncApi.StockApi(mContext, data.get(position).getCode(),Class_Static.tempOrderingProduct.get(foundAt).getQuantity());
                         }
                         break;
                     case Class_Genric.DISTRIBUTOR:
-                    case Class_Genric.SALESPERSON:
-                        Class_Static.tempProduct.setProductDetais(data.get(position));
-                        Class_Static.tempProduct.setQuantity(1);
-                        Add_Product.productSearch.setText(Class_Static.tempProduct.getDescription());
-                        Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
-                        Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
-                        Add_Product.productPrice.setText(Class_Static.tempProduct.getPrice() + "");
-                        ((Activity) mContext).finish();
+                    case Class_Genric.SALESMAN:
+                        if (Class_Genric.NetAvailable(mContext)) {
+                            Class_SyncApi.ProductPriceApi(mContext,data.get(position),Class_Static.tempRole.getId());
+                        }
+                        else {
+                            if(data.get(position).getPrice()>0)
+                            {
+                                Class_Static.tempProduct.setProductDetais(data.get(position));
+                                Class_Static.tempProduct.setQuantity(1);
+                                Add_Product.productSearch.setText(Class_Static.tempProduct.getDescription());
+                                Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
+                                Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
+                                Add_Product.productPrice.setText(Class_Static.tempProduct.getPrice() + "");
+                                ((Activity) mContext).finish();
+                            }
+                            else {
+                                Toast.makeText(mContext, "This Product is UnAvailable", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                         break;
                 }
-
-
             }
         });
     }

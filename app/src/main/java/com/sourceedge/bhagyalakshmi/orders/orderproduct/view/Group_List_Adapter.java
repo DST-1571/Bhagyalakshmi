@@ -40,7 +40,7 @@ public class Group_List_Adapter extends RecyclerView.Adapter<Group_List_Adapter.
 
     @Override
     public void onBindViewHolder(Group_List_Adapter.ViewHolder holder, final int position) {
-        holder.text.setText(data.get(position).getName().toString());
+        holder.text.setText(data.get(position).getName());
         holder.text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

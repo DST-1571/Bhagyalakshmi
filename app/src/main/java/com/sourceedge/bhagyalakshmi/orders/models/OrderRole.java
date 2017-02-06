@@ -9,13 +9,13 @@ public class OrderRole {
     private String Id;
     private String Name;
     private String Address;
-    private String UserType;
+    private String Usertype;
 
     public OrderRole(){
         Id="";
         Name="";
         Address="";
-        UserType="";
+        Usertype="";
     }
 
     public String getId() {
@@ -43,10 +43,10 @@ public class OrderRole {
     }
 
     public String getUserType() {
-        return UserType;
+        return Usertype;
     }
 
     public void setUserType(String userType) {
-        UserType = userType;
+        Usertype = userType;
     }
 }

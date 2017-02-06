@@ -37,7 +37,7 @@ public class Order_Product_List_Adapter extends RecyclerView.Adapter<Order_Produ
         for (Product prod : data) {
             amount+=prod.getAmount();
         }
-            Product_Order_Lookup.grandTotal.setText("Total : "+amount+"");
+            Product_Order_Lookup.grandTotal.setText("Total : "+String.format("%.2f", amount)+"");
 
 
     }

@@ -54,10 +54,19 @@ public class Admin_Orders_Adapter extends RecyclerView.Adapter<Admin_Orders_Adap
                 Class_Static.tempOrderingProduct=new ArrayList<Product>();
                 Class_Static.OrdredProducts=data.get(position);
                 for(int i=0;i<Class_Static.OrdredProducts.getProducts().size();i++){
+                    prod=new Product();
+                    prod.setQuantity(new Double(Class_Static.OrdredProducts.getProducts().get(i).getQuantity()).intValue());
+                    prod.setPrice(Class_Static.OrdredProducts.getProducts().get(i).getPrice());
+                    prod.setAmount(prod.getQuantity()*prod.getPrice());
+                    prod.setDescription(Class_Static.OrdredProducts.getProducts().get(i).getDescription());
+                    prod.setUnits(Class_Static.OrdredProducts.getProducts().get(i).getUnit());
+                    Class_Static.tempOrderingProduct.add(prod);
+                }
+                /*for(int i=0;i<Class_Static.OrdredProducts.getProducts().size();i++){
                     for(int j = 0; j< Class_ModelDB.getProductList().size(); j++){
-                        if(Class_Static.OrdredProducts.getProducts().get(i).getProductId().matches(Class_ModelDB.getProductList().get(j).getId())){
+                        if(Class_Static.OrdredProducts.getProducts().get(i).getProductId().matches(Class_ModelDB.getProductList().get(j).getCode())){
                             prod=new Product();
-                            prod.setId(Class_ModelDB.getProductList().get(j).getId());
+                            prod.setCode(Class_ModelDB.getProductList().get(j).getCode());
                             prod.setQuantity(new Double(Class_Static.OrdredProducts.getProducts().get(i).getQuantity()).intValue());
                             prod.setPrice(Class_Static.OrdredProducts.getProducts().get(i).getPrice());
                             prod.setAmount(prod.getQuantity()*prod.getPrice());
@@ -74,7 +83,7 @@ public class Admin_Orders_Adapter extends RecyclerView.Adapter<Admin_Orders_Adap
                             Class_Static.tempOrderingProduct.add(prod);
                         }
                     }
-                }
+                }*/
                 ((Activity)mcontext).startActivity(new Intent(mcontext, Admin_View_Order.class));
             }
         });

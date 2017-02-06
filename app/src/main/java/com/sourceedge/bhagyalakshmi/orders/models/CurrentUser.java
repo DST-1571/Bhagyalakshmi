@@ -7,14 +7,14 @@ package com.sourceedge.bhagyalakshmi.orders.models;
 public class CurrentUser {
     private String Id;
     private String Name;
-    private String UserType;
+    private String Usertype;
     private String Token;
     private String ACL;
 
     public CurrentUser(){
         Id="";
         Name="";
-        UserType="";
+        Usertype="";
         Token="";
         ACL="";
     }
@@ -35,12 +35,12 @@ public class CurrentUser {
         Name = name;
     }
 
-    public String getUserType() {
-        return UserType;
+    public String getUsertype() {
+        return Usertype;
     }
 
-    public void setUserType(String userType) {
-        UserType = userType;
+    public void setUsertype(String usertype) {
+        Usertype = usertype;
     }
 
     public String getToken() {

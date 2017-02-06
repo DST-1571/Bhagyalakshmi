@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 
 public class Location extends AppCompatActivity {
     Toolbar toolbar;
@@ -19,7 +20,7 @@ public class Location extends AppCompatActivity {
         setContentView(R.layout.activity_location);
         Class_Genric.setOrientation(Location.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Bhagyalakshmi Traders");
+        toolbar.setTitle(Class_ModelDB.AppTitle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

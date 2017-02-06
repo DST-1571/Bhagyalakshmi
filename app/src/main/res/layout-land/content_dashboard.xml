@@ -6,12 +6,12 @@
     android:id="@+id/content_dashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard"
-    tools:showIn="@layout/activity_dashboard">
+    tools:showIn="@layout/activity_dashboard"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <ScrollView
         android:id="@+id/dashboard_scrollview"
@@ -23,258 +23,241 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            //orders pane
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/primary_400"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="@dimen/dimen_60dp">
-
-                <TextView
-                    android:id="@+id/total_order_count"
+                <LinearLayout
+                    android:gravity="center_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text=""
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/dimen_60dp"
-                    android:textStyle="bold" />
+                    android:background="@color/primary_400"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_60dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="@dimen/dimen_10dp"
-                    android:text="Orders"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/dimen_16dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/total_order_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dimen_60dp"
+                        android:textStyle="bold" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Orders"
+                        android:textColor="@color/white"
+                        android:padding="@dimen/dimen_10dp"
+                        android:textSize="@dimen/dimen_16dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:padding="@dimen/dimen_4dp"
-                android:weightSum="2">
-
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
                 <android.support.v7.widget.CardView
                     android:id="@+id/admin_retailers_distributors"
-                    android:layout_width="@dimen/dimen_0dp"
-                    android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dimen_4dp"
-                    android:layout_marginRight="@dimen/dimen_2dp"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="@dimen/dimen_4dp"
                     app:cardElevation="@dimen/dimen_2dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_300dp"
-                        android:background="@color/white"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/dimen_4dp"
-                        android:paddingLeft="@dimen/dimen_16dp"
+
+                        android:paddingTop="@dimen/dimen_16dp"
                         android:paddingRight="@dimen/dimen_16dp"
-                        android:paddingTop="@dimen/dimen_16dp">
+                        android:paddingLeft="@dimen/dimen_16dp"
+                        android:paddingBottom="@dimen/dimen_4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:padding="@dimen/dimen_4dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="left"
-                            android:padding="@dimen/dimen_4dp"
                             android:text="@string/dashboard_retailers_distributors"
                             android:textColor="@color/primary_400"
                             android:textSize="@dimen/textsize_18sp"
                             android:textStyle="bold" />
 
                         <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_1dp"
                             android:layout_marginBottom="@dimen/dimen_2dp"
                             android:layout_marginTop="@dimen/dimen_2dp"
-                            android:background="@color/primary_400" />
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/view_1dp"
+                            android:background="@color/primary_400"/>
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:paddingLeft="@dimen/dimen_10dp"
+                            android:paddingTop="@dimen/dimen_10dp"
                             android:paddingRight="@dimen/dimen_10dp"
-                            android:paddingTop="@dimen/dimen_10dp">
-
+                            android:paddingLeft="@dimen/dimen_10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/viewcolor">
-
+                                android:background="@color/viewcolor"
+                                android:layout_height="wrap_content">
                                 <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginBottom="@dimen/view_1dp"
+                                    android:padding="@dimen/dimen_2dp"
                                     android:background="@color/white"
                                     android:orientation="vertical"
-                                    android:padding="@dimen/dimen_2dp">
-
+                                    android:layout_marginBottom="@dimen/view_1dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
                                     <TextView
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
                                         android:text="150"
-                                        android:textStyle="bold" />
+                                        android:textStyle="bold"
+                                        android:layout_height="wrap_content" />
 
                                     <TextView
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="Bangalore" />
+                                        android:text="Bangalore"
+                                        android:layout_height="wrap_content" />
 
                                 </LinearLayout>
 
                             </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/viewcolor">
-
+                                android:background="@color/viewcolor"
+                                android:layout_height="wrap_content">
                                 <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginBottom="@dimen/view_1dp"
+                                    android:padding="@dimen/dimen_2dp"
                                     android:background="@color/white"
                                     android:orientation="vertical"
-                                    android:padding="@dimen/dimen_2dp">
-
+                                    android:layout_marginBottom="@dimen/view_1dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
                                     <TextView
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
                                         android:text="150"
-                                        android:textStyle="bold" />
+                                        android:textStyle="bold"
+                                        android:layout_height="wrap_content" />
 
                                     <TextView
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="Bangalore" />
+                                        android:text="Bangalore"
+                                        android:layout_height="wrap_content" />
 
                                 </LinearLayout>
 
                             </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/viewcolor">
-
+                                android:background="@color/viewcolor"
+                                android:layout_height="wrap_content">
                                 <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginBottom="@dimen/view_1dp"
+                                    android:padding="@dimen/dimen_2dp"
                                     android:background="@color/white"
                                     android:orientation="vertical"
-                                    android:padding="@dimen/dimen_2dp">
-
+                                    android:layout_marginBottom="@dimen/view_1dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
                                     <TextView
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
                                         android:text="150"
-                                        android:textStyle="bold" />
+                                        android:textStyle="bold"
+                                        android:layout_height="wrap_content" />
 
                                     <TextView
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="Bangalore" />
+                                        android:text="Bangalore"
+                                        android:layout_height="wrap_content" />
 
                                 </LinearLayout>
 
                             </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/viewcolor">
-
+                                android:background="@color/viewcolor"
+                                android:layout_height="wrap_content">
                                 <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginBottom="@dimen/view_1dp"
+                                    android:padding="@dimen/dimen_2dp"
                                     android:background="@color/white"
                                     android:orientation="vertical"
-                                    android:padding="@dimen/dimen_2dp">
-
+                                    android:layout_marginBottom="@dimen/view_1dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
                                     <TextView
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
                                         android:text="150"
-                                        android:textStyle="bold" />
+                                        android:textStyle="bold"
+                                        android:layout_height="wrap_content" />
 
                                     <TextView
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="Bangalore" />
+                                        android:text="Bangalore"
+                                        android:layout_height="wrap_content" />
 
                                 </LinearLayout>
 
                             </LinearLayout>
-
                             <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="right"
-                                android:padding="@dimen/dimen_10dp"
                                 android:text="@string/viewmore"
                                 android:textColor="@color/colorPrimary"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:gravity="right"
+                                android:padding="@dimen/dimen_10dp"
+                                android:layout_height="wrap_content" />
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
+
+
+                //Statistics pane
                 <android.support.v7.widget.CardView
                     android:id="@+id/statistics"
-                    android:layout_width="@dimen/dimen_0dp"
-                    android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dimen_4dp"
-                    android:layout_marginLeft="@dimen/dimen_2dp"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="@dimen/dimen_4dp"
                     app:cardElevation="@dimen/dimen_2dp">
 
                     <LinearLayout
+                        android:padding="@dimen/dimen_16dp"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_300dp"
+                        android:layout_height="wrap_content"
                         android:background="@color/white"
-                        android:orientation="vertical"
-                        android:padding="@dimen/dimen_16dp">
+                        android:orientation="vertical">
 
                         <TextView
+                            android:padding="@dimen/dimen_4dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="left"
-                            android:padding="@dimen/dimen_4dp"
                             android:text="@string/dashboard_statistics"
                             android:textColor="@color/primary_400"
                             android:textSize="@dimen/textsize_18sp"
                             android:textStyle="bold" />
-
                         <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_1dp"
                             android:layout_marginBottom="@dimen/dimen_2dp"
                             android:layout_marginTop="@dimen/dimen_2dp"
-                            android:background="@color/primary_400" />
-
-                        <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/temp" />
+                            android:layout_height="@dimen/view_1dp"
+                            android:background="@color/primary_400"/>
+                        <ImageView
+                            android:src="@drawable/temp"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_150dp" />
 
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
+            //Admin Retailers and Distributors
+
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

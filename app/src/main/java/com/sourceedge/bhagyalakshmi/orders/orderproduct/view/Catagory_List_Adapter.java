@@ -13,7 +13,9 @@ import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Add_Product;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
 import java.util.ArrayList;
 
@@ -47,7 +49,7 @@ public class Catagory_List_Adapter extends RecyclerView.Adapter<Catagory_List_Ad
                 Class_Static.tempProduct.setCategoryId(data.get(position).getId());
                 Class_Static.tempProduct.setCatagoryName(data.get(position).getName());
                 Class_Static.tempProduct.setSectionName("");
-                Class_Static.tempProduct.setId("");
+                Class_Static.tempProduct.setCode("");
                 Class_Static.tempProduct.setAmount(0.0);
                 Class_Static.tempProduct.setUnits("");
                 Class_Static.tempProduct.setQuantity(0);
@@ -59,7 +61,12 @@ public class Catagory_List_Adapter extends RecyclerView.Adapter<Catagory_List_Ad
                 Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
                 Add_Product.productQuantity.setText("");
                 Add_Product.productPrice.setText("");
-                ((Activity)mContext).finish();
+                if (Class_Genric.NetAvailable(mContext)) {
+                    Class_SyncApi.ProductApi(mContext,Class_Static.tempRole.getId(),data.get(position).getName());
+                }
+                else {
+                    Class_SyncApi.LoadOfflineProducts(mContext,Class_Static.tempRole.getId(),data.get(position).getName());
+                }
             }
         });
     }

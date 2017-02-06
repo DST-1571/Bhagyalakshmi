@@ -7,10 +7,11 @@ package com.sourceedge.bhagyalakshmi.orders.models;
 public class OrderProduct {
 
     private String Id;
-    private String ProductId;
+    private String Code;
     private int Quantity;
     private Double Price;
-    private String Unit;
+    private String Description;
+    private String Units;
    // private String SectionId;
     //private String CategoryId;
    // private String SectionName;
@@ -20,10 +21,11 @@ public class OrderProduct {
 
     public OrderProduct(){
         Id="";
-        ProductId="";
+        Code="";
         Quantity=0;
         Price=0.0;
-        Unit="";
+        Description="";
+        Units="";
        // Description="";
        // SectionId="";
        // CategoryId="";
@@ -41,11 +43,35 @@ public class OrderProduct {
     }
 
     public String getProductId() {
-        return ProductId;
+        return Code;
+    }
+
+    public String getCode() {
+        return Code;
+    }
+
+    public void setCode(String code) {
+        Code = code;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    public String getUnits() {
+        return Units;
+    }
+
+    public void setUnits(String units) {
+        Units = units;
     }
 
     public void setProductId(String productId) {
-        ProductId = productId;
+        Code = productId;
     }
 
     public int getQuantity() {
@@ -65,11 +91,11 @@ public class OrderProduct {
     }
 
     public String getUnit() {
-        return Unit;
+        return Units;
     }
 
     public void setUnit(String unit) {
-        Unit = unit;
+        Units = unit;
     }
 
 

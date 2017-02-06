@@ -16,10 +16,12 @@ import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 import com.sourceedge.bhagyalakshmi.orders.models.Sections;
+import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Catagory_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Group_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Product_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Role_List_Adapter;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Sales_Person_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Genric;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
@@ -36,6 +38,7 @@ public class Search_Customer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search__customer);
+        Class_Genric.setOrientation(Search_Customer.this);
         retailerSearch = (EditText) findViewById(R.id.retailer_search);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -45,7 +48,7 @@ public class Search_Customer extends AppCompatActivity {
         retailerList.setLayoutManager(new LinearLayoutManager(Search_Customer.this));
 
         if (Class_Static.Flag_SEARCH == Class_Static.SEARCHCUSTOMER) {
-            switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUserType())) {
+            switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                 case Class_Genric.ADMIN:
                     break;
                 case Class_Genric.DISTRIBUTORSALES:
@@ -54,12 +57,13 @@ public class Search_Customer extends AppCompatActivity {
                 case Class_Genric.DISTRIBUTOR:
                     retailerSearch.setHint("Search");
                     break;
-                case Class_Genric.SALESPERSON:
+                case Class_Genric.SALESMAN:
                     retailerSearch.setHint("Search Distributor");
                     break;
             }
             Class_Static.tempRoleList = new ArrayList<Role>();
             Class_Static.tempRoleList = Class_ModelDB.getRoleList();
+
             retailerList.setAdapter(new Role_List_Adapter(Search_Customer.this, Class_Static.tempRoleList));
 
             //
@@ -96,11 +100,12 @@ public class Search_Customer extends AppCompatActivity {
 
         } else if (Class_Static.Flag_SEARCH == Class_Static.SEARCHPRODUCT) {
             Class_Static.tempProductList = new ArrayList<Product>();
-            for (Product product : Class_ModelDB.getProductList()) {
+            Class_Static.tempProductList = Class_ModelDB.getProductList();
+           /* for (Product product : Class_ModelDB.getProductList()) {
                 if (product.getCategoryId().toString().toLowerCase().matches(Class_Static.tempProduct.getCategoryId().toString().toLowerCase())) {
                     Class_Static.tempProductList.add(product);
                 }
-            }
+            }*/
             retailerList.setAdapter(new Product_List_Adapter(Search_Customer.this, Class_Static.tempProductList));
             retailerSearch.setHint("Search Product");
 
@@ -174,13 +179,16 @@ public class Search_Customer extends AppCompatActivity {
             });
         } else if (Class_Static.Flag_SEARCH == Class_Static.SEARCHCATAGORY) {
             Class_Static.tempCategotyList = new ArrayList<Catagories>();
+            Class_Static.tempCategotyList = Class_ModelDB.getCatagoryList();
+            //retailerList.setAdapter(new Group_List_Adapter(Search_Customer.this, Class_Static.tempCategotyList));
+            /*Class_Static.tempCategotyList = new ArrayList<Catagories>();
             for (Catagories catagory : Class_ModelDB.getCatagoryList()) {
                 if (catagory.getSectionId().toString().toLowerCase().matches(Class_Static.tempProduct.getSectionId().toString().toLowerCase())) {
                     Class_Static.tempCategotyList.add(catagory);
                 }
-            }
+            }*/
             retailerList.setAdapter(new Catagory_List_Adapter(Search_Customer.this, Class_Static.tempCategotyList));
-            retailerSearch.setHint("Search Catagory");
+            retailerSearch.setHint("Search Category");
 
             //
             retailerSearch.addTextChangedListener(new TextWatcher() {
@@ -207,6 +215,51 @@ public class Search_Customer extends AppCompatActivity {
                                 }
                             }
                         retailerList.setAdapter(new Catagory_List_Adapter(Search_Customer.this, Class_Static.tempCategotyList));
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        }else if (Class_Static.Flag_SEARCH == Class_Static.SEARCHSALESPERSON) {
+            switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
+                case Class_Genric.ADMIN:
+                    retailerSearch.setHint("Search SalesPerson");
+                    break;
+                case Class_Genric.DISTRIBUTORSALES:
+                case Class_Genric.DISTRIBUTOR:
+                case Class_Genric.SALESMAN:
+                    break;
+            }
+            Class_Static.tempRoleList = new ArrayList<Role>();
+            Class_Static.tempRoleList = Class_ModelDB.getRoleList();
+            retailerList.setAdapter(new Sales_Person_List_Adapter(Search_Customer.this, Class_Static.tempRoleList));
+
+            //
+            retailerSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.toString().matches("")) {
+                        retailerList.setVisibility(View.VISIBLE);
+                        Class_Static.tempSalesPersonList = new ArrayList<Role>();
+                        Class_Static.tempSalesPersonList = Class_ModelDB.getRoleList();
+                        retailerList.setAdapter(new Sales_Person_List_Adapter(Search_Customer.this, Class_Static.tempSalesPersonList));
+                    } else {
+                        retailerList.setVisibility(View.VISIBLE);
+                        Class_Static.tempSalesPersonList = new ArrayList<Role>();
+                        if (!Class_Static.tempRole.getName().toLowerCase().matches(s.toString().toLowerCase()))
+                            for (Role role : Class_ModelDB.getRoleList()) {
+                                if (role.getName().toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                                    Class_Static.tempSalesPersonList.add(role);
+                                }
+                            }
+                        retailerList.setAdapter(new Sales_Person_List_Adapter(Search_Customer.this, Class_Static.tempSalesPersonList));
                     }
                 }
 
