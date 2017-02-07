@@ -155,6 +155,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                         order_header1.setVisibility(View.GONE);
                         order_header2.setVisibility(View.VISIBLE);
                         orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                        deleteOption();
                     } else {
                         orderDetailsHeader.setVisibility(View.GONE);
                         orderdate.setText(Class_Genric.getDate());
@@ -197,6 +198,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                         order_header1.setVisibility(View.GONE);
                         order_header2.setVisibility(View.VISIBLE);
                         orderProductRecyclerview.setAdapter(new View_Product_List_Adapter(context, Class_Static.tempOrderingProduct));
+                        deleteOption();
                     } else {
                         orderDetailsHeader.setVisibility(View.GONE);
                         orderdate.setText(Class_Genric.getDate());
@@ -221,8 +223,51 @@ public class Product_Order_Lookup extends AppCompatActivity {
     }
 
 
-    private void onClicks() {
+    public static void deleteOption(){
+        if(Class_Static.OrdredProducts.getStatus().contains("Failed")){
+            fab.setImageResource(R.drawable.ic_delete_white_24dp);
+            fab.setVisibility(View.VISIBLE);
+        }
+    }
 
+    private void onClicks() {
+        if (Class_Static.viewOrderedProducts) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Class_ModelDB.getDraftorderList().remove(Class_Static.OrdredProducts);
+                    Class_DBHelper dbHelper= new Class_DBHelper(Product_Order_Lookup.this);
+                    dbHelper.saveDraftOrders();
+                    dbHelper.loadDraftOrders();
+                    dbHelper.loadOrders();
+                    finish();
+                }
+            });
+        }
+        else {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
+                        case Class_Genric.ADMIN:
+                            break;
+                        case Class_Genric.DISTRIBUTORSALES:
+                            Class_Static.editProductOrder = false;
+                            startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
+                            break;
+                        case Class_Genric.DISTRIBUTOR:
+                            Class_Static.editProductOrder = false;
+                            startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
+                            break;
+                        case Class_Genric.SALESMAN:
+                            Class_Static.editProductOrder = false;
+                            startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
+                            break;
+                    }
+                    finish();
+                }
+            });
+        }
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,28 +337,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
-                    case Class_Genric.ADMIN:
-                        break;
-                    case Class_Genric.DISTRIBUTORSALES:
-                        Class_Static.editProductOrder = false;
-                        startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
-                        break;
-                    case Class_Genric.DISTRIBUTOR:
-                        Class_Static.editProductOrder = false;
-                        startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
-                        break;
-                    case Class_Genric.SALESMAN:
-                        Class_Static.editProductOrder = false;
-                        startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
-                        break;
-                }
-                finish();
-            }
-        });
+
     }
 
 

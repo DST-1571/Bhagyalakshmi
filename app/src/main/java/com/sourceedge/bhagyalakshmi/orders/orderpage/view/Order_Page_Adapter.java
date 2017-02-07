@@ -59,6 +59,7 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
         }
         holder.totalAmount.setText(Class_Genric.rupee+data.get(position).getTotalAmount().toString());
         holder.orderStatus.setText(data.get(position).getStatus());
+        holder.orderStatus.setSelected(true);
         holder.orderedPane.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

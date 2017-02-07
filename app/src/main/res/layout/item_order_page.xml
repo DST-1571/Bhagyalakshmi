@@ -54,8 +54,11 @@
             android:layout_weight="0.9"
             android:gravity="left"
             android:padding="@dimen/dimen_10dp"
-            android:maxLines="1"
-            android:ellipsize="end"
+            android:maxLines="2"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
             />
     </LinearLayout>
 

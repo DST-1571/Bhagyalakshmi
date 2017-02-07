@@ -850,12 +850,11 @@ public class Class_SyncApi {
                 String ErrorMessage= null;
                 try {
                     ErrorMessage = (String) (new JSONObject(new String(error.networkResponse.data))).get("Status");
-                    Class_ModelDB.DraftorderList.get(pos).setStatus("Draft - "+ErrorMessage);
+                    Class_ModelDB.DraftorderList.get(pos).setStatus("Failed - "+ErrorMessage);
                     PlaceDraftOrderApi(context, pos + 1, OrdersCount);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(context, ErrorMessage, Toast.LENGTH_SHORT).show();
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     Class_Genric.NetCheck(context);
                 }
