@@ -41,7 +41,7 @@ public class Add_Product extends AppCompatActivity {
     Toolbar toolbar;
     public static TextView productSearch, productStock;
     public static TextView retailerName, productGroup, productCategory;
-    public static EditText productUnit, productQuantity, productPrice;
+    public static EditText productUnit, productQuantity, productPrice,productTax,productAmount;
     ImageView searchGroupIcon, searchCategoryIcon, searchIcon;
     ImageButton incrementQuantity, decrementQuantity;
     Button buttonAdd, buttonReset, buttonAddNew;
@@ -76,6 +76,8 @@ public class Add_Product extends AppCompatActivity {
         productUnit = (EditText) findViewById(R.id.product_unit);
         productQuantity = (EditText) findViewById(R.id.product_quantity);
         productPrice = (EditText) findViewById(R.id.product_price);
+        productTax = (EditText) findViewById(R.id.product_tax);
+        productAmount = (EditText) findViewById(R.id.product_amount);
         incrementQuantity = (ImageButton) findViewById(R.id.increment_quantity);
         decrementQuantity = (ImageButton) findViewById(R.id.decrement_quantity);
         buttonAdd = (Button) findViewById(R.id.button_add);
@@ -87,7 +89,7 @@ public class Add_Product extends AppCompatActivity {
             case Class_Genric.ADMIN:
                 break;
             case Class_Genric.DISTRIBUTORSALES:
-                if (Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")) {
+                if (Class_ModelDB.getCurrentuserModel().getACL().matches("1")) {
                     productPrice.setEnabled(true);
                 } else {
                     productPrice.setEnabled(false);
@@ -103,7 +105,7 @@ public class Add_Product extends AppCompatActivity {
                 }*/
                 break;
             case Class_Genric.DISTRIBUTOR:
-                if (Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")) {
+                if (Class_ModelDB.getCurrentuserModel().getACL().matches("1")) {
                     productPrice.setEnabled(true);
                 } else {
                     productPrice.setEnabled(false);
@@ -111,8 +113,9 @@ public class Add_Product extends AppCompatActivity {
                 retailerLayout.setVisibility(View.GONE);
                 productStock.setVisibility(View.GONE);
                 break;
+            case Class_Genric.ASM:
             case Class_Genric.SALESMAN:
-                if (Class_ModelDB.getCurrentuserModel().getACL().matches("editprice")) {
+                if (Class_ModelDB.getCurrentuserModel().getACL().matches("1")) {
                     productPrice.setEnabled(true);
                 } else {
                     productPrice.setEnabled(false);
@@ -121,6 +124,7 @@ public class Add_Product extends AppCompatActivity {
                 //distributorSalesManName.setText(Class_ModelDB.getCurrentuserModel().getName().toString() + " - Sales(SBL)");
                 break;
         }
+
         retailerName.setText(Class_Static.tempRole.getName().toString());
 
         if (Class_Static.editProductOrder) {
@@ -136,6 +140,8 @@ public class Add_Product extends AppCompatActivity {
             productUnit.setText(Class_Static.tempProduct.getUnits());
             productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
             productPrice.setText(Class_Static.tempProduct.getPrice() + "");
+            productTax.setText(Class_Static.tempProduct.getTax()+"");
+            productAmount.setText(Class_Static.tempProduct.getAmount()+"");
             productSearch.setEnabled(false);
             searchCategoryIcon.setVisibility(View.INVISIBLE);
             searchIcon.setVisibility(View.INVISIBLE);
@@ -185,11 +191,16 @@ public class Add_Product extends AppCompatActivity {
 
                         break;
                     case Class_Genric.DISTRIBUTOR:
+                    case Class_Genric.ASM:
                     case Class_Genric.SALESMAN:
                         if ("".equals(productQuantity.getText().toString().trim())) {
                             productQuantity.setText("0");
                         }
                         productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) + 1) + "");
+                        Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                        Add_Product.productTax.setText(Class_Static.tempProduct.getTax()+"");
+                        Add_Product.productAmount.setText(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax())+"");
+
                         //productStock.setText("Stock Available : " + (Class_Static.Stock - Integer.parseInt(productQuantity.getText().toString())));
                         break;
                 }
@@ -214,12 +225,17 @@ public class Add_Product extends AppCompatActivity {
                             Toast.makeText(Add_Product.this, "Min Count is 1", Toast.LENGTH_SHORT).show();
                         break;
                     case Class_Genric.DISTRIBUTOR:
+                    case Class_Genric.ASM:
                     case Class_Genric.SALESMAN:
                         if ("".equals(productQuantity.getText().toString().trim())) {
                             productQuantity.setText("1");
+                            Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                            Add_Product.productAmount.setText(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax())+"");
                         }
                         if (!productQuantity.getText().toString().matches("1")) {
                             productQuantity.setText((Integer.parseInt(productQuantity.getText().toString()) - 1) + "");
+                            Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                            Add_Product.productAmount.setText(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax())+"");
                             //productStock.setText("Stock Available : " + ((Integer.parseInt(productStock.getText().toString().split(": ")[1]) + 1) + ""));
                         } else
                             Toast.makeText(Add_Product.this, "Min Count is 1", Toast.LENGTH_SHORT).show();
@@ -247,13 +263,13 @@ public class Add_Product extends AppCompatActivity {
                                                              Class_Static.tempProduct.setUnits(productUnit.getText().toString());
                                                              Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                                                              Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                                                             Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
-
+                                                             Class_Static.tempProduct.setTax(Double.valueOf(productTax.getText().toString()));
+                                                             Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax()));
                                                              Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
                                                              Product prod = new Product();
                                                              while (iter.hasNext()) {
                                                                  prod = iter.next();
-                                                                 if (prod.getCode().matches(Class_Static.tempProduct.getCode()))
+                                                                 if (prod.getDescription().matches(Class_Static.tempProduct.getDescription()))
                                                                      iter.remove();
                                                              }
                                                              if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.Stock) {
@@ -268,6 +284,7 @@ public class Add_Product extends AppCompatActivity {
                                                          }
                                                          break;
                                                      case Class_Genric.DISTRIBUTOR:
+                                                     case Class_Genric.ASM:
                                                      case Class_Genric.SALESMAN:
                                                          Class_Static.tempProduct.setCode(Class_Static.tempProduct.getCode());
                                                          Class_Static.tempProduct.setDescription(productSearch.getText().toString());
@@ -275,12 +292,13 @@ public class Add_Product extends AppCompatActivity {
                                                          Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
                                                          Class_Static.tempProduct.setUnits(productUnit.getText().toString());
                                                          Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
+                                                         Class_Static.tempProduct.setTax(Double.valueOf(productTax.getText().toString()));
                                                          Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                                                         Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                                                         Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax()));
                                                          Iterator<Product> iter1 = Class_Static.tempOrderingProduct.iterator();
                                                          while (iter1.hasNext()) {
                                                              Product prod = iter1.next();
-                                                             if (prod.getCode().matches(Class_Static.tempProduct.getCode()))
+                                                             if (prod.getDescription().matches(Class_Static.tempProduct.getDescription()))
                                                                  iter1.remove();
                                                          }
                                                          Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
@@ -310,11 +328,11 @@ public class Add_Product extends AppCompatActivity {
                                                              Product prod = new Product();
                                                              while (iter.hasNext()) {
                                                                  prod = iter.next();
-                                                                 if (prod.getCode().matches(Class_Static.tempProduct.getCode())) {
+                                                                 if (prod.getDescription().matches(Class_Static.tempProduct.getDescription())) {
                                                                      qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
                                                                      prod.setQuantity(qty);
                                                                      Class_Static.AvailableStock = Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString());
-                                                                     prod.setAmount(prod.getQuantity() * prod.getPrice());
+                                                                     prod.setAmount(Class_Genric.CalculateAmount(prod.getPrice(),prod.getQuantity(),prod.getTax()));
                                                                      found = true;
                                                                      break;
                                                                  }
@@ -329,8 +347,9 @@ public class Add_Product extends AppCompatActivity {
                                                                      Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                                      Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
                                                                      Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                                     Class_Static.tempProduct.setTax(Double.valueOf(productTax.getText().toString()));
                                                                      Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                                                                     Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                                                                     Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax()));
                                                                      Product tempProd = new Product(Class_Static.tempProduct);
                                                                      Class_Static.AvailableStock = Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString());
                                                                      Class_Static.tempOrderingProduct.add(tempProd);
@@ -342,6 +361,7 @@ public class Add_Product extends AppCompatActivity {
                                                          }
                                                          break;
                                                      case Class_Genric.DISTRIBUTOR:
+                                                     case Class_Genric.ASM:
                                                      case Class_Genric.SALESMAN:
                                                          if (productSearch.getText().toString().isEmpty() ||
                                                                  productSearch.getText().toString().length() == 0 ||
@@ -355,10 +375,10 @@ public class Add_Product extends AppCompatActivity {
                                                              boolean found = false;
                                                              while (iter.hasNext()) {
                                                                  Product prod = iter.next();
-                                                                 if (prod.getCode().matches(Class_Static.tempProduct.getCode())) {
+                                                                 if (prod.getDescription().matches(Class_Static.tempProduct.getDescription())) {
                                                                      int qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
                                                                      prod.setQuantity(qty);
-                                                                     prod.setAmount(prod.getQuantity() * prod.getPrice());
+                                                                     prod.setAmount(Class_Genric.CalculateAmount(prod.getPrice(),prod.getQuantity(),prod.getTax()));
                                                                      found = true;
                                                                      break;
                                                                  }
@@ -370,8 +390,9 @@ public class Add_Product extends AppCompatActivity {
                                                                  Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                                  Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
                                                                  Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                                 Class_Static.tempProduct.setTax(Double.valueOf(productTax.getText().toString()));
                                                                  Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                                                                 Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                                                                 Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax()));
                                                                  Product tempProd = new Product(Class_Static.tempProduct);
                                                                  Class_Static.tempOrderingProduct.add(tempProd);
                                                              }
@@ -410,11 +431,11 @@ public class Add_Product extends AppCompatActivity {
                                                                     Product prod = new Product();
                                                                     while (iter.hasNext()) {
                                                                         prod = iter.next();
-                                                                        if (prod.getCode().matches(Class_Static.tempProduct.getCode())) {
+                                                                        if (prod.getDescription().matches(Class_Static.tempProduct.getDescription())) {
                                                                             qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
                                                                             prod.setQuantity(qty);
                                                                             Class_Static.AvailableStock = Class_Static.AvailableStock - qty;
-                                                                            prod.setAmount(prod.getQuantity() * prod.getPrice());
+                                                                            prod.setAmount(Class_Genric.CalculateAmount(prod.getPrice(),prod.getQuantity(),prod.getTax()));
                                                                             found = true;
                                                                             break;
                                                                         }
@@ -429,8 +450,9 @@ public class Add_Product extends AppCompatActivity {
                                                                             Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                                             Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
                                                                             Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                                            Class_Static.tempProduct.setTax(Double.valueOf(productTax.getText().toString()));
                                                                             Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                                                                            Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                                                                            Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax()));
                                                                             Product tempProd = new Product(Class_Static.tempProduct);
                                                                             Class_Static.AvailableStock = Class_Static.AvailableStock - Integer.parseInt(productQuantity.getText().toString());
                                                                             Class_Static.tempOrderingProduct.add(tempProd);
@@ -454,15 +476,16 @@ public class Add_Product extends AppCompatActivity {
 
                                                                 break;
                                                             case Class_Genric.DISTRIBUTOR:
+                                                            case Class_Genric.ASM:
                                                             case Class_Genric.SALESMAN:
                                                                 Iterator<Product> iter1 = Class_Static.tempOrderingProduct.iterator();
                                                                 boolean found1 = false;
                                                                 while (iter1.hasNext()) {
                                                                     Product prod = iter1.next();
-                                                                    if (prod.getCode().matches(Class_Static.tempProduct.getCode())) {
+                                                                    if (prod.getDescription().matches(Class_Static.tempProduct.getDescription())) {
                                                                         int qty = (prod.getQuantity() + Integer.parseInt(productQuantity.getText().toString()));
                                                                         prod.setQuantity(qty);
-                                                                        prod.setAmount(prod.getQuantity() * prod.getPrice());
+                                                                        prod.setAmount(Class_Genric.CalculateAmount(prod.getPrice(),prod.getQuantity(),prod.getTax()));
                                                                         found1 = true;
                                                                         break;
                                                                     }
@@ -473,9 +496,10 @@ public class Add_Product extends AppCompatActivity {
                                                                     Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
                                                                     Class_Static.tempProduct.setCatagoryName(productCategory.getText().toString());
                                                                     Class_Static.tempProduct.setUnits(productUnit.getText().toString());
+                                                                    Class_Static.tempProduct.setTax(Double.valueOf(productTax.getText().toString()));
                                                                     Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                                                                     Class_Static.tempProduct.setPrice(Double.valueOf(productPrice.getText().toString()));
-                                                                    Class_Static.tempProduct.setAmount(Class_Static.tempProduct.getQuantity() * Class_Static.tempProduct.getPrice());
+                                                                    Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax()));
                                                                     Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
                                                                     cleanScreen();
                                                                 }
@@ -537,8 +561,13 @@ public class Add_Product extends AppCompatActivity {
 
                 //if (!Class_Static.tempProduct.getSectionId().matches("")) {
                   //  if (!Class_Static.tempProduct.getCategoryId().matches("")) {
-                        Class_Static.Flag_SEARCH = Class_Static.SEARCHPRODUCT;
-                        startActivity(new Intent(Add_Product.this, Search_Customer.class));
+                if (productCategory.getText().toString().isEmpty() || productCategory.getText().toString().length() == 0 || productCategory.getText().toString().equals("") || productCategory.getText().toString() == null) {
+                    Toast.makeText(Add_Product.this, "Select Category", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Class_Static.Flag_SEARCH = Class_Static.SEARCHPRODUCT;
+                    startActivity(new Intent(Add_Product.this, Search_Customer.class));
+                }
                     //} else
                       //  Toast.makeText(context, "Please Select a Catagory", Toast.LENGTH_SHORT).show();
                 //} else
@@ -588,5 +617,7 @@ public class Add_Product extends AppCompatActivity {
         productPrice.setText("");
         productQuantity.setText("");
         productStock.setText("");
+        productTax.setText("");
+        productAmount.setText("");
     }
 }

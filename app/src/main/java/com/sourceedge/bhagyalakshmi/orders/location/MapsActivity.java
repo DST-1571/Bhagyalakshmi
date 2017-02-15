@@ -161,6 +161,8 @@ public class MapsActivity extends FragmentActivity implements
             case Class_Genric.SALESMAN:
                 //api();
                 break;
+            case Class_Genric.ASM:
+                break;
 
         }
         Log.d(TAG, "Marker added.............................");

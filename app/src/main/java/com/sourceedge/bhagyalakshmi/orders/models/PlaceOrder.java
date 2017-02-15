@@ -12,6 +12,8 @@ public class PlaceOrder {
     private String OrderDate;
     private ArrayList<OrderProduct> Products;
     private Double TotalAmount;
+    private String Company;
+    private String Timestamp;
 
     public PlaceOrder(){
         UserId="";
@@ -19,6 +21,24 @@ public class PlaceOrder {
         Products=new ArrayList<OrderProduct>();
         TotalAmount=0.0;
         OrderDate="";
+        Company="";
+        Timestamp="";
+    }
+
+    public String getTimestamp() {
+        return Timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        Timestamp = timestamp;
+    }
+
+    public String getCompany() {
+        return Company;
+    }
+
+    public void setCompany(String company) {
+        Company = company;
     }
 
     public String getClientId() {

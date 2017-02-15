@@ -1,110 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_admin__orders"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Admin_Orders"
-    tools:showIn="@layout/activity_admin_orders">
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/empty_active_orders"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="There are no Orders!!!"
-            android:textSize="@dimen/textsize_18sp"
-            android:gravity="left"/>
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/active_ordered_layout"
+    tools:showIn="@layout/activity_admin_orders"
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page">
+    <RelativeLayout
+        android:id="@+id/content_admin__orders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <!--<RelativeLayout
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true">
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/empty_active_orders"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="left"
-            android:background="@drawable/grey_square_border"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp">
-
-            <EditText
-                android:id="@+id/order_search"
-
-                android:layout_toLeftOf="@+id/search_image"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:hint="Search"
-                android:paddingLeft="@dimen/dimen_10dp"
-                android:textSize="@dimen/dimen_20dp"
-                android:inputType="text|textNoSuggestions"/>
-            <ImageView
-                android:id="@+id/search_image"
-                android:layout_width="@dimen/dimen_40dp"
-                android:layout_height="@dimen/dimen_40dp"
-                android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_magnify_grey600_24dp"
-                android:layout_leftVertical="true"
-                android:layout_alignParentRight="true"/>
-        </RelativeLayout>-->
+                android:layout_height="wrap_content"
+                android:text="There are no Orders!!!"
+                android:textSize="@dimen/textsize_18sp"
+                android:gravity="left"/>
 
-                <LinearLayout
-                    android:id="@+id/order_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@color/view"
-                    android:weightSum="3">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/admin_order_id"
-                        android:textColor="@color/colorPrimary"
-                        android:padding="@dimen/dimen_10dp"
-                        android:gravity="left"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/admin_name"
-                        android:textColor="@color/colorPrimary"
-                        android:padding="@dimen/dimen_10dp"
-                        android:gravity="left"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/admin_placed_by"
-                        android:textColor="@color/colorPrimary"
-                        android:padding="@dimen/dimen_10dp"
-                        android:gravity="left"/>
+        </LinearLayout>
 
-                </LinearLayout>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/active_order_page_recyclerView"
+
+        <LinearLayout
+            android:id="@+id/active_ordered_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--<RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="left"
+                android:background="@drawable/grey_square_border"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginTop="@dimen/dimen_10dp">
+
+                <EditText
+                    android:id="@+id/order_search"
+
+                    android:layout_toLeftOf="@+id/search_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/order_header"
-                    android:padding="@dimen/dimen_5dp"
-                    android:layout_margin="@dimen/dimen_5dp">
-                </android.support.v7.widget.RecyclerView>
+                    android:background="@android:color/transparent"
+                    android:hint="Search"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:textSize="@dimen/dimen_20dp"
+                    android:inputType="text|textNoSuggestions"/>
+                <ImageView
+                    android:id="@+id/search_image"
+                    android:layout_width="@dimen/dimen_40dp"
+                    android:layout_height="@dimen/dimen_40dp"
+                    android:padding="@dimen/dimen_10dp"
+                    android:src="@drawable/ic_magnify_grey600_24dp"
+                    android:layout_leftVertical="true"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>-->
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/order_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/view"
+                android:weightSum="3">
 
-</RelativeLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/admin_order_id"
+                    android:textColor="@color/colorPrimary"
+                    android:padding="@dimen/dimen_10dp"
+                    android:gravity="left"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/admin_name"
+                    android:textColor="@color/colorPrimary"
+                    android:padding="@dimen/dimen_10dp"
+                    android:gravity="left"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/admin_placed_by"
+                    android:textColor="@color/colorPrimary"
+                    android:padding="@dimen/dimen_10dp"
+                    android:gravity="left"/>
+
+            </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/active_order_page_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/order_header"
+                android:padding="@dimen/dimen_5dp"
+                android:layout_margin="@dimen/dimen_5dp">
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_plus_white_24dp"/>
+</android.support.design.widget.CoordinatorLayout>
+

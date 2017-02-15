@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:padding="@dimen/dimen_15dp"
+        android:layout_width="match_parent"
+        android:text="Select Company"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/viewcolor"/>
+
+</LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/company_list"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_100dp"/>
+</LinearLayout>

@@ -129,6 +129,8 @@ public class MyService extends Service {
                                                       dbHelper.loadLocation();
                                                       //Class_SyncApi.Location(MyService.this,latitude,longitude,mLastUpdateTime);
                                                       break;
+                                                  case Class_Genric.ASM:
+                                                      break;
 
                                               }
                                               /*Toast.makeText(getBaseContext(), "Latitude is = " + latitude + "Longitude is =" + longitude + "Time is ="+mLastUpdateTime, Toast.LENGTH_LONG).show();*/

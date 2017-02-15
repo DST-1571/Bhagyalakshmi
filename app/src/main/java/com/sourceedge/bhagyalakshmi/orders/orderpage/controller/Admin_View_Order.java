@@ -23,6 +23,7 @@ public class Admin_View_Order extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     public static TextView total;
+    static TextView customername, orderdate, ordernumber, placedby;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +36,18 @@ public class Admin_View_Order extends AppCompatActivity {
         recyclerView=(RecyclerView)findViewById(R.id.admin_view_order);
         total=(TextView)findViewById(R.id.total);
         recyclerView.setLayoutManager(new LinearLayoutManager(Admin_View_Order.this));
+        customername = (TextView) findViewById(R.id.customername);
+        orderdate = (TextView) findViewById(R.id.orderdate);
+        ordernumber = (TextView) findViewById(R.id.ordernumber);
+        placedby = (TextView) findViewById(R.id.placedby);
         InitializeAdapter();
     }
 
     private void InitializeAdapter() {
+        customername.setText(Class_Static.OrdredProducts.getClient().getName());
+        placedby.setText(Class_Static.OrdredProducts.getUser().getEmployee());
+        orderdate.setText(Class_Genric.getDateTime(Class_Static.OrdredProducts));
+        ordernumber.setText(Class_Static.OrdredProducts.getOrderNumber());
         if(Class_Static.tempOrderingProduct.size()!=0){
             recyclerView.setAdapter(new Admin_View_Order_Adapter(Admin_View_Order.this,Class_Static.tempOrderingProduct));
         }else {

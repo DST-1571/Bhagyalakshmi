@@ -1,6 +1,7 @@
 package com.sourceedge.bhagyalakshmi.orders.support;
 
 import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
+import com.sourceedge.bhagyalakshmi.orders.models.CompanyModel;
 import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
 import com.sourceedge.bhagyalakshmi.orders.models.LocationModel;
 import com.sourceedge.bhagyalakshmi.orders.models.OfflineModel_Distributor;
@@ -45,6 +46,9 @@ public class Class_ModelDB {
     private static Catagories CatagoryModel = new Catagories();
     public static OfflineModel_Distributor OfflineDistributor= new OfflineModel_Distributor();
     public static ArrayList<OfflineModel_Distributor> OfflineDistributors= new ArrayList<OfflineModel_Distributor>();
+
+
+    public static ArrayList<CompanyModel> CompanyList= new ArrayList<CompanyModel>();
 
     public static void ClearDB() {
         orderModel = new Order();
@@ -137,6 +141,7 @@ public class Class_ModelDB {
     public static void setCatagoryList(ArrayList<Catagories> catagoryList) {
         Class_ModelDB.catagoryList = catagoryList;
     }
+
 
     public static Order getOrderModel() {
         return orderModel;

@@ -55,12 +55,15 @@ public class Catagory_List_Adapter extends RecyclerView.Adapter<Catagory_List_Ad
                 Class_Static.tempProduct.setQuantity(0);
                 Class_Static.tempProduct.setDescription("");
                 Class_Static.tempProduct.setPrice(0.0);
+                Class_Static.tempProduct.setTax(0.0);
 
                 Add_Product.productSearch.setText(Class_Static.tempProduct.getDescription());
                 Add_Product.productCategory.setText(Class_Static.tempProduct.getCatagoryName());
                 Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
                 Add_Product.productQuantity.setText("");
                 Add_Product.productPrice.setText("");
+                Add_Product.productTax.setText("");
+                Add_Product.productAmount.setText("");
                 if (Class_Genric.NetAvailable(mContext)) {
                     Class_SyncApi.ProductApi(mContext,Class_Static.tempRole.getId(),data.get(position).getName());
                 }

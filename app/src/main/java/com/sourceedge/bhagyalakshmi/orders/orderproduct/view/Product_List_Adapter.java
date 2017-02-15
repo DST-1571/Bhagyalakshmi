@@ -73,12 +73,14 @@ public class Product_List_Adapter extends RecyclerView.Adapter<Product_List_Adap
                         }
                         break;
                     case Class_Genric.DISTRIBUTOR:
+                    case Class_Genric.ASM:
                     case Class_Genric.SALESMAN:
                         if (Class_Genric.NetAvailable(mContext)) {
+                            Class_Static.tempProduct.setProductDetais(data.get(position));
+                            Class_Static.tempProduct.setQuantity(1);
+                            Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax()));
                             Class_SyncApi.ProductPriceApi(mContext,data.get(position),Class_Static.tempRole.getId());
-                        }
-                        else {
-                            if(data.get(position).getPrice()>0)
+                            /*if(data.get(position).getPrice()>0)
                             {
                                 Class_Static.tempProduct.setProductDetais(data.get(position));
                                 Class_Static.tempProduct.setQuantity(1);
@@ -86,6 +88,26 @@ public class Product_List_Adapter extends RecyclerView.Adapter<Product_List_Adap
                                 Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
                                 Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
                                 Add_Product.productPrice.setText(Class_Static.tempProduct.getPrice() + "");
+                                Add_Product.productTax.setText(Class_Static.tempProduct.getTax()+"");
+                                Add_Product.productAmount.setText(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax())+"");
+                                ((Activity) mContext).finish();
+                            }
+                            else {
+                                Toast.makeText(mContext, "This Product is UnAvailable", Toast.LENGTH_SHORT).show();
+                            }*/
+                        }
+                        else {
+                            if(data.get(position).getPrice()>0)
+                            {
+                                Class_Static.tempProduct.setProductDetais(data.get(position));
+                                Class_Static.tempProduct.setQuantity(1);
+                                Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax()));
+                                Add_Product.productSearch.setText(Class_Static.tempProduct.getDescription());
+                                Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
+                                Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
+                                Add_Product.productPrice.setText(Class_Static.tempProduct.getPrice() + "");
+                                Add_Product.productTax.setText(Class_Static.tempProduct.getTax()+"");
+                                Add_Product.productAmount.setText(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax())+"");
                                 ((Activity) mContext).finish();
                             }
                             else {

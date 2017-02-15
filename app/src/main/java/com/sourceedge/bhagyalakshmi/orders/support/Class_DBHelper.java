@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 public class Class_DBHelper extends SQLiteOpenHelper {
     SharedPreferences sharedPreferences = Class_Application.sharedPreferences;
+    public static final int DATABASE_Version = 1;
     public static final String DATABASE_NAME = "Bhagyalaksmi_Traders.db";
     Gson gson = new Gson();
     static ContentValues contentValues = new ContentValues();
@@ -54,7 +55,7 @@ public class Class_DBHelper extends SQLiteOpenHelper {
     public static String DataTableOfflineData = "OfflineData";
 
     public Class_DBHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, DATABASE_Version);
         sharedPreferences = context.getSharedPreferences(Class_Genric.MyPref, context.MODE_PRIVATE);
     }
     @Override
@@ -259,6 +260,8 @@ public class Class_DBHelper extends SQLiteOpenHelper {
                 Class_Static.tempRole=Class_Genric.getRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel());
                 break;
             case Class_Genric.SALESMAN:
+                break;
+            case Class_Genric.ASM:
                 break;
         }
         db.close();

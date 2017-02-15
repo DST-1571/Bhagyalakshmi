@@ -32,11 +32,11 @@ public class View_Product_List_Adapter extends RecyclerView.Adapter<View_Product
 
     public View_Product_List_Adapter(Context context, ArrayList<Product> model) {
         this.mContext = context;
-        this.data = model;
+        this.data = model;/*
         for (Product product : data) {
             amount += product.getAmount();
-        }
-        Product_Order_Lookup.grandTotal.setText("Total : " + String.format("%.2f", amount) + "");
+        }*/
+        Product_Order_Lookup.grandTotal.setText("Total : " + Class_Static.OrdredProducts.getTotalAmount()+ "");
 
 
     }

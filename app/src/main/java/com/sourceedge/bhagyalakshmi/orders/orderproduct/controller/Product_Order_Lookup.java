@@ -1,6 +1,7 @@
 package com.sourceedge.bhagyalakshmi.orders.orderproduct.controller;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,23 +15,32 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sourceedge.bhagyalakshmi.orders.R;
+import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
+import com.sourceedge.bhagyalakshmi.orders.models.CompanyModel;
 import com.sourceedge.bhagyalakshmi.orders.models.Order;
 import com.sourceedge.bhagyalakshmi.orders.models.OrderProduct;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Success;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.CompanyListAdapter;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.Order_Product_List_Adapter;
 import com.sourceedge.bhagyalakshmi.orders.models.Role;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.view.View_Product_List_Adapter;
@@ -40,6 +50,7 @@ import com.sourceedge.bhagyalakshmi.orders.support.Class_ModelDB;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -102,7 +113,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
         order_header2 = (LinearLayout) findViewById(R.id.order_header2);
         scrollView = (LinearLayout) findViewById(R.id.orderitemlist);
 
-        placedby.setText(Class_ModelDB.getCurrentuserModel().getName());
+        placedby.setText(Class_ModelDB.getCurrentuserModel().getEmployee());
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
             case Class_Genric.ADMIN:
                 customerlable.setText("");
@@ -116,6 +127,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                 //searchPane.setVisibility(View.GONE);
                 break;
             case Class_Genric.SALESMAN:
+            case Class_Genric.ASM:
                 //searchPane.setVisibility(View.VISIBLE);
                 // retailerSearch.setHint("Select Distributor");
                 customerlable.setText("Distributor :");
@@ -136,6 +148,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
             case Class_Genric.ADMIN:
                 break;
+            case Class_Genric.ASM:
             case Class_Genric.DISTRIBUTORSALES:
             case Class_Genric.SALESMAN:
                 if (Class_Static.tempOrderingProduct.size() != 0) {
@@ -248,6 +261,8 @@ public class Product_Order_Lookup extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    Class_Static.tempProduct = new Product();
                     switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                         case Class_Genric.ADMIN:
                             break;
@@ -259,6 +274,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                             Class_Static.editProductOrder = false;
                             startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
                             break;
+                        case Class_Genric.ASM:
                         case Class_Genric.SALESMAN:
                             Class_Static.editProductOrder = false;
                             startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
@@ -272,72 +288,22 @@ public class Product_Order_Lookup extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
-                    case Class_Genric.ADMIN:
-                        break;
-                    case Class_Genric.DISTRIBUTORSALES:
-                    case Class_Genric.SALESMAN:
-                        if (Class_Genric.NetAvailable(Product_Order_Lookup.this))
-                            Class_SyncApi.PlaceOrderApiTemp(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getName(), Class_Static.tempRole.getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
-                        else {
-                            Order tempOrder = new Order();
-                            tempOrder.setProducts(Class_Genric.getOrderProductsFromProducts(Class_Static.tempOrderingProduct));
-                            tempOrder.setId("N/A");
-                            tempOrder.setUser(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
-                            tempOrder.setClient(Class_Genric.getOrderRoleFromCurrentRole(Class_Static.tempRole));
-                            tempOrder.setOrderNumber("Offline Order");
-                            tempOrder.setOrderDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-                            tempOrder.setStatus("Draft");
-                            if (grandTotal.getText() == null)
-                                tempOrder.setTotalAmount(0.0);
-                            else if (grandTotal.getText().toString().matches(""))
-                                tempOrder.setTotalAmount(0.0);
-                            else
-                                tempOrder.setTotalAmount(Double.valueOf(grandTotal.getText().toString().substring(8)));
-
-                            Class_ModelDB.DraftorderList.add(tempOrder);
-                            Class_DBHelper class_dbHelper = new Class_DBHelper(Product_Order_Lookup.this);
-                            class_dbHelper.saveDraftOrders();
-                            Intent intent= new Intent(Product_Order_Lookup.this, Order_Success.class);
-                            intent.putExtra("OrderNumber",("Offline Order"));
-                            startActivity(intent);
-                            finish();
-                        }
-                        break;
-                    case Class_Genric.DISTRIBUTOR:
-                        if (Class_Genric.NetAvailable(Product_Order_Lookup.this))
-                            Class_SyncApi.PlaceOrderApiTemp(Product_Order_Lookup.this, Class_ModelDB.getCurrentuserModel().getName(), Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString());
-                        else {
-                            Order tempOrder = new Order();
-                            tempOrder.setProducts(Class_Genric.getOrderProductsFromProducts(Class_Static.tempOrderingProduct));
-                            tempOrder.setId("N/A");
-                            tempOrder.setUser(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
-                            tempOrder.setClient(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
-                            tempOrder.setOrderNumber("Offline Order");
-                            tempOrder.setOrderDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-                            tempOrder.setStatus("Draft");
-                            if (grandTotal.getText() == null)
-                                tempOrder.setTotalAmount(0.0);
-                            else if (grandTotal.getText().toString().matches(""))
-                                tempOrder.setTotalAmount(0.0);
-                            else
-                                tempOrder.setTotalAmount(Double.valueOf(grandTotal.getText().toString().substring(8)));
-                            Class_ModelDB.DraftorderList.add(tempOrder);
-                            Class_DBHelper class_dbHelper = new Class_DBHelper(Product_Order_Lookup.this);
-                            class_dbHelper.saveDraftOrders();
-                            Intent intent= new Intent(Product_Order_Lookup.this, Order_Success.class);
-                            intent.putExtra("OrderNumber",("Offline Order"));
-                            startActivity(intent);
-                            finish();
-                        }
-                        break;
+                if (Class_Genric.NetAvailable(Product_Order_Lookup.this)){
+                    if(Class_ModelDB.CompanyList.size()>0)
+                    {
+                        CompanyDialog(Product_Order_Lookup.this);
+                    }
+                    else Class_SyncApi.ComapnyApi(Product_Order_Lookup.this);
                 }
-
-
+                else {
+                    Gson gson= new Gson();
+                    Type listType = new TypeToken<ArrayList<CompanyModel>>() {
+                    }.getType();
+                    Class_ModelDB.CompanyList = gson.fromJson(sharedPreferences.getString(Class_Genric.Sp_Companies,""), listType);
+                    CompanyDialog(Product_Order_Lookup.this);
+                }
             }
         });
-
-
     }
 
 
@@ -392,5 +358,90 @@ public class Product_Order_Lookup extends AppCompatActivity {
             v.requestLayout();
         }
     }
+
+    public static void CompanyDialog(Context context){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.countydialog);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+       // dialog.getWindow().setAttributes(lp);
+        //dialog.setTitle("Select Company.");
+        // set the custom dialog components - text, image and button
+        RecyclerView company_list = (RecyclerView) dialog.findViewById(R.id.company_list);
+        company_list.setLayoutManager(new LinearLayoutManager(context));
+        company_list.setAdapter(new CompanyListAdapter(context));
+        dialog.show();
+    }
+
+    public static void PlaceOrder(Context context,String Selectedcompany){
+        switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
+            case Class_Genric.ADMIN:
+                break;
+            case Class_Genric.DISTRIBUTORSALES:
+            case Class_Genric.ASM:
+            case Class_Genric.SALESMAN:
+                if (Class_Genric.NetAvailable(context))
+                    Class_SyncApi.PlaceOrderApiTemp(context, Class_ModelDB.getCurrentuserModel().getName(), Class_Static.tempRole.getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString(),Selectedcompany);
+                else {
+                    Order tempOrder = new Order();
+                    tempOrder.setProducts(Class_Genric.getOrderProductsFromProducts(Class_Static.tempOrderingProduct));
+                    tempOrder.setId("N/A");
+                    tempOrder.setUser(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
+                    tempOrder.setClient(Class_Genric.getOrderRoleFromCurrentRole(Class_Static.tempRole));
+                    tempOrder.setOrderNumber("Offline Order");
+                    tempOrder.setOrderDate(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+                    tempOrder.setStatus("Draft");
+                    tempOrder.setCompany(Selectedcompany);
+                    if (grandTotal.getText() == null)
+                        tempOrder.setTotalAmount(0.0);
+                    else if (grandTotal.getText().toString().matches(""))
+                        tempOrder.setTotalAmount(0.0);
+                    else
+                        tempOrder.setTotalAmount(Double.valueOf(grandTotal.getText().toString().substring(8)));
+
+                    Class_ModelDB.DraftorderList.add(tempOrder);
+                    Class_DBHelper class_dbHelper = new Class_DBHelper(context);
+                    class_dbHelper.saveDraftOrders();
+                    Intent intent= new Intent(context, Order_Success.class);
+                    intent.putExtra("OrderNumber",("Offline Order"));
+                    ((Activity)context).startActivity(intent);
+                    ((Activity)context).finish();
+                }
+                break;
+            case Class_Genric.DISTRIBUTOR:
+                if (Class_Genric.NetAvailable(context))
+                    Class_SyncApi.PlaceOrderApiTemp(context, Class_ModelDB.getCurrentuserModel().getName(), Class_ModelDB.getCurrentuserModel().getId(), Class_Static.tempOrderingProduct, grandTotal.getText().toString(),Selectedcompany);
+                else {
+                    Order tempOrder = new Order();
+                    tempOrder.setProducts(Class_Genric.getOrderProductsFromProducts(Class_Static.tempOrderingProduct));
+                    tempOrder.setId("N/A");
+                    tempOrder.setUser(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
+                    tempOrder.setClient(Class_Genric.getOrderRoleFromCurrentUser(Class_ModelDB.getCurrentuserModel()));
+                    tempOrder.setOrderNumber("Offline Order");
+                    tempOrder.setOrderDate(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+                    tempOrder.setStatus("Draft");
+                    tempOrder.setCompany(Selectedcompany);
+                    if (grandTotal.getText() == null)
+                        tempOrder.setTotalAmount(0.0);
+                    else if (grandTotal.getText().toString().matches(""))
+                        tempOrder.setTotalAmount(0.0);
+                    else
+                        tempOrder.setTotalAmount(Double.valueOf(grandTotal.getText().toString().substring(8)));
+                    Class_ModelDB.DraftorderList.add(tempOrder);
+                    Class_DBHelper class_dbHelper = new Class_DBHelper(context);
+                    class_dbHelper.saveDraftOrders();
+                    Intent intent= new Intent(context, Order_Success.class);
+                    intent.putExtra("OrderNumber",("Offline Order"));
+                    ((Activity)context).startActivity(intent);
+                    ((Activity)context).finish();
+                }
+                break;
+        }
+    }
+
 }
 

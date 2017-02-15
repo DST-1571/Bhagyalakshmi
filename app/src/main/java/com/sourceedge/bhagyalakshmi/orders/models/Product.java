@@ -18,10 +18,12 @@ public class Product {
     private Double Price;
     private int Quantity;
     private int Stock;
+    private int Aliasflag;
     private Double Amount;
     private String Description;
     private String Code;
     private BigInteger TimeStamp;
+    private Double Tax;
 
     public Product(){
         Id="";
@@ -36,7 +38,17 @@ public class Product {
         Code="";
         SectionName="";
         CatagoryName="";
+        Tax=0.0;
+        Aliasflag=-1;
         TimeStamp= BigInteger.valueOf(0);
+    }
+
+    public int getAliasflag() {
+        return Aliasflag;
+    }
+
+    public void setAliasflag(int aliasflag) {
+        Aliasflag = aliasflag;
     }
 
     public BigInteger getTimeStamp() {
@@ -53,12 +65,37 @@ public class Product {
         Price=tempPtoduct.getPrice();
         Quantity=tempPtoduct.getQuantity();
         Stock=tempPtoduct.getStock();
-
+        Tax=tempPtoduct.getTax();
         Amount=tempPtoduct.getAmount();
         Description=tempPtoduct.getDescription();
         SectionId=tempPtoduct.getSectionId();
         Category=tempPtoduct.getCategoryId();
         Code=tempPtoduct.getCode();
+        Aliasflag=tempPtoduct.getAliasflag();
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public String getCategory() {
+        return Category;
+    }
+
+    public void setCategory(String category) {
+        Category = category;
+    }
+
+    public Double getTax() {
+        return Tax;
+    }
+
+    public void setTax(Double tax) {
+        Tax = tax;
     }
 
     public String getSectionId() {
@@ -106,6 +143,8 @@ public class Product {
         SectionName= tempProduct.getSectionName();
         SectionId= tempProduct.getSectionId();
         Code=tempProduct.getCode();
+        Tax=tempProduct.getTax();
+        Aliasflag=tempProduct.getAliasflag();
     }
 
     public String getCode() {

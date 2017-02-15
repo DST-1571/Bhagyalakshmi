@@ -54,7 +54,7 @@ public class Order_Page_Adapter extends RecyclerView.Adapter<Order_Page_Adapter.
                 holder.clientName.setText(data.get(position).getClient().getName());
                 break;
             case Class_Genric.DISTRIBUTOR:
-                holder.clientName.setText(data.get(position).getUser().getName());
+                holder.clientName.setText(data.get(position).getUser().getEmployee());
                 break;
         }
         holder.totalAmount.setText(Class_Genric.rupee+data.get(position).getTotalAmount().toString());

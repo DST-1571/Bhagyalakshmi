@@ -28,6 +28,7 @@ import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.dashboard.Dashboard;
 import com.sourceedge.bhagyalakshmi.orders.location.MapsActivity;
 import com.sourceedge.bhagyalakshmi.orders.models.Catagories;
+import com.sourceedge.bhagyalakshmi.orders.models.CompanyModel;
 import com.sourceedge.bhagyalakshmi.orders.models.CurrentUser;
 import com.sourceedge.bhagyalakshmi.orders.models.KeyValuePair;
 import com.sourceedge.bhagyalakshmi.orders.models.LocationModel;
@@ -44,6 +45,7 @@ import com.sourceedge.bhagyalakshmi.orders.models.tempjson;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Success;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Add_Product;
+import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Search_Customer;
 
 import org.json.JSONArray;
@@ -140,6 +142,8 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+
+
     public static void DistributorApi(final Context context) {
         dbHelper = new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -187,10 +191,10 @@ public class Class_SyncApi {
                             dbHelper.saveRole();
                             dbHelper.loadRole();
 
-                            Class_Static.viewOrderedProducts=false;
+                            Class_Static.viewOrderedProducts = false;
                             Class_Static.tempOrderingProduct = new ArrayList<Product>();
                             Class_Static.Flag_SEARCH = Class_Static.SEARCHCUSTOMER;
-                            ((Activity)context).startActivity(new Intent(context, Search_Customer.class));
+                            ((Activity) context).startActivity(new Intent(context, Search_Customer.class));
 
                             break;
                         } catch (JSONException e) {
@@ -231,6 +235,7 @@ public class Class_SyncApi {
 
         queue.add(Class_Genric.VolleyTime(postRequest));
     }
+
     public static void CatagoryApi(final Context context, String Distributorid) {
         dbHelper = new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -278,13 +283,12 @@ public class Class_SyncApi {
                             if (Class_Static.CURRENTPAGE == Class_Static.DISTRIBUTORLIST) {
                                 ((Activity) context).startActivity(new Intent(context, Add_Product.class));
                                 ((Activity) context).finish();
-                            }
-                            else if(Class_Static.CURRENTPAGE == Class_Static.ORDERS) {
+                            } else if (Class_Static.CURRENTPAGE == Class_Static.ORDERS) {
                                 //Class_SyncApi.LoadOfflineCatagories(context, Class_ModelDB.getCurrentuserModel().getId());
-                                Class_Static.viewOrderedProducts=false;
+                                Class_Static.viewOrderedProducts = false;
                                 Class_Static.tempOrderingProduct = new ArrayList<Product>();
                                 Class_Static.editProductOrder = false;
-                                ((Activity)context).startActivity(new Intent(context, Add_Product.class));
+                                ((Activity) context).startActivity(new Intent(context, Add_Product.class));
 
                             }
 
@@ -344,6 +348,7 @@ public class Class_SyncApi {
         };
         queue.add(Class_Genric.VolleyTime(postRequest));
     }
+
     public static void ProductApi(final Context context, String id, String name) {
         //GroupsApi(context);
         //CatagoryApi(context);
@@ -469,6 +474,7 @@ public class Class_SyncApi {
 
         queue.add(Class_Genric.VolleyTime(postRequest));
     }
+
     public static void OrderApi(final Context context) {
         if (Order.LoadOrders) {
             dbHelper = new Class_DBHelper(context);
@@ -581,6 +587,7 @@ public class Class_SyncApi {
         } else
             Dashboard.animateTextView(0, Class_ModelDB.getOrderList().size(), total_order_count);
     }
+
     public static void ProductPriceApi(final Context context, final Product data, String Distributorid) {
         //GroupsApi(context);
         //CatagoryApi(context);
@@ -592,6 +599,7 @@ public class Class_SyncApi {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
         params.add(new KeyValuePair("Distributorid", Distributorid));
+        params.add(new KeyValuePair("Description", data.getDescription()));
         params.add(new KeyValuePair("Code", data.getCode()));
         Class_Genric.ShowDialog(context, "Loading Price.", true);
 
@@ -609,13 +617,19 @@ public class Class_SyncApi {
                             }.getType();*/
                             String code = new JSONObject(response).optString("Code");
                             String price = new JSONObject(response).optString("Price");
+                            Double price_double = new JSONObject(response).optDouble("Price");
 
                             Class_Static.tempProduct.setProductDetais(data);
+                            Class_Static.tempProduct.setPrice(price_double);
+                            Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(), Class_Static.tempProduct.getQuantity(), Class_Static.tempProduct.getTax()));
                             Class_Static.tempProduct.setQuantity(1);
                             Add_Product.productSearch.setText(Class_Static.tempProduct.getDescription());
                             Add_Product.productUnit.setText(Class_Static.tempProduct.getUnits());
                             Add_Product.productQuantity.setText(Class_Static.tempProduct.getQuantity() + "");
                             Add_Product.productPrice.setText(price + "");
+                            Add_Product.productTax.setText(Class_Static.tempProduct.getTax() + "");
+                            Add_Product.productAmount.setText(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(), Class_Static.tempProduct.getQuantity(), Class_Static.tempProduct.getTax()) + "");
+
                             ((Activity) context).finish();
                             /*JSONObject jsonArray = new JSONObject(response);
                             String s = gson.fromJson(jsonArray.toString(), String.class);*/
@@ -716,7 +730,8 @@ public class Class_SyncApi {
         };
         queue.add(Class_Genric.VolleyTime(postRequest));
     }
-    public static void PlaceOrderApiTemp(final Context context, String UserId, String ClientId, ArrayList<Product> orderedProduct, String total) {
+
+    public static void PlaceOrderApiTemp(final Context context, String UserId, String ClientId, ArrayList<Product> orderedProduct, String total, String CompanyName) {
         ArrayList<OrderProduct> products = new ArrayList<OrderProduct>();
        /* String s = Class_Static.tempRole.getTimeStamp()+"";
         if (s.contains("T")) {
@@ -729,14 +744,18 @@ public class Class_SyncApi {
             OrderProduct obj = new OrderProduct();
             obj.setProductId(orderedProduct.get(i).getCode());
             obj.setPrice(orderedProduct.get(i).getPrice());
+            obj.setAliasflag(orderedProduct.get(i).getAliasflag());
             obj.setQuantity(orderedProduct.get(i).getQuantity());
+            obj.setTaxamount(Class_Genric.CalculateTaxAmount(orderedProduct.get(i).getPrice(), orderedProduct.get(i).getQuantity(), orderedProduct.get(i).getTax()));
+            obj.setDescription(orderedProduct.get(i).getDescription());
             obj.setUnit(orderedProduct.get(i).getUnits());
             products.add(obj);
         }
         PlaceOrder placeorder = new PlaceOrder();
         placeorder.setUserId(UserId);
         placeorder.setClientId(ClientId);
-        placeorder.setTotalAmount(Double.valueOf(total.substring(8)));
+        placeorder.setTotalAmount(Double.valueOf(total.substring(8))); //to Trim "Total : 1871.50"
+        placeorder.setCompany(CompanyName);
         placeorder.setProducts(products);
         placeorder.setOrderDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         JSONObject jsonObject = new JSONObject();
@@ -746,7 +765,7 @@ public class Class_SyncApi {
             e.printStackTrace();
         }
         Class_Genric.ShowDialog(context, "Placing Order .", true);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,Class_Urls.PlaceOrder1, jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Class_Urls.PlaceOrder1, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
@@ -773,17 +792,18 @@ public class Class_SyncApi {
                         switch (mStatusCode) {
                             case 400:
                                 try {
-                                String ErrorMessage= (String) (new JSONObject(new String(error.networkResponse.data))).get("Status");
+                                    String ErrorMessage="";
+                                    if (error.networkResponse != null)
+                                        ErrorMessage = (String) (new JSONObject(new String(error.networkResponse.data))).get("Status");
                                     Toast.makeText(context, ErrorMessage, Toast.LENGTH_SHORT).show();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Error Response From Server", Toast.LENGTH_SHORT).show();
                                 }
-
                                 break;
                         }
-                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
-
+                    } else
+                        Toast.makeText(context, "Error Response From Server", Toast.LENGTH_SHORT).show();
                 }
             }
         }) {
@@ -793,11 +813,15 @@ public class Class_SyncApi {
                 return super.parseNetworkResponse(response);
             }
         };
-        queue.add(jsonObjectRequest);
+        queue.add(Class_Genric.VolleyTime(jsonObjectRequest));
     }
+
     public static void PlaceDraftOrderApi(final Context context, final int pos, final int OrdersCount) {
         if (pos >= OrdersCount) {
-            for (Order order : Class_ModelDB.DraftorderList) {
+
+            ArrayList<Order> TempDraftorderList = new ArrayList<Order>();
+            TempDraftorderList= (ArrayList<Order>) Class_ModelDB.DraftorderList.clone();
+            for (Order order : TempDraftorderList) {
                 if (order.getStatus().matches("Pending."))
                     Class_ModelDB.DraftorderList.remove(order);
             }
@@ -806,7 +830,7 @@ public class Class_SyncApi {
                 dbHelper.saveDraftOrders();
             else
                 dbHelper.DeleteDraftOrders();
-            Order.LoadOrders=true;
+            Order.LoadOrders = true;
             Class_SyncApi.OrderApi(context);
             return;
         }
@@ -817,13 +841,14 @@ public class Class_SyncApi {
         ArrayList<OrderProduct> products = new ArrayList<OrderProduct>();
         sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
         RequestQueue queue = Volley.newRequestQueue(context);
-
         PlaceOrder placeorder = new PlaceOrder();
         placeorder.setUserId(UserId);
         placeorder.setClientId(ClientId);
-        placeorder.setOrderDate(Class_ModelDB.DraftorderList.get(pos).getOrderDate());
+        placeorder.setCompany(Class_ModelDB.DraftorderList.get(pos).getCompany());
+        placeorder.setOrderDate(Class_ModelDB.DraftorderList.get(pos).getOrderDate().substring(0, 10));
         placeorder.setTotalAmount(Double.valueOf(total));
         placeorder.setProducts(orderedProduct);
+        placeorder.setTimestamp(Class_ModelDB.DraftorderList.get(pos).getOrderDate());
         JSONObject jsonObject = new JSONObject();
         try {
             gson = new Gson();
@@ -832,7 +857,7 @@ public class Class_SyncApi {
             e.printStackTrace();
         }
         Class_Genric.ShowDialog(context, "Placing Offline Orders...", true);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Class_Urls.PlaceOrder1, jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Class_Urls.PlaceOrderDraft, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
@@ -847,10 +872,11 @@ public class Class_SyncApi {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Class_Genric.ShowDialog(context, "Loading...", false);
-                String ErrorMessage= null;
+                String ErrorMessage = "";
                 try {
-                    ErrorMessage = (String) (new JSONObject(new String(error.networkResponse.data))).get("Status");
-                    Class_ModelDB.DraftorderList.get(pos).setStatus("Failed - "+ErrorMessage);
+                    if (error.networkResponse != null)
+                        ErrorMessage = (String) (new JSONObject(new String(error.networkResponse.data))).get("Status");
+                    Class_ModelDB.DraftorderList.get(pos).setStatus("Failed - " + ErrorMessage);
                     PlaceDraftOrderApi(context, pos + 1, OrdersCount);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -866,7 +892,57 @@ public class Class_SyncApi {
                 return super.parseNetworkResponse(response);
             }
         };
-        queue.add(jsonObjectRequest);
+        queue.add(Class_Genric.VolleyTime(jsonObjectRequest));
+    }
+
+    public static void ComapnyApi(final Context context) {
+        sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+        dbHelper = new Class_DBHelper(context);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        Class_Genric.ShowDialog(context, "Loading...", true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Company, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            Type listType = new TypeToken<ArrayList<CompanyModel>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            Class_ModelDB.CompanyList = gson.fromJson(jsonArray.toString(), listType);
+                            Product_Order_Lookup.CompanyDialog(context);
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.ShowDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }) {
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(postRequest);
     }
 
     // Note : Experiment
@@ -976,6 +1052,7 @@ public class Class_SyncApi {
         };
         queue.add(stringRequest);
     }
+
     public static void PlaceOrderApiTemp2(final Context context, String UserId, String ClientId, ArrayList<Product> orderedProduct, String total) {
         ArrayList<OrderProduct> products = new ArrayList<OrderProduct>();
        /* String s = Class_Static.tempRole.getTimeStamp()+"";
@@ -1140,6 +1217,7 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+
     public static void DistributorIdApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
@@ -1200,6 +1278,7 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+
     public static void RetailerApi(final Context context) {
         dbHelper = new Class_DBHelper(context);
         String s = "2016-12-06T11:29:26";
@@ -1311,6 +1390,7 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+
     public static void RetailerIdApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
@@ -1371,6 +1451,7 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+
     private static void SyncNow(final Context context) {
         new AlertDialog.Builder(context)
                 .setTitle("OutDated Data")
@@ -1389,6 +1470,7 @@ public class Class_SyncApi {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
     private static boolean loadOffileProducts_Time(Context context) {
         if (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype()) == Class_Genric.DISTRIBUTORSALES) {
             try {
@@ -1411,6 +1493,7 @@ public class Class_SyncApi {
         } else
             return true;
     }
+
     public static void StockApi(final Context context, final String id, final int currentQty) {
         String s = "2016-12-06T11:29:26";
         if (s.contains("T")) {
@@ -1511,6 +1594,7 @@ public class Class_SyncApi {
         }
 
     }
+
     public static void GroupsApi(final Context context) {
         dbHelper = new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -1612,6 +1696,7 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+
     public static void ProductIdApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
@@ -1671,6 +1756,7 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+
     public static void OrderIdApi(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
@@ -1733,6 +1819,7 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+
     public static void Location(final Context context, Double latitude, Double longitude, String date) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -1788,6 +1875,7 @@ public class Class_SyncApi {
         };
         queue.add(jsonObjectRequest);
     }
+
     public static void SalesPersonListApi(final Context context) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -1882,6 +1970,7 @@ public class Class_SyncApi {
         };
         queue.add(postRequest);
     }
+
     public static void TrackLocationApi(final Context context, String id) {
         RequestQueue queue = Volley.newRequestQueue(context);
         ArrayList<KeyValuePair> params = new ArrayList<KeyValuePair>();
@@ -1947,14 +2036,12 @@ public class Class_SyncApi {
     }
 
 
-
     //Note : Offline save Opertaions
+
     public static void loadallcategories(int pos, Context context) {
-        if(Class_ModelDB.getRoleList().size()==0)
-        {
+        if (Class_ModelDB.getRoleList().size() == 0) {
             Class_SyncApi.DistributorApiSync(context);
-        }
-        else {
+        } else {
             if (pos < Class_ModelDB.getRoleList().size()) {
                 tempOfflineDistributor = new OfflineModel_Distributor();
                 RecursiveCatagoryApi(context, pos);
@@ -1964,6 +2051,7 @@ public class Class_SyncApi {
         }
 
     }
+
     public static void RecursiveCatagoryApi(final Context context, final int DistributorPos) {
         dbHelper = new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -2045,6 +2133,7 @@ public class Class_SyncApi {
         };
         queue.add(Class_Genric.VolleyTime(postRequest));
     }
+
     public static void DistributorRecursiveCatagoryApi(final Context context, String DistributorId) {
         dbHelper = new Class_DBHelper(context);
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -2127,22 +2216,19 @@ public class Class_SyncApi {
         queue.add(Class_Genric.VolleyTime(postRequest));
     }
 
-    public static OfflineModel_Distributor OfflineDist=new OfflineModel_Distributor();
+    public static OfflineModel_Distributor OfflineDist = new OfflineModel_Distributor();
 
     public static void loadallProducts(Context context, int Distributorpos, int Categorypos) {
 
 
         if ((Distributorpos) < Class_ModelDB.OfflineDistributors.size()) {
-            if (Categorypos < Class_ModelDB.OfflineDistributors.get(Distributorpos).getCategories().size())
-            {
-                if(Categorypos==0)
-                {
-                    OfflineDist=new OfflineModel_Distributor();
-                    OfflineDist=Class_ModelDB.OfflineDistributors.get(Distributorpos);
+            if (Categorypos < Class_ModelDB.OfflineDistributors.get(Distributorpos).getCategories().size()) {
+                if (Categorypos == 0) {
+                    OfflineDist = new OfflineModel_Distributor();
+                    OfflineDist = Class_ModelDB.OfflineDistributors.get(Distributorpos);
                 }
                 RecursiveProductApi(context, Distributorpos, Categorypos);
-            }
-            else if (Distributorpos < Class_ModelDB.OfflineDistributors.size()) {
+            } else if (Distributorpos < Class_ModelDB.OfflineDistributors.size()) {
                 dbHelper = new Class_DBHelper(context);
                 dbHelper.saveOfflineData(OfflineDist);
                 loadallProducts(context, Distributorpos + 1, 0);
@@ -2151,15 +2237,19 @@ public class Class_SyncApi {
                 //dbHelper.saveOfflineData();
                 dbHelper = new Class_DBHelper(context);
                 dbHelper.saveOfflineData(OfflineDist);
-                Class_Genric.SYNCDialog(context, "Loading...", false);
+                Class_Genric.saveOfflineTime(context);
+                LoadOfflineComapnyApi(context);
             }
         } else {
             dbHelper = new Class_DBHelper(context);
             //dbHelper.saveOfflineData();
-            Class_Genric.SYNCDialog(context, "Loading...", false);
+            LoadOfflineComapnyApi(context);
+            Class_Genric.saveOfflineTime(context);
+            //Class_Genric.SYNCDialog(context, "Loading...", false);
         }
 
     }
+
     public static void RecursiveProductApi(final Context context, final int Distributorpos, final int Categorypos) {
         //GroupsApi(context);
         //CatagoryApi(context);
@@ -2260,34 +2350,112 @@ public class Class_SyncApi {
         queue.add(Class_Genric.VolleyTime(postRequest));
     }
 
+    public static void LoadOfflineComapnyApi(final Context context) {
+        sharedPreferences = context.getSharedPreferences(MyPref, context.MODE_PRIVATE);
+        dbHelper = new Class_DBHelper(context);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        Class_Genric.SYNCDialog(context, "Loading Comapany List...", true);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Class_Urls.Company, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Class_Genric.SYNCDialog(context, "Loading...", false);
+                switch (mStatusCode) {
+                    case 200:
+                        try {
+                            gson = new Gson();
+                            Type listType = new TypeToken<ArrayList<CompanyModel>>() {
+                            }.getType();
+                            JSONArray jsonArray = new JSONArray(response);
+                            Class_ModelDB.CompanyList = gson.fromJson(jsonArray.toString(), listType);
+                            sharedPreferences = context.getSharedPreferences(Class_Genric.MyPref, context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(Class_Genric.Sp_Companies, gson.toJsonTree(Class_ModelDB.CompanyList).getAsJsonArray().toString());
+                            editor.commit();
+                            break;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Class_Genric.SYNCDialog(context, "Loading...", false);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Class_Genric.NetCheck(context);
+                } else {
+                    if (error != null && error.networkResponse != null) {
+                        mStatusCode = error.networkResponse.statusCode;
+                        switch (mStatusCode) {
+
+                        }
+                    } else Toast.makeText(context, "Server Down", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }) {
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                mStatusCode = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        queue.add(postRequest);
+    }
+
+
     //Note : Offline load Opertaions
     public static void LoadOfflineDistributors(Context context) {
-        dbHelper= new Class_DBHelper(context);
-        dbHelper.loadOfflineDistributorList();
+        if (Class_Genric.CheckOfflineTime(context)) {
+            dbHelper = new Class_DBHelper(context);
+            dbHelper.loadOfflineDistributorList();
+            Class_Static.viewOrderedProducts = false;
+            Class_Static.tempOrderingProduct = new ArrayList<Product>();
+            Class_Static.Flag_SEARCH = Class_Static.SEARCHCUSTOMER;
+            ((Activity) context).startActivity(new Intent(context, Search_Customer.class));
+        } else
+            Toast.makeText(context, "OfflineSessionTimeOut", Toast.LENGTH_SHORT).show();
+
+
     }
+
     public static void LoadOfflineProducts(Context mContext, String Distributorid, String Catagoryname) {
-        dbHelper= new Class_DBHelper(mContext);
-        dbHelper.loadOfflineDistributorDataData(Distributorid);
-        ArrayList<Product> model = new ArrayList<Product>();
-        for (OffineModel_Category tempcatagories : Class_ModelDB.OfflineDistributor.getCategories()) {
-            if (Catagoryname.matches(tempcatagories.getName()))
-                model = (tempcatagories.getProducts());
-        }
-        Class_ModelDB.setProductList(model);
-        ((Activity) mContext).finish();
+        if (Class_Genric.CheckOfflineTime(mContext)) {
+            dbHelper = new Class_DBHelper(mContext);
+            dbHelper.loadOfflineDistributorDataData(Distributorid);
+            ArrayList<Product> model = new ArrayList<Product>();
+            for (OffineModel_Category tempcatagories : Class_ModelDB.OfflineDistributor.getCategories()) {
+                if (Catagoryname.matches(tempcatagories.getName()))
+                    model = (tempcatagories.getProducts());
+            }
+            Class_ModelDB.setProductList(model);
+            ((Activity) mContext).finish();
+        } else
+            Toast.makeText(mContext, "OfflineSessionTimeOut", Toast.LENGTH_SHORT).show();
+
     }
+
     public static void LoadOfflineCatagories(Context context, String DistributorId) {
-        dbHelper= new Class_DBHelper(context);
-        dbHelper.loadOfflineDistributorDataData(DistributorId);
-        ArrayList<Catagories> catagoryList = new ArrayList<Catagories>();
-        for (OffineModel_Category tempcatagories : Class_ModelDB.OfflineDistributor.getCategories()) {
-            catagoryList.add(getcatagory(tempcatagories));
-        }
-        Class_ModelDB.setCatagoryList(catagoryList);
-        if (Class_Static.CURRENTPAGE == Class_Static.DISTRIBUTORLIST) {
-            ((Activity) context).startActivity(new Intent(context, Add_Product.class));
-            ((Activity) context).finish();
-        }
+        if (Class_Genric.CheckOfflineTime(context)) {
+            dbHelper = new Class_DBHelper(context);
+            dbHelper.loadOfflineDistributorDataData(DistributorId);
+            ArrayList<Catagories> catagoryList = new ArrayList<Catagories>();
+            for (OffineModel_Category tempcatagories : Class_ModelDB.OfflineDistributor.getCategories()) {
+                catagoryList.add(getcatagory(tempcatagories));
+            }
+            Class_ModelDB.setCatagoryList(catagoryList);
+            if (Class_Static.CURRENTPAGE == Class_Static.DISTRIBUTORLIST) {
+                ((Activity) context).startActivity(new Intent(context, Add_Product.class));
+                ((Activity) context).finish();
+            }
+            if (Class_Static.CURRENTPAGE == Class_Static.ORDERS) {
+                Class_Static.viewOrderedProducts = false;
+                Class_Static.tempOrderingProduct = new ArrayList<Product>();
+                Class_Static.editProductOrder = false;
+                ((Activity) context).startActivity(new Intent(context, Add_Product.class));
+            }
+        } else
+            Toast.makeText(context, "OfflineSessionTimeOut", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -2298,6 +2466,7 @@ public class Class_SyncApi {
         temprole.setName(tempDitributor.getName());
         return temprole;
     }
+
     private static Catagories getcatagory(OffineModel_Category tempOfflinecatagories) {
         Catagories temp_catagory = new Catagories();
         temp_catagory.setName(tempOfflinecatagories.getName());
@@ -2353,7 +2522,7 @@ public class Class_SyncApi {
 
                             dbHelper.saveRole();
                             dbHelper.loadRole();
-                            loadallcategories(0,context);
+                            loadallcategories(0, context);
 
                             break;
                         } catch (JSONException e) {

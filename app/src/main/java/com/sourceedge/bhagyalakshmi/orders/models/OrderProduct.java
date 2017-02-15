@@ -12,6 +12,8 @@ public class OrderProduct {
     private Double Price;
     private String Description;
     private String Units;
+    private int Aliasflag;
+    private Double Taxamount;
    // private String SectionId;
     //private String CategoryId;
    // private String SectionName;
@@ -26,12 +28,30 @@ public class OrderProduct {
         Price=0.0;
         Description="";
         Units="";
+        Taxamount=0.0;
+        Aliasflag=-1;
        // Description="";
        // SectionId="";
        // CategoryId="";
        // Code="";
       //  SectionName="";
       //  CatagoryName="";
+    }
+
+    public int getAliasflag() {
+        return Aliasflag;
+    }
+
+    public void setAliasflag(int aliasflag) {
+        Aliasflag = aliasflag;
+    }
+
+    public Double getTaxamount() {
+        return Taxamount;
+    }
+
+    public void setTaxamount(Double taxamount) {
+        Taxamount = taxamount;
     }
 
     public String getId() {

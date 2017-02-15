@@ -277,6 +277,45 @@
                 android:maxLines="1"
                 android:enabled="false"
                 android:padding="@dimen/dimen_15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_15dp"
+                android:text="@string/tax"
+                android:textSize="@dimen/textsize_16sp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/product_tax"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:background="@drawable/primary_outline"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:enabled="false"
+                android:padding="@dimen/dimen_15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_15dp"
+                android:text="@string/amount"
+                android:textSize="@dimen/textsize_16sp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/product_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:background="@drawable/primary_outline"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:enabled="false"
+                android:padding="@dimen/dimen_15dp" />
+
             <LinearLayout
                 android:padding="@dimen/dimen_2dp"
                 android:weightSum="2"

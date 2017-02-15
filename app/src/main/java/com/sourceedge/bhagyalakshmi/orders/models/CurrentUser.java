@@ -9,6 +9,7 @@ public class CurrentUser {
     private String Name;
     private String Usertype;
     private String Token;
+    private String Employee;
     private String ACL;
 
     public CurrentUser(){
@@ -17,6 +18,15 @@ public class CurrentUser {
         Usertype="";
         Token="";
         ACL="";
+        Employee="";
+    }
+
+    public String getEmployee() {
+        return Employee;
+    }
+
+    public void setEmployee(String employee) {
+        Employee = employee;
     }
 
     public String getId() {

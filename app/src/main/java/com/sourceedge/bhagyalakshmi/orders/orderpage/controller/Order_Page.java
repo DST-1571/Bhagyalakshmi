@@ -107,6 +107,7 @@ public class Order_Page extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Class_Static.tempProduct = new Product();
                 switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                     case Class_Genric.ADMIN:
                         break;
@@ -123,15 +124,14 @@ public class Order_Page extends AppCompatActivity {
                                 startActivity(new Intent(Order_Page.this, Add_Product.class));
                             }
                         } else {
+                            Class_Static.CURRENTPAGE = Class_Static.ORDERS;
                             Class_SyncApi.LoadOfflineCatagories(Order_Page.this, Class_ModelDB.getCurrentuserModel().getId());
-                            Class_Static.viewOrderedProducts = false;
-                            Class_Static.tempOrderingProduct = new ArrayList<Product>();
-                            Class_Static.editProductOrder = false;
-                            startActivity(new Intent(Order_Page.this, Add_Product.class));
+
                         }
 
                         break;
                     case Class_Genric.DISTRIBUTORSALES:
+                    case Class_Genric.ASM:
                     case Class_Genric.SALESMAN:
                         if (Class_Genric.NetAvailable(Order_Page.this)) {
                             if (Class_ModelDB.getRoleList().size() == 0)
@@ -144,10 +144,7 @@ public class Order_Page extends AppCompatActivity {
                             }
                         } else {
                             Class_SyncApi.LoadOfflineDistributors(Order_Page.this);
-                            Class_Static.viewOrderedProducts = false;
-                            Class_Static.tempOrderingProduct = new ArrayList<Product>();
-                            Class_Static.Flag_SEARCH = Class_Static.SEARCHCUSTOMER;
-                            startActivity(new Intent(Order_Page.this, Search_Customer.class));
+
                         }
 
                         break;

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class Dashboard extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_dashboard);
         Class_Genric.setOrientation(Dashboard.this);
         Class_Static.page(Class_Static.DASHBOARD);
@@ -128,7 +130,7 @@ public class Dashboard extends AppCompatActivity {
         if (Class_Genric.NetAvailable(Dashboard.this) && Class_ModelDB.DraftorderList.size() > 0) {
             Class_SyncApi.PlaceDraftOrderApi(Dashboard.this, 0, Class_ModelDB.DraftorderList.size());
         }
-
+        Class_Genric.UpdateSyncTime(Dashboard.this);
         Class_SyncApi.OrderApi(Dashboard.this);
     }
 }

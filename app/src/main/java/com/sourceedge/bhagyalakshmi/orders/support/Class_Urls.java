@@ -14,6 +14,9 @@ public class Class_Urls {
     public static final String ProductPrice=Parent1+"FileToGetCat.php?type=ProductPrice";
     public static final String Order1=Parent1+"FileToViewOrder.php?type=Order";
     public static final String PlaceOrder1=Parent1+"FileToPlaceOrder.php?type=PlaceOrder";
+    public static final String PlaceOrderDraft=Parent1+"FileToPlaceOfflineOrder.php?type=PlaceOrder";
+    public static final String Company=Parent1+"FileToGetCompany.php?type=Company";
+
 
 
 

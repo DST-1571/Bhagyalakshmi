@@ -12,6 +12,7 @@ import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.models.Product;
 import com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Admin_View_Order;
 import com.sourceedge.bhagyalakshmi.orders.orderproduct.controller.Product_Order_Lookup;
+import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 
 import java.util.ArrayList;
 
@@ -27,10 +28,10 @@ public class Admin_View_Order_Adapter extends RecyclerView.Adapter<Admin_View_Or
     public Admin_View_Order_Adapter(Context context, ArrayList<Product> model) {
         this.mContext = context;
         this.data = model;
-        for (Product prod : data) {
+       /* for (Product prod : data) {
             amount += prod.getAmount();
-        }
-        Admin_View_Order.total.setText("Total : " +String.format("%.2f", amount)+ "");
+        }*/
+        Admin_View_Order.total.setText("Total : " +String.format("%.2f", Class_Static.OrdredProducts.getTotalAmount())+ "");
 
     }
 

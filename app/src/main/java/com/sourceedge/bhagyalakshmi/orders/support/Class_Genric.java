@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.sourceedge.bhagyalakshmi.orders.R;
 import com.sourceedge.bhagyalakshmi.orders.changepassword.Change_Password;
@@ -84,6 +85,7 @@ public class Class_Genric {
 
     public static final String Sp_SyncDate = "SyncDate";
     public static final String Sp_Status = "Status";
+    public static final String Sp_OfflineTime="OfflineTime";
     public static final String Sp_OrderNumber = "OrderNumber";
     public static final String Sp_OrderStatus = "OrderNumber";
     public static final String Sp_ProductsTS = "ProductsTS";
@@ -91,6 +93,7 @@ public class Class_Genric {
     public static final String Sp_OrdersTS = "OrdersTS";
     public static final String Sp_GroupsTS = "GroupsTS";
     public static final String Sp_CatagoriesTS = "CatagoriesTS";
+    public static final String Sp_Companies = "Companies";
 
     public static boolean progressAlive = false;
     static ProgressDialog pDialog;
@@ -99,7 +102,7 @@ public class Class_Genric {
 
     static Button button;
     static Button button1;
-    static TextView homeText;
+    static TextView homeText, synctime;
     static Class_DBHelper dbHelper;
 
     public static LinearLayout home, myProfile, changePassword, location, distributorSalesMyOrders, asmMyOrders, activeOrders, distributorMyOrders, salesmanMyOrders, salesDistributorRetailers, retailers, distributorSalesPayments, distributorPayments, salesmanPayments, messages, logout, sync;
@@ -188,6 +191,24 @@ public class Class_Genric {
             }
         }
     }
+    public static Long getTimeStamp(int hours,Context context) {
+        SharedPreferences sharedPreferences= context.getSharedPreferences(Class_Genric.MyPref,context.MODE_PRIVATE);
+        long offlinetime= Long.valueOf(sharedPreferences.getString(Sp_OfflineTime,"0"));
+        Date res = new java.util.Date(offlinetime);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime( res );
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+hours);
+        Long data = calendar.getTimeInMillis();
+        return data;
+    }
+
+    public static Long getCurrentTimeStamp() {
+        Date res = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime( res );
+        Long data = calendar.getTimeInMillis();
+        return data;
+    }
 
     public static void hideKeyboard(Context context) {
         try {
@@ -262,6 +283,8 @@ public class Class_Genric {
             tempOP.setQuantity(product.getQuantity());
             tempOP.setDescription(product.getDescription());
             tempOP.setPrice(product.getPrice());
+            tempOP.setAliasflag(product.getAliasflag());
+            tempOP.setTaxamount(Class_Genric.CalculateTaxAmount(product.getPrice(),product.getQuantity(),product.getTax()));
             tempOrderProducts.add(tempOP);
         }
         return tempOrderProducts;
@@ -356,7 +379,7 @@ public class Class_Genric {
     }
 
     public static int getType(String LoginType) {
-        if (LoginType.toString().toLowerCase().matches(("admin").toLowerCase()))
+        if (LoginType.toString().toLowerCase().matches(("admin").toLowerCase())||LoginType.toString().toLowerCase().matches(("Sales Head").toLowerCase()))
             return ADMIN;
         if (LoginType.toLowerCase().matches(("distributorsalesperson").toLowerCase()))
             return DISTRIBUTORSALES;
@@ -365,7 +388,7 @@ public class Class_Genric {
         if (LoginType.toLowerCase().matches(("salesperson").toLowerCase()))
             return SALESPERSON;
         if (LoginType.toLowerCase().matches(("ASM").toLowerCase()))
-            return ADMIN;
+            return ASM;
         if (LoginType.toLowerCase().matches(("Sales Man").toLowerCase()))
             return SALESMAN;
         else return 0;
@@ -393,6 +416,7 @@ public class Class_Genric {
         logout = (LinearLayout) a.findViewById(R.id.logout);
         homeText = (TextView) a.findViewById(R.id.home_text);
         sync = (LinearLayout) a.findViewById(R.id.sync);
+        synctime=(TextView) a.findViewById(R.id.synctime);
 
         switch (getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
             case ADMIN:
@@ -418,7 +442,6 @@ public class Class_Genric {
                     public void onClick(View view) {
                         a.startActivity(new Intent(a, Admin_Orders.class));
                         drawer.closeDrawer(Gravity.LEFT);
-
                     }
                 });
                 salesDistributorRetailers.setOnClickListener(new View.OnClickListener() {
@@ -441,7 +464,7 @@ public class Class_Genric {
                 salesmanPayments.setVisibility(View.GONE);
                 retailers.setVisibility(View.GONE);
                 sync.setVisibility(View.VISIBLE);
-
+                UpdateSyncTime(context);
                 salesDistributorRetailers.setVisibility(View.GONE);
                 distributorSalesMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -490,7 +513,7 @@ public class Class_Genric {
                 salesDistributorRetailers.setVisibility(View.GONE);
                 asmMyOrders.setVisibility(View.GONE);
                 sync.setVisibility(View.VISIBLE);
-
+                UpdateSyncTime(context);
                 distributorMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -551,7 +574,7 @@ public class Class_Genric {
                     }
                 });
                 break;*/
-
+            case Class_Genric.ASM:
             case SALESMAN:
                 location.setVisibility(View.GONE);
                 activeOrders.setVisibility(View.GONE);
@@ -562,12 +585,21 @@ public class Class_Genric {
                 salesDistributorRetailers.setVisibility(View.GONE);
                 retailers.setVisibility(View.GONE);
                 asmMyOrders.setVisibility(View.GONE);
+                sync.setVisibility(View.VISIBLE);
+                UpdateSyncTime(context);
                 salesmanMyOrders.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a.startActivity(new Intent(a, Order_Page.class));
-                        drawer.closeDrawer(Gravity.LEFT);
-
+                        switch (getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
+                            case ASM:
+                                a.startActivity(new Intent(a, Admin_Orders.class));
+                                drawer.closeDrawer(Gravity.LEFT);
+                                break;
+                            default:
+                                a.startActivity(new Intent(a, Order_Page.class));
+                                drawer.closeDrawer(Gravity.LEFT);
+                                break;
+                        }
                     }
                 });
 
@@ -638,6 +670,17 @@ public class Class_Genric {
                 logout(context);
             }
         });
+    }
+
+    public static void UpdateSyncTime(Context context) {
+        SharedPreferences sharedPreferences= context.getSharedPreferences(Class_Genric.MyPref,context.MODE_PRIVATE);
+        long timestamp= Long.valueOf(sharedPreferences.getString(Sp_OfflineTime,"0"));
+        if(timestamp!=0)
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("d MMM h:mm a");
+            synctime.setText("last Sync :\n "+sdf.format(new java.util.Date(getTimeStamp(0,context) * 1000))+"");
+        }
+        else synctime.setText("");
     }
 
     public static void logout(Context context) {
@@ -791,6 +834,12 @@ public class Class_Genric {
         return postRequest;
     }
 
+    public static JsonObjectRequest VolleyTime(JsonObjectRequest postRequest) {
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(10000, 2, 2f));
+
+        return postRequest;
+    }
+
     public static String getDateTime(Order order) {
         order.getOrderDate();
         if(order.getOrderNumber().toLowerCase().contains(("Offline").toLowerCase()))
@@ -798,8 +847,38 @@ public class Class_Genric {
             return  order.getOrderDate();
         }
         else {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyy HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
             return sdf.format(new java.util.Date(Long.parseLong((order.getOrderDate())) * 1000));
         }
+    }
+
+    public static Double CalculateTaxAmount(Double price,int qty,Double tax){
+        Double Amount=0.0;
+        Amount=price*qty;
+        Amount=(Amount*(tax/100.0f));
+        Amount = Double.valueOf(String.format("%.2f", Amount));
+        return  Amount;
+    }
+
+    public static Double CalculateAmount(Double price,int qty,Double tax){
+        Double Amount=0.0;
+        Amount=price*qty;
+        Amount=(Amount*(tax/100.0f))+Amount;
+        Amount = Double.valueOf(String.format("%.2f", Amount));
+        return  Amount;
+    }
+
+    public static void saveOfflineTime(Context context) {
+        SharedPreferences sharedPreferences= context.getSharedPreferences(Class_Genric.MyPref,context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Class_Genric.Sp_OfflineTime,getCurrentTimeStamp()+"");
+        editor.commit();
+    }
+
+    public static boolean CheckOfflineTime(Context context) {
+        long ThresHoldTime = getTimeStamp(6,context);
+        if(getCurrentTimeStamp()>ThresHoldTime)
+            return false;
+        else return true;
     }
 }

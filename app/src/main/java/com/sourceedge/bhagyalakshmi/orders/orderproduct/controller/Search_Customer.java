@@ -57,6 +57,7 @@ public class Search_Customer extends AppCompatActivity {
                 case Class_Genric.DISTRIBUTOR:
                     retailerSearch.setHint("Search");
                     break;
+                case Class_Genric.ASM:
                 case Class_Genric.SALESMAN:
                     retailerSearch.setHint("Search Distributor");
                     break;
@@ -229,6 +230,7 @@ public class Search_Customer extends AppCompatActivity {
                     retailerSearch.setHint("Search SalesPerson");
                     break;
                 case Class_Genric.DISTRIBUTORSALES:
+                case Class_Genric.ASM:
                 case Class_Genric.DISTRIBUTOR:
                 case Class_Genric.SALESMAN:
                     break;

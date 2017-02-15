@@ -165,6 +165,7 @@ public class Tracker extends FragmentActivity implements
 
         mapMarker.setTitle(mLastUpdateTime);
         switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
+            case Class_Genric.ASM:
             case Class_Genric.ADMIN:
                 break;
             case Class_Genric.DISTRIBUTORSALES:

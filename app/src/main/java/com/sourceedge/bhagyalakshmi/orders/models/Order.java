@@ -23,12 +23,15 @@ public class Order {
     private String OrderNumber;
     private String OrderDate;
     private BigInteger TimeStamp;
+    private String Company;
+    private String abc;
 
 
     public static boolean LoadOrders=true;
 
     public Order(){
         Id="";
+        abc="";
         Products=new ArrayList<OrderProduct>();
         User=new OrderRole();
         Client=new OrderRole();
@@ -37,6 +40,31 @@ public class Order {
         OrderNumber="";
         TimeStamp= BigInteger.valueOf(0);
         OrderDate="";
+        Company="";
+    }
+
+    public String getAbc() {
+        return abc;
+    }
+
+    public void setAbc(String abc) {
+        this.abc = abc;
+    }
+
+    public String getCompany() {
+        return Company;
+    }
+
+    public void setCompany(String company) {
+        Company = company;
+    }
+
+    public static boolean isLoadOrders() {
+        return LoadOrders;
+    }
+
+    public static void setLoadOrders(boolean loadOrders) {
+        LoadOrders = loadOrders;
     }
 
     public String getId() {

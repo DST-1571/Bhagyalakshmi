@@ -10,12 +10,30 @@ public class OrderRole {
     private String Name;
     private String Address;
     private String Usertype;
+    private String Employee;
 
     public OrderRole(){
         Id="";
         Name="";
         Address="";
         Usertype="";
+        Employee="";
+    }
+
+    public String getUsertype() {
+        return Usertype;
+    }
+
+    public void setUsertype(String usertype) {
+        Usertype = usertype;
+    }
+
+    public String getEmployee() {
+        return Employee;
+    }
+
+    public void setEmployee(String employee) {
+        Employee = employee;
     }
 
     public String getId() {
