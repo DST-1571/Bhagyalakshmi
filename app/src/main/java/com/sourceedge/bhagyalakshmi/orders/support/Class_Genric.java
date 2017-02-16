@@ -876,7 +876,7 @@ public class Class_Genric {
     }
 
     public static boolean CheckOfflineTime(Context context) {
-        long ThresHoldTime = getTimeStamp(6,context);
+        long ThresHoldTime = getTimeStamp(24,context);
         if(getCurrentTimeStamp()>ThresHoldTime)
             return false;
         else return true;
