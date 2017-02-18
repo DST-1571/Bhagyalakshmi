@@ -9,7 +9,6 @@
     android:focusableInTouchMode="true"
     tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

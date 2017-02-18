@@ -322,10 +322,13 @@ public class Add_Product extends AppCompatActivity {
                                                          } else if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
                                                              productQuantity.setError("Out of Stock");
                                                          } else {
-                                                             Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
-                                                             boolean found = false;
+
                                                              int qty = 0;
                                                              Product prod = new Product();
+                                                             //repeated selection
+                                                             /*
+                                                             Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+                                                             boolean found = false;
                                                              while (iter.hasNext()) {
                                                                  prod = iter.next();
                                                                  if (prod.getDescription().matches(Class_Static.tempProduct.getDescription())) {
@@ -337,7 +340,7 @@ public class Add_Product extends AppCompatActivity {
                                                                      break;
                                                                  }
                                                              }
-                                                             if (!found) {
+                                                             if (!found) {*/
                                                                  if (qty > Class_Static.AvailableStock) {
                                                                      Toast.makeText(Add_Product.this, "Product is Already Added with Stock " + prod.getStock(), Toast.LENGTH_SHORT).show();
                                                                  } else {
@@ -355,7 +358,7 @@ public class Add_Product extends AppCompatActivity {
                                                                      Class_Static.tempOrderingProduct.add(tempProd);
 
                                                                  }
-                                                             }
+                                                             //} //repeated selection
                                                              startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
                                                              finish();
                                                          }
@@ -371,7 +374,10 @@ public class Add_Product extends AppCompatActivity {
                                                              startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
                                                              finish();
                                                          } else {
-                                                             Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+
+                                                             //repeated selection
+                                                             /*I
+                                                             terator<Product> iter = Class_Static.tempOrderingProduct.iterator();
                                                              boolean found = false;
                                                              while (iter.hasNext()) {
                                                                  Product prod = iter.next();
@@ -383,7 +389,7 @@ public class Add_Product extends AppCompatActivity {
                                                                      break;
                                                                  }
                                                              }
-                                                             if (!found) {
+                                                             if (!found) {*/
                                                                  Class_Static.tempProduct.setQuantity(Integer.parseInt(productQuantity.getText().toString()));
                                                                  Class_Static.tempProduct.setCode(Class_Static.tempProduct.getCode());
                                                                  Class_Static.tempProduct.setDescription(productSearch.getText().toString());
@@ -395,7 +401,7 @@ public class Add_Product extends AppCompatActivity {
                                                                  Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax()));
                                                                  Product tempProd = new Product(Class_Static.tempProduct);
                                                                  Class_Static.tempOrderingProduct.add(tempProd);
-                                                             }
+                                                             //} //repeated selection
                                                          }
                                                          startActivity(new Intent(Add_Product.this, Product_Order_Lookup.class));
                                                          finish();
@@ -425,10 +431,13 @@ public class Add_Product extends AppCompatActivity {
                                                                 if (Integer.parseInt(productQuantity.getText().toString()) > Class_Static.AvailableStock) {
                                                                     productQuantity.setError("Out of Stock");
                                                                 } else {
-                                                                    Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
-                                                                    boolean found = false;
+
                                                                     int qty = 0;
                                                                     Product prod = new Product();
+
+                                                                    //Repeated Selection
+                                                                    /*Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+                                                                    boolean found = false;
                                                                     while (iter.hasNext()) {
                                                                         prod = iter.next();
                                                                         if (prod.getDescription().matches(Class_Static.tempProduct.getDescription())) {
@@ -440,7 +449,7 @@ public class Add_Product extends AppCompatActivity {
                                                                             break;
                                                                         }
                                                                     }
-                                                                    if (!found) {
+                                                                    if (!found) {*/
                                                                         if (qty > Class_Static.AvailableStock) {
                                                                             Toast.makeText(Add_Product.this, "Product is Already Added with Stock " + prod.getStock(), Toast.LENGTH_SHORT).show();
                                                                         } else {
@@ -458,7 +467,7 @@ public class Add_Product extends AppCompatActivity {
                                                                             Class_Static.tempOrderingProduct.add(tempProd);
 
                                                                         }
-                                                                    }
+                                                                    //}
                                                                     cleanScreen();
                                                                 }
 
@@ -478,7 +487,8 @@ public class Add_Product extends AppCompatActivity {
                                                             case Class_Genric.DISTRIBUTOR:
                                                             case Class_Genric.ASM:
                                                             case Class_Genric.SALESMAN:
-                                                                Iterator<Product> iter1 = Class_Static.tempOrderingProduct.iterator();
+                                                                // Repeated Selection
+                                                                /*Iterator<Product> iter1 = Class_Static.tempOrderingProduct.iterator();
                                                                 boolean found1 = false;
                                                                 while (iter1.hasNext()) {
                                                                     Product prod = iter1.next();
@@ -490,7 +500,7 @@ public class Add_Product extends AppCompatActivity {
                                                                         break;
                                                                     }
                                                                 }
-                                                                if (!found1) {
+                                                                if (!found1) {*/
                                                                     Class_Static.tempProduct.setCode(Class_Static.tempProduct.getCode());
                                                                     Class_Static.tempProduct.setDescription(productSearch.getText().toString());
                                                                     Class_Static.tempProduct.setSectionName(productGroup.getText().toString());
@@ -502,7 +512,7 @@ public class Add_Product extends AppCompatActivity {
                                                                     Class_Static.tempProduct.setAmount(Class_Genric.CalculateAmount(Class_Static.tempProduct.getPrice(),Class_Static.tempProduct.getQuantity(),Class_Static.tempProduct.getTax()));
                                                                     Class_Static.tempOrderingProduct.add(Class_Static.tempProduct);
                                                                     cleanScreen();
-                                                                }
+                                                               // }
                                                                 break;
                                                         }
 

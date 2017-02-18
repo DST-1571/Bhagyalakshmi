@@ -18,6 +18,7 @@ import com.sourceedge.bhagyalakshmi.orders.support.Class_Static;
 import com.sourceedge.bhagyalakshmi.orders.support.Class_SyncApi;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Centura User1 on 12-12-2016.
@@ -46,6 +47,18 @@ public class Product_List_Adapter extends RecyclerView.Adapter<Product_List_Adap
             @Override
             public void onClick(View v) {
                 Class_Genric.hideKeyboard(mContext);
+                Iterator<Product> iter = Class_Static.tempOrderingProduct.iterator();
+                boolean productInCart=false;
+                while (iter.hasNext()) {
+                    Product prod = iter.next();
+                    if (prod.getDescription().matches(data.get(position).getDescription())) {
+                        productInCart=true;
+                    }
+                }
+                if(productInCart){
+                    Toast.makeText(mContext,"Already in cart",Toast.LENGTH_SHORT).show();
+                }
+                else {
                 switch (Class_Genric.getType(Class_ModelDB.getCurrentuserModel().getUsertype())) {
                     case Class_Genric.DISTRIBUTORSALES:
                         boolean found=false;
@@ -116,7 +129,9 @@ public class Product_List_Adapter extends RecyclerView.Adapter<Product_List_Adap
                         }
                         break;
                 }
-            }
+
+                }//end else
+            } // endonclick
         });
     }
 

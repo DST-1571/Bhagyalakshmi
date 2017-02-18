@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_order__page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_admin_orders"
-    tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Order_Page">
-    <RelativeLayout
-        android:id="@+id/content_admin__orders"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true">
+    tools:context="com.sourceedge.bhagyalakshmi.orders.orderpage.controller.Admin_Orders">
         <LinearLayout
             android:visibility="gone"
             android:id="@+id/empty_active_orders"
@@ -113,12 +109,4 @@
         </LinearLayout>
 
     </RelativeLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_plus_white_24dp"/>
-</android.support.design.widget.CoordinatorLayout>
 

@@ -229,6 +229,7 @@ public class Product_Order_Lookup extends AppCompatActivity {
                     scrollView.setVisibility(View.GONE);
                     setMargins(fab, 16, context);
                     emptyProducts.setVisibility(View.VISIBLE);
+                    ((Activity)context).finish();
                 }
                 break;
         }
@@ -269,15 +270,18 @@ public class Product_Order_Lookup extends AppCompatActivity {
                         case Class_Genric.DISTRIBUTORSALES:
                             Class_Static.editProductOrder = false;
                             startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
+                            finish();
                             break;
                         case Class_Genric.DISTRIBUTOR:
                             Class_Static.editProductOrder = false;
                             startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
+                            finish();
                             break;
                         case Class_Genric.ASM:
                         case Class_Genric.SALESMAN:
                             Class_Static.editProductOrder = false;
                             startActivity(new Intent(Product_Order_Lookup.this, Add_Product.class));
+                            finish();
                             break;
                     }
                     finish();
